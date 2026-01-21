@@ -68,12 +68,18 @@ body {
 
 .hero {
   position: relative;
-  min-height: 560px;
+  min-height: 92vh; /* makes it feel full-screen */
   display: grid;
   place-items: center;
-  /* Replace hero.jpg with your file name */
-  background: url("./hero.jpg") center/cover no-repeat;
+
+  background-image: url("./hero.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  /* Move the “camera” down so you don’t lose the top */
+  background-position: center 28%;
 }
+
 
 .hero-overlay {
   position: absolute;
