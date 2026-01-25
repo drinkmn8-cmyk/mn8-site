@@ -3,8 +3,9 @@
   --text: rgba(255, 255, 255, 0.92);
   --muted: rgba(255, 255, 255, 0.65);
 
-  --card: rgba(74, 92, 140, 0.18);
-  --card2: rgba(78, 96, 150, 0.26);
+  /* MN8 PURPLE SYSTEM */
+  --card: rgb(18, 10, 28);      /* deep base purple */
+  --card2: rgb(60, 30, 89);     /* rich MN8 purple top */
   --stroke: rgba(255, 255, 255, 0.16);
   --stroke2: rgba(255, 255, 255, 0.12);
 
@@ -22,9 +23,10 @@ html, body { height: 100%; }
 
 body {
   margin: 0;
-  background: radial-gradient(1200px 650px at 50% 8%, rgba(120, 90, 180, 0.18), transparent 60%),
-              radial-gradient(900px 600px at 70% 65%, rgba(70, 120, 170, 0.18), transparent 60%),
-              var(--bg);
+  background:
+    radial-gradient(1200px 650px at 50% 8%, rgba(90, 55, 150, 0.22), transparent 60%),
+    radial-gradient(900px 600px at 70% 65%, rgba(60, 30, 120, 0.18), transparent 60%),
+    var(--bg);
   color: var(--text);
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
 }
@@ -59,8 +61,8 @@ a { color: inherit; text-decoration: none; }
 .btn:active { transform: translateY(0px); opacity: 0.9; }
 
 .btn-primary {
-  background: linear-gradient(180deg, rgba(103, 69, 191, 0.9), rgba(72, 47, 150, 0.92));
-  box-shadow: 0 14px 30px rgba(40, 18, 90, 0.35);
+  background: linear-gradient(180deg, rgba(103, 69, 191, 0.95), rgba(72, 47, 150, 0.95));
+  box-shadow: 0 14px 30px rgba(40, 18, 90, 0.45);
 }
 
 .btn-small {
@@ -88,13 +90,12 @@ a { color: inherit; text-decoration: none; }
 /* HERO */
 .hero {
   position: relative;
-  min-height: 100vh;              /* full screen */
+  min-height: 100vh;
   width: 100%;
   display: grid;
   place-items: center;
   overflow: hidden;
 
-  /* IMPORTANT: true fullscreen cover */
   background-image: url("./assets/hero.jpg");
   background-size: cover;
   background-position: center;
@@ -105,8 +106,8 @@ a { color: inherit; text-decoration: none; }
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(900px 500px at 50% 35%, rgba(20, 30, 60, 0.35), rgba(0, 0, 0, 0.72)),
-    linear-gradient(180deg, rgba(0, 0, 0, 0.22), rgba(0, 0, 0, 0.72));
+    radial-gradient(900px 500px at 50% 35%, rgba(20, 30, 60, 0.35), rgba(0, 0, 0, 0.75)),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.75));
 }
 
 .hero-inner {
@@ -130,7 +131,7 @@ a { color: inherit; text-decoration: none; }
   font-weight: 500;
   line-height: 1.02;
   font-size: clamp(44px, 5.2vw, 72px);
-  text-shadow: 0 10px 28px rgba(0, 0, 0, 0.55);
+  text-shadow: 0 10px 28px rgba(0, 0, 0, 0.65);
 }
 
 .hero-subtitle {
@@ -212,7 +213,7 @@ a { color: inherit; text-decoration: none; }
   font-size: 15px;
 }
 
-/* “Lines” list (fix missing divider issue) */
+/* Lines list */
 .lines {
   list-style: none;
   margin: 0;
@@ -227,11 +228,11 @@ a { color: inherit; text-decoration: none; }
   font-size: 15px;
 }
 .lines li:last-child {
-  border-bottom: none; /* ensures no “extra” divider */
+  border-bottom: none;
   padding-bottom: 6px;
 }
 
-/* Split sections: big title left, paragraph right */
+/* Split sections */
 .section-split { padding-top: 58px; }
 
 .split {
@@ -252,12 +253,10 @@ a { color: inherit; text-decoration: none; }
 }
 
 .split-title--top {
-  transform: translateY(-10px); /* your “a little more on top” request */
+  transform: translateY(-10px);
 }
 
 .split-body { max-width: 860px; }
-
-.split-cta { margin-top: 18px; }
 
 /* Footer */
 .footer {
@@ -275,7 +274,7 @@ a { color: inherit; text-decoration: none; }
 
 .muted { color: rgba(255, 255, 255, 0.55); }
 
-/* Responsive (mobile) */
+/* Responsive */
 @media (max-width: 920px) {
   .two-cards { grid-template-columns: 1fr; }
   .split { grid-template-columns: 1fr; gap: 18px; }
