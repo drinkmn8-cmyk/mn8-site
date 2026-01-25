@@ -2,23 +2,23 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MN8</title>
     <link rel="stylesheet" href="./style.css" />
   </head>
 
   <body>
-    <!-- Sticky CTA -->
-    <div class="sticky-cta">
+    <!-- Sticky CTA (hidden on hero; appears after scroll) -->
+    <div class="sticky-cta" id="stickyCta" aria-hidden="true">
       <a class="btn btn-primary btn-small" href="./qualify.html">Begin Qualification</a>
     </div>
 
     <!-- HERO -->
-    <header class="hero">
+    <header class="hero" id="hero">
       <div class="hero-overlay"></div>
 
       <div class="hero-inner container">
-        <div class="brand">MN8<span class="reg">®</span></div>
+        <div class="brand-mark">MN8<sup>®</sup></div>
 
         <h1 class="hero-title">
           Weight control built for full schedules and<br />
@@ -40,145 +40,149 @@
     </header>
 
     <main class="page">
-      <!-- SECTION 2 -->
+      <!-- SECTION 2: WHAT USED TO WORK / WHY IT DOESN’T NOW -->
       <section class="section">
         <div class="container">
           <div class="two-cards">
             <div class="card">
-              <h2 class="card-title serif">What used to work</h2>
-
-              <ul class="bullets roomy">
+              <h2 class="card-title">What used to work</h2>
+              <ul class="lines">
                 <li>You could lose weight when life was simpler</li>
                 <li>You had more time to plan and prepare</li>
                 <li>You could focus on food and workouts</li>
                 <li>You could follow rules and routines</li>
+                <li>It worked when your days had space</li>
               </ul>
-
-              <p class="card-foot">It worked when your days had space</p>
             </div>
 
             <div class="card">
-              <h2 class="card-title serif">Why it doesn’t now</h2>
-
-              <ul class="bullets roomy">
+              <h2 class="card-title">Why it doesn’t now</h2>
+              <ul class="lines">
                 <li>Your life is heavier and busier</li>
                 <li>You don’t have time to think about food all day</li>
                 <li>You don’t have time for long workouts</li>
                 <li>Your schedule is full from morning to night</li>
+                <li>The old way doesn’t fit your life anymore</li>
               </ul>
-
-              <p class="card-foot">The old way doesn’t fit your life anymore</p>
             </div>
           </div>
 
-          <p class="section-note serif">Your system failed because it wasn’t built for your life.</p>
+          <p class="section-note">Your system failed because it wasn’t built for your life.</p>
         </div>
       </section>
 
-      <!-- SECTION 3 -->
+      <!-- SECTION 3: WHY THE OLD WAY BREAKS -->
       <section class="section">
         <div class="container">
-          <h2 class="section-title serif">Why the old way breaks</h2>
-
+          <h2 class="section-title">Why the old way breaks</h2>
           <p class="lead-paragraph">
-            As responsibility increased, the old system stopped fitting. It required too much time, too much
-            planning, and too much attention to survive inside a full schedule. When a system depends on mental
-            space that no longer exists, it collapses. That’s why the old approach keeps failing in real life.
+            As responsibility increased, the old system stopped fitting. It required too much time, too
+            much planning, and too much attention to survive inside a full schedule. When a system
+            depends on mental space that no longer exists, it collapses. That’s why the old approach
+            keeps failing in real life.
           </p>
         </div>
       </section>
 
-      <!-- SECTION 4 -->
+      <!-- SECTION 4: WHAT MN8 IS / IS NOT -->
       <section class="section">
         <div class="container">
           <div class="two-cards">
             <div class="card">
-              <h2 class="card-title serif">What MN8 is</h2>
-              <p class="card-text roomy">
-                MN8 is a private weight control platform for high-responsibility people who want progress without
-                disrupting their lives. It’s built for people whose schedules are full, whose days are dense, and
-                whose responsibilities leave no room for complicated routines.
+              <h2 class="card-title">What MN8 is</h2>
+              <p class="card-text">
+                MN8 is a private weight control platform for high-responsibility people who want progress
+                without disrupting their lives. It’s built for people whose schedules are full, whose days
+                are dense, and whose responsibilities leave no room for complicated routines.
               </p>
             </div>
 
             <div class="card">
-              <h2 class="card-title serif">What MN8 is not</h2>
-              <p class="card-text roomy">
-                MN8 isn’t built to take over your life. It doesn’t require constant tracking, long workouts, rigid
-                routines, or daily mental effort. It doesn’t turn health into a second job or identity project.
-                MN8 exists to fit inside a full life not compete with it.
+              <h2 class="card-title">What MN8 is not</h2>
+              <p class="card-text">
+                MN8 isn’t built to take over your life. It doesn’t require constant tracking, long workouts,
+                rigid routines, or daily mental effort. It doesn’t turn health into a second job or identity
+                project. MN8 exists to fit inside a full life not compete with it.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-<!-- PROCESS -->
-<section class="section process">
-  <div class="container process-grid">
-    <h2 class="process-title">process</h2>
+      <!-- SECTION 5: PROCESS (split layout like your screenshot) -->
+      <section class="section section-split">
+        <div class="container split">
+          <h2 class="split-title split-title--top">process</h2>
 
-    <p class="process-text">
-      We start by tightening how you eat so progress begins without rewriting your life.
-      Then we add short, repeatable daily workouts that don’t compete with your schedule.
-      Finally, we lock both into a routine that runs automatically, so you stop relying on
-      motivation and stop restarting. The goal isn’t intensity. It’s control that holds
-      under real responsibility.
-    </p>
-  </div>
-</section>
+          <div class="split-body">
+            <p class="lead-paragraph">
+              We start by tightening how you eat so progress begins without rewriting your life.<br /><br />
+              Then we add short, repeatable daily workouts that don’t compete with your schedule.<br /><br />
+              Finally, we lock both into a routine that runs automatically, so you stop relying on motivation
+              and stop restarting. The goal isn’t intensity. It’s control that holds under real responsibility.
+            </p>
+          </div>
+        </div>
+      </section>
 
-
-      <!-- SECTION 6 -->
+      <!-- SECTION 6: WHO IT'S FOR / NOT FOR -->
       <section class="section">
         <div class="container">
           <div class="two-cards">
             <div class="card">
-              <h2 class="card-title serif caps">WHO MN8 IS FOR</h2>
-              <p class="card-text roomy">
+              <h2 class="card-title">WHO MN8 IS FOR</h2>
+              <p class="card-text">
                 MN8 is for people who already carry responsibility and don’t have space for complicated health
-                systems. It’s built for individuals whose schedules are full, whose days are dense, and whose lives
-                don’t allow time-heavy routines, constant tracking, or constant decision-making. It’s for people who
-                want progress without disruption, structure without friction, and control without their health
-                becoming their second job.
+                systems. It’s built for individuals whose schedules are full, whose days are dense, and whose
+                lives don’t allow time-heavy routines, constant tracking, or constant decision-making.<br /><br />
+                It’s for people who want progress without disruption, structure without friction, and control
+                without their health becoming their second job.
               </p>
             </div>
 
             <div class="card">
-              <h2 class="card-title serif caps">WHO MN8 IS NOT FOR</h2>
-              <p class="card-text roomy">
-                MN8 is not for people who want their health to become their main focus, their main identity, or their
-                main project. It isn’t built for those who enjoy complexity, customization, experimentation, or
-                time-intensive routines. If someone needs their system to take over their schedule, dominate their
-                attention, or become their lifestyle, MN8 will feel too simple — because it’s designed to fit into
-                life, not replace it.
+              <h2 class="card-title">WHO MN8 IS NOT FOR</h2>
+              <p class="card-text">
+                MN8 is not for people who want their health to become their main focus, their main identity,
+                or their main project. It isn’t built for those who enjoy complexity, customization,
+                experimentation, or time-intensive routines. If someone needs their system to take over their
+                schedule, dominate their attention, or become their lifestyle, MN8 will feel too simple —
+                because it’s designed to fit into life, not replace it.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- SECTION 7 -->
-      <section class="section">
-        <div class="container">
-          <h2 class="section-title serif">Begin qualification</h2>
+      <!-- SECTION 7: BEGIN QUALIFICATION (match split layout, not centered) -->
+      <section class="section section-split">
+        <div class="container split">
+          <h2 class="split-title">Begin qualification</h2>
 
-          <p class="lead-paragraph">
-            MN8 is built for people with full schedules, real responsibilities, and lives that can’t afford
-            disruption. This step is a qualification to ensure the system fits your life, your pace, and your
-            reality. It protects the integrity of the system and the people inside it. If it’s a fit, you receive
-            next steps and private access. If it’s not, nothing moves forward. Just a clean decision based on
-            alignment.
-          </p>
+          <div class="split-body">
+            <p class="lead-paragraph">
+              MN8 is built for people with full schedules, real responsibilities, and lives that can’t afford
+              disruption. This step is a qualification to ensure the system fits your life, your pace, and your
+              reality. It protects the integrity of the system and the people inside it. If it’s a fit, you
+              receive next steps and private access. If it’s not, nothing moves forward. Just a clean decision
+              based on alignment.
+            </p>
+
+            <div class="split-cta">
+              <a class="btn btn-primary" href="./qualify.html">Begin Qualification</a>
+            </div>
+          </div>
         </div>
       </section>
 
       <footer class="footer">
         <div class="container footer-inner">
-          <span class="footer-brand">MN8</span>
+          <span>MN8</span>
           <span class="muted">Private system</span>
         </div>
       </footer>
     </main>
+
+    <script src="./script.js"></script>
   </body>
 </html>
