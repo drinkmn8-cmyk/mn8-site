@@ -612,3 +612,49 @@ body::before, body::after{ display:none !important; }
   background: rgba(var(--mn8), .12) !important;
   border: 1px solid rgba(var(--mn8), .22) !important;
 }
+/* HARD NUKE: remove any sticky container "card" / box */
+.sticky,
+.sticky-inner{
+  background: transparent !important;
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* If any pseudo-element is creating a box */
+.sticky::before,
+.sticky::after,
+.sticky-inner::before,
+.sticky-inner::after{
+  content: none !important;
+  display: none !important;
+}
+
+/* Remove extra padding that can look like a container */
+.sticky-inner{
+  padding: 0 !important;
+}
+
+/* Make ONLY the button visible */
+.sticky-inner .btn{
+  border-radius: 999px !important;
+}
+
+/* Kill focus ring that can look like a faint box */
+.sticky a,
+.sticky button,
+.sticky .btn{
+  outline: none !important;
+  box-shadow: none !important; /* remove if you want a shadow */
+}
+
+.sticky a:focus,
+.sticky a:focus-visible,
+.sticky .btn:focus,
+.sticky .btn:focus-visible{
+  outline: none !important;
+  box-shadow: none !important;
+}
+
