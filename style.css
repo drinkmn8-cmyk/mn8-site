@@ -229,6 +229,17 @@ body::after {
   color: rgba(255, 255, 255, 0.78);
   font-size: 16px;
 }
+/* Process spacing control (THIS is what you actually want) */
+.process-copy .lead-paragraph{
+  line-height: 1.45;
+  margin: 0;
+  max-width: 860px;
+}
+
+.process-copy .lead-paragraph + .lead-paragraph{
+  margin-top: 14px; /* controls space between the 3 lines */
+}
+
 
 .section-note {
   margin: 34px 0 0;
