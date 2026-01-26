@@ -166,18 +166,26 @@ body::after {
   padding: 140px 0 120px;
 }
 
-.brand-mark {
+/* Logo (replaces brand-mark text) */
+.brand-logo{
   position: absolute;
-  top: 28px;
+  top: 18px;
   left: 50%;
   transform: translateX(-50%);
-  font-weight: 600;
-  letter-spacing: 4px;
-  opacity: 0.9;
-  margin: 0;
-  z-index: 5;
+  height: 34px;              /* adjust if needed */
+  width: auto;
+  z-index: 6;
+  opacity: 0.95;
+  filter: drop-shadow(0 10px 24px rgba(0,0,0,0.55));
 }
-.brand-mark sup { font-size: 10px; vertical-align: super; }
+
+/* If you want it closer to the border on mobile */
+@media (max-width: 520px){
+  .brand-logo{
+    top: 12px;
+    height: 30px;
+  }
+}
 
 .hero-title {
   margin: 0 auto 18px;
