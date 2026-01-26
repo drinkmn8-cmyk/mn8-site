@@ -3,181 +3,298 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MN8</title>
+    <title>MN8 — Private Weight Control</title>
+    <meta name="description" content="Weight control built for full schedules and real responsibility." />
     <link rel="stylesheet" href="./style.css" />
   </head>
 
   <body>
-    <!-- Sticky CTA (hidden on hero; appears after scroll) -->
-    <div class="sticky-cta" id="stickyCta" aria-hidden="true">
-      <a class="btn btn-primary btn-small" href="./qualify.html">Begin Qualification</a>
-    </div>
+    <!-- Top Nav -->
+    <header class="topbar" id="top">
+      <div class="wrap topbar-inner">
+        <a class="brand" href="#top" aria-label="MN8 home">
+          <span class="brand-dot" aria-hidden="true"></span>
+          <span class="brand-name">MN8</span>
+        </a>
 
-    <header class="hero" id="hero">
-      <!-- IMPORTANT: overlay layer (you were missing this) -->
-      <div class="hero-overlay" aria-hidden="true"></div>
+        <nav class="nav">
+          <a href="#what">What it is</a>
+          <a href="#process">Process</a>
+          <a href="#proof">Why it works</a>
+          <a href="#faq">FAQ</a>
+        </nav>
 
-      <div class="hero-inner">
-        <h1 class="hero-title reveal">
-          Weight control built for full schedules and<br />
-          real responsibility.
-        </h1>
-
-        <p class="hero-subtitle reveal delay-1">
-          Consistent progress. Minimal disruption. Built to fit real life
-        </p>
-
-        <a class="btn btn-primary reveal delay-2" href="#qualify">Begin Qualification</a>
-
-        <div class="hero-tags reveal delay-3">
-          <span>Private</span>
-          <span>Simple</span>
-          <span>Sustainable</span>
-        </div>
+        <a class="btn btn-primary btn-sm" href="./qualify.html">Begin Qualification</a>
       </div>
     </header>
 
-    <main class="page">
-      <!-- SECTION 2 -->
-      <section class="section" id="qualify">
-        <div class="container">
-          <div class="two-cards">
-            <div class="card reveal">
-              <h2 class="card-title">What used to work</h2>
-              <ul class="lines">
-                <li>You could lose weight when life was simpler</li>
-                <li>You had more time to plan and prepare</li>
-                <li>You could focus on food and workouts</li>
-                <li>You could follow rules and routines</li>
-                <li>It worked when your days had space</li>
-              </ul>
-            </div>
+    <!-- Sticky CTA -->
+    <div class="sticky" id="sticky">
+      <div class="sticky-inner">
+        <span class="sticky-text">Private system. Full schedules. Real control.</span>
+        <a class="btn btn-primary" href="./qualify.html">Begin Qualification</a>
+      </div>
+    </div>
 
-            <div class="card reveal delay-1">
-              <h2 class="card-title">Why it doesn’t now</h2>
-              <ul class="lines">
-                <li>Your life is heavier and busier</li>
-                <li>You don’t have time to think about food all day</li>
-                <li>You don’t have time for long workouts</li>
-                <li>Your schedule is full from morning to night</li>
-                <li>The old way doesn’t fit your life anymore</li>
-              </ul>
-            </div>
+    <!-- HERO -->
+    <main>
+      <section class="hero">
+        <div class="wrap hero-inner">
+          <div class="eyebrow reveal">
+            <span class="pill">Private System</span>
+            <span class="divider"></span>
+            <span class="muted">Built for real responsibility</span>
           </div>
 
-          <p class="section-note reveal delay-2">
-            Your system failed because it wasn’t built for your life.
+          <h1 class="hero-title reveal delay-1">
+            Weight control built for full schedules —<br />
+            not time-rich lifestyles.
+          </h1>
+
+          <p class="hero-subtitle reveal delay-2">
+            MN8 is a private weight control system designed to fit inside dense days.
+            Minimal disruption. Repeatable structure. Control that holds.
           </p>
+
+          <div class="hero-ctas reveal delay-3">
+            <a class="btn btn-primary" href="./qualify.html">Begin Qualification</a>
+            <a class="btn btn-ghost" href="#what">See how it works</a>
+          </div>
+
+          <div class="hero-metrics reveal delay-4">
+            <div class="metric">
+              <div class="metric-k">Simple</div>
+              <div class="metric-v">No tracking obsession.</div>
+            </div>
+            <div class="metric">
+              <div class="metric-k">Built for density</div>
+              <div class="metric-v">Works when days are full.</div>
+            </div>
+            <div class="metric">
+              <div class="metric-k">Private</div>
+              <div class="metric-v">Qualification protects fit.</div>
+            </div>
+          </div>
         </div>
+
+        <div class="hero-bg" aria-hidden="true"></div>
       </section>
 
-      <!-- SECTION 3 -->
-      <section class="section">
-        <div class="container">
-          <h2 class="section-title reveal">Why the old way breaks</h2>
-          <p class="lead-paragraph reveal delay-1">
-            As responsibility increased, the old system stopped fitting. It required too much time, too
-            much planning, and too much attention to survive inside a full schedule. When a system
-            depends on mental space that no longer exists, it collapses. That’s why the old approach
-            keeps failing in real life.
-          </p>
-        </div>
-      </section>
+      <!-- SECTION: The Problem -->
+      <section class="section" id="what">
+        <div class="wrap">
+          <div class="section-head reveal">
+            <h2 class="h2">The real reason the old way keeps failing</h2>
+            <p class="lead">
+              It’s not motivation. It’s not discipline. It’s that your life changed.
+              Responsibility increased, and the “old system” stopped fitting.
+            </p>
+          </div>
 
-      <!-- SECTION 4 -->
-      <section class="section">
-        <div class="container">
-          <div class="two-cards">
-            <div class="card reveal">
-              <h2 class="card-title">What MN8 is</h2>
-              <p class="card-text">
-                MN8 is a private weight control platform for high-responsibility people who want progress
-                without disrupting their lives. It’s built for people whose schedules are full, whose days
-                are dense, and whose responsibilities leave no room for complicated routines.
-              </p>
-            </div>
+          <div class="grid-2">
+            <article class="card reveal">
+              <h3 class="h3">What used to work</h3>
+              <ul class="list">
+                <li>Time to plan and prepare</li>
+                <li>Space for long workouts</li>
+                <li>Mental bandwidth to “stay on it”</li>
+                <li>Rules you could follow consistently</li>
+              </ul>
+              <div class="card-note">It worked when your days had space.</div>
+            </article>
 
-            <div class="card reveal delay-1">
-              <h2 class="card-title">What MN8 is not</h2>
-              <p class="card-text">
-                MN8 isn’t built to take over your life. It doesn’t require constant tracking, long workouts,
-                rigid routines, or daily mental effort. It doesn’t turn health into a second job or identity
-                project. MN8 exists to fit inside a full life not compete with it.
-              </p>
-            </div>
+            <article class="card reveal delay-1">
+              <h3 class="h3">Why it doesn’t now</h3>
+              <ul class="list">
+                <li>Your schedule is dense</li>
+                <li>Decisions stack all day</li>
+                <li>Energy is spent on responsibility</li>
+                <li>The system demands attention you don’t have</li>
+              </ul>
+              <div class="card-note">The old approach doesn’t fit your life anymore.</div>
+            </article>
+          </div>
+
+          <div class="callout reveal delay-2">
+            <div class="callout-line"></div>
+            <p class="callout-text">
+              Your system didn’t fail because you’re weak.<br />
+              It failed because it wasn’t built for your life.
+            </p>
           </div>
         </div>
       </section>
 
-      <!-- SECTION 5: PROCESS -->
-      <section class="section section-split">
-        <div class="container split">
-          <h2 class="split-title split-title--top reveal">process</h2>
-
-          <div class="process-copy reveal delay-1">
-            <p class="lead-paragraph">
-              We start by tightening how you eat so progress begins without rewriting your life.
-            </p>
-            <p class="lead-paragraph">
-              Then we add short, repeatable daily workouts that don’t compete with your schedule.
-            </p>
-            <p class="lead-paragraph">
-              Finally, we lock both into a routine that runs automatically, so you stop relying on motivation and
-              stop restarting. The goal isn’t intensity. It’s control that holds under real responsibility.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <!-- SECTION 6 -->
+      <!-- SECTION: What MN8 is -->
       <section class="section">
-        <div class="container">
-          <div class="two-cards">
-            <div class="card reveal">
-              <h2 class="card-title">WHO MN8 IS FOR</h2>
-              <p class="card-text">
-                MN8 is for people who already carry responsibility and don’t have space for complicated health
-                systems. It’s built for individuals whose schedules are full, whose days are dense, and whose
-                lives don’t allow time-heavy routines, constant tracking, or constant decision-making.<br /><br />
-                It’s for people who want progress without disruption, structure without friction, and control
-                without their health becoming their second job.
-              </p>
-            </div>
+        <div class="wrap">
+          <div class="section-head reveal">
+            <h2 class="h2">What MN8 is — and what it’s not</h2>
+            <p class="lead">
+              MN8 is a private system for people who want control back without turning health into a second job.
+            </p>
+          </div>
 
-            <div class="card reveal delay-1">
-              <h2 class="card-title">WHO MN8 IS NOT FOR</h2>
-              <p class="card-text">
-                MN8 is not for people who want their health to become their main focus, their main identity,
-                or their main project. It isn’t built for those who enjoy complexity, customization,
-                experimentation, or time-intensive routines. If someone needs their system to take over their
-                schedule, dominate their attention, or become their lifestyle, MN8 will feel too simple —
-                because it’s designed to fit into life, not replace it.
+          <div class="grid-2">
+            <article class="card soft reveal">
+              <h3 class="h3">MN8 is</h3>
+              <p class="p">
+                A structured weight control system for high-responsibility people.
+                Built to run inside full schedules, dense days, and real constraints.
               </p>
-            </div>
+              <div class="tagrow">
+                <span class="tag">Structure</span>
+                <span class="tag">Repeatability</span>
+                <span class="tag">Low friction</span>
+              </div>
+            </article>
+
+            <article class="card soft reveal delay-1">
+              <h3 class="h3">MN8 is not</h3>
+              <p class="p">
+                Not constant tracking. Not long workouts. Not rigid routines.
+                Not a lifestyle takeover. If you need complexity to feel “serious,” this will feel too simple.
+              </p>
+              <div class="tagrow">
+                <span class="tag">No obsession</span>
+                <span class="tag">No takeover</span>
+                <span class="tag">Fits reality</span>
+              </div>
+            </article>
           </div>
         </div>
       </section>
 
-      <!-- SECTION 7 -->
-      <section class="section section-split">
-        <div class="container split">
-          <h2 class="split-title reveal">Begin qualification</h2>
+      <!-- SECTION: Process -->
+      <section class="section" id="process">
+        <div class="wrap">
+          <div class="section-head reveal">
+            <h2 class="h2">Process</h2>
+            <p class="lead">Three steps. Zero chaos. Built for people who can’t “start over” every month.</p>
+          </div>
 
-          <div class="split-body reveal delay-1">
-            <p class="lead-paragraph">
-              MN8 is built for people with full schedules, real responsibilities, and lives that can’t afford
-              disruption. This step is a qualification to ensure the system fits your life, your pace, and your
-              reality. It protects the integrity of the system and the people inside it. If it’s a fit, you
-              receive next steps and private access. If it’s not, nothing moves forward. Just a clean decision
-              based on alignment.
+          <div class="steps">
+            <div class="step reveal">
+              <div class="step-index">01</div>
+              <div class="step-body">
+                <h3 class="h3">Tighten nutrition</h3>
+                <p class="p">
+                  Make progress begin without rewriting your entire life. We reduce friction and decision load first.
+                </p>
+              </div>
+            </div>
+
+            <div class="step reveal delay-1">
+              <div class="step-index">02</div>
+              <div class="step-body">
+                <h3 class="h3">Add short daily training</h3>
+                <p class="p">
+                  Repeatable sessions that don’t compete with your schedule. Consistency comes from fit, not intensity.
+                </p>
+              </div>
+            </div>
+
+            <div class="step reveal delay-2">
+              <div class="step-index">03</div>
+              <div class="step-body">
+                <h3 class="h3">Lock it into automatic structure</h3>
+                <p class="p">
+                  A routine that holds under stress so you stop relying on motivation and stop restarting.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="divider-space"></div>
+
+          <div class="cta-panel reveal delay-3">
+            <div>
+              <h3 class="h3">This is private for a reason.</h3>
+              <p class="p muted">
+                Qualification protects fit. If it’s a match, you receive next steps and private access.
+              </p>
+            </div>
+            <a class="btn btn-primary" href="./qualify.html">Begin Qualification</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION: Why it works -->
+      <section class="section" id="proof">
+        <div class="wrap">
+          <div class="section-head reveal">
+            <h2 class="h2">Why it works for full schedules</h2>
+            <p class="lead">
+              The design goal isn’t “max results.” It’s control that doesn’t collapse when your week gets heavy.
             </p>
+          </div>
+
+          <div class="grid-3">
+            <article class="card reveal">
+              <h3 class="h3">Load-aware</h3>
+              <p class="p">
+                Built for high cognitive load, dense calendars, and decision fatigue.
+              </p>
+            </article>
+            <article class="card reveal delay-1">
+              <h3 class="h3">Low-friction</h3>
+              <p class="p">
+                Less planning, fewer decisions, more repeatability. That’s what actually scales.
+              </p>
+            </article>
+            <article class="card reveal delay-2">
+              <h3 class="h3">Stable output</h3>
+              <p class="p">
+                The system holds even when you travel, work late, or lose a “perfect week.”
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="section" id="faq">
+        <div class="wrap">
+          <div class="section-head reveal">
+            <h2 class="h2">FAQ</h2>
+            <p class="lead">Keep it clean. No fluff. Just answers.</p>
+          </div>
+
+          <div class="faq">
+            <details class="faq-item reveal">
+              <summary>Is MN8 a workout program?</summary>
+              <p>
+                No. It’s a weight control system built around structure and repeatability. Training is short and supportive,
+                not the center of your life.
+              </p>
+            </details>
+
+            <details class="faq-item reveal delay-1">
+              <summary>Do I need to track everything?</summary>
+              <p>
+                No. If tracking is required for progress, the system is fragile. MN8 prioritizes fit and consistency.
+              </p>
+            </details>
+
+            <details class="faq-item reveal delay-2">
+              <summary>Why “qualification”?</summary>
+              <p>
+                Because this is designed for a specific person: full schedule, real responsibility, wants control back.
+                Qualification protects alignment.
+              </p>
+            </details>
+          </div>
+
+          <div class="bottom-cta reveal delay-3">
+            <h3 class="h3">Ready to see if it fits your life?</h3>
+            <a class="btn btn-primary" href="./qualify.html">Begin Qualification</a>
           </div>
         </div>
       </section>
 
       <footer class="footer">
-        <div class="container footer-inner reveal">
-          <span>MN8</span>
+        <div class="wrap footer-inner">
+          <span class="muted">MN8</span>
           <span class="muted">Private system</span>
         </div>
       </footer>
