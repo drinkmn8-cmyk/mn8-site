@@ -143,7 +143,7 @@ body::after {
   place-items: center;
   overflow: hidden;
 
-  background-image: url("./assets/hero.jpg");
+  background-image: url("./hero.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
