@@ -109,22 +109,36 @@ body::after {
   font-size: 14px;
 }
 
-/* Sticky CTA */
+/* Sticky CTA – bottom control bar */
 .sticky-cta {
   position: fixed;
-  top: 18px;
-  right: 18px;
-  z-index: 60;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  z-index: 80;
+
   opacity: 0;
   pointer-events: none;
-  transform: translateY(-8px);
-  transition: opacity 180ms ease, transform 180ms ease;
+
+  transition: opacity 200ms ease, transform 200ms ease;
 }
+
 .sticky-cta.is-visible {
   opacity: 1;
   pointer-events: auto;
-  transform: translateY(0px);
+  transform: translateX(-50%) translateY(0px);
 }
+
+/* Optional premium container look */
+.sticky-cta .btn {
+  padding: 14px 28px;
+  font-size: 15px;
+  border-radius: 999px;
+  box-shadow: 
+    0 20px 40px rgba(0,0,0,0.6),
+    0 0 0 1px rgba(255,255,255,0.12);
+}
+
 
 /* HERO (fullscreen image + unified overlay) */
 .hero {
