@@ -192,6 +192,14 @@ body::after {
   font-size: clamp(44px, 5.2vw, 72px);
   text-shadow: 0 10px 28px rgba(0, 0, 0, 0.55);
 }
+@media (max-width: 520px) {
+  .hero-title {
+    font-size: 38px;   /* was clamp(...) too aggressive on mobile */
+    line-height: 1.08;
+    margin-bottom: 22px;
+  }
+}
+
 
 .hero-subtitle {
   margin: 0 auto 26px;
