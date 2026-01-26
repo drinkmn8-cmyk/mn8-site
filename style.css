@@ -239,6 +239,23 @@ body::after {
 .process-copy .lead-paragraph + .lead-paragraph{
   margin-top: 14px; /* controls space between the 3 lines */
 }
+/* Precision spacing for process section */
+.process-copy{
+  max-width: 860px;
+}
+
+.process-copy p{
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.42;          /* tighter vertical rhythm */
+  color: rgba(255,255,255,0.82);
+  letter-spacing: 0.15px;
+}
+
+.process-copy p + p{
+  margin-top: 10px;           /* controlled gap, not paragraph spacing */
+}
+
 
 
 .section-note {
