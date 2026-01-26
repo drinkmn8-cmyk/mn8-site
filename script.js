@@ -1,20 +1,5 @@
 (() => {
-  const sticky = document.getElementById("stickyCta");
-  const hero = document.getElementById("hero");
-  if (!sticky || !hero) return;
-
-  const update = () => {
-    const heroBottom = hero.getBoundingClientRect().bottom;
-    const show = heroBottom <= 0; // only once hero is fully scrolled past
-    sticky.classList.toggle("is-visible", show);
-    sticky.setAttribute("aria-hidden", show ? "false" : "true");
-  };
-
-  window.addEventListener("scroll", update, { passive: true });
-  window.addEventListener("resize", update);
-  update();
-
-(() => {
+  // ===== Apple-like reveal =====
   const els = document.querySelectorAll(".reveal");
 
   const io = new IntersectionObserver(
@@ -27,6 +12,26 @@
   );
 
   els.forEach((el) => io.observe(el));
+
+  // ===== Sticky CTA after hero =====
+  const sticky = document.getElementById("stickyCta");
+  const hero = document.getElementById("hero");
+
+  if (!sticky || !hero) return;
+
+  const heroIO = new IntersectionObserver(
+    (entries) => {
+      const onHero = entries[0]?.isIntersecting;
+      if (onHero) {
+        sticky.classList.remove("is-visible");
+        sticky.setAttribute("aria-hidden", "true");
+      } else {
+        sticky.classList.add("is-visible");
+        sticky.setAttribute("aria-hidden", "false");
+      }
+    },
+    { threshold: 0.15 }
+  );
+
+  heroIO.observe(hero);
 })();
-
-
