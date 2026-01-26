@@ -166,14 +166,20 @@ body::after {
 .hero-inner {
   position: relative;
   text-align: center;
-  padding: 92px 0 72px;
+  padding: 140px 0 120px;   /* was 92px 0 72px */
 }
 
+
 .brand-mark {
+  position: absolute;
+  top: 28px;
+  left: 50%;
+  transform: translateX(-50%);
   font-weight: 600;
   letter-spacing: 4px;
-  opacity: 0.86;
-  margin-bottom: 18px;
+  opacity: 0.9;
+  margin: 0;
+  z-index: 5;
 }
 .brand-mark sup { font-size: 10px; vertical-align: super; }
 
