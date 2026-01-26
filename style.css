@@ -497,3 +497,114 @@ body::after{
   .btn{ width: 100%; }
   .hero-ctas .btn{ width: 100%; }
 }
+
+/* ===========================
+   APPLE CLEAN OVERRIDES
+   Paste at the very bottom
+   =========================== */
+
+/* 1) Kill the neon canvas + heavy vignette */
+body::before,
+body::after{
+  opacity: 0.22 !important;
+  filter: none !important;
+}
+
+/* Optional: if you want ZERO glow at all, uncomment:
+body::before, body::after{ display:none !important; }
+*/
+
+/* 2) Flatten shadows everywhere */
+:root{
+  --shadow: 0 8px 24px rgba(0,0,0,.28) !important;
+  --radius: 18px !important;
+  --stroke: rgba(255,255,255,.10) !important;
+}
+
+/* 3) Make topbar Apple-clean (less blur, less gradient, more “glass but subtle”) */
+.topbar{
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  background: rgba(7,7,10,.62) !important;
+  border-bottom: 1px solid rgba(255,255,255,.08) !important;
+}
+
+/* 4) Buttons: no neon glow, no fat shadow, clean solid */
+.btn{
+  border: 1px solid rgba(255,255,255,.14) !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.btn-primary{
+  background: rgba(var(--mn8), 1) !important;           /* flat */
+  box-shadow: 0 8px 22px rgba(0,0,0,.22) !important;    /* soft */
+  border: 1px solid rgba(255,255,255,.10) !important;
+}
+
+.btn-ghost{
+  background: rgba(255,255,255,.05) !important;
+  border: 1px solid rgba(255,255,255,.10) !important;
+  box-shadow: none !important;
+}
+
+/* 5) Sticky CTA: remove “capsule card” look */
+.sticky-inner{
+  background: rgba(7,7,10,.72) !important;
+  border: 1px solid rgba(255,255,255,.10) !important;
+  box-shadow: 0 10px 26px rgba(0,0,0,.35) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+}
+
+/* 6) Cards: remove purple gradients + heavy blur (this is the main culprit) */
+.card{
+  background: rgba(255,255,255,.04) !important;         /* quiet */
+  border: 1px solid rgba(255,255,255,.08) !important;
+  box-shadow: 0 10px 26px rgba(0,0,0,.30) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* If you still want a *tiny* MN8 accent, keep only on hover */
+.card:hover{
+  border-color: rgba(var(--mn8), .35) !important;
+}
+
+/* 7) Remove the hero “neon wash” overlay intensity */
+.hero-bg{
+  background:
+    radial-gradient(900px 520px at 50% 18%,
+      rgba(var(--mn8), .10),
+      rgba(0,0,0,.72)
+    ),
+    linear-gradient(180deg, rgba(0,0,0,.18), rgba(0,0,0,.82)) !important;
+}
+
+/* 8) Typography polish: Apple spacing + less dramatic shadows */
+.hero-title{
+  text-shadow: 0 6px 18px rgba(0,0,0,.40) !important;
+  letter-spacing: -0.2px !important;
+}
+.h2, .h3{
+  letter-spacing: -0.15px !important;
+}
+
+/* 9) Small UI elements: quieter surfaces */
+.metric,
+.step,
+.faq-item{
+  background: rgba(255,255,255,.035) !important;
+  border: 1px solid rgba(255,255,255,.075) !important;
+  box-shadow: none !important;
+}
+
+/* 10) Kill any leftover glow effects */
+.brand-dot{
+  box-shadow: none !important;
+}
+.step-index{
+  background: rgba(var(--mn8), .12) !important;
+  border: 1px solid rgba(var(--mn8), .22) !important;
+}
