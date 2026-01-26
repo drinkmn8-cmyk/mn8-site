@@ -5,10 +5,7 @@
   --muted: rgba(255, 255, 255, 0.68);
 
   /* MN8 Purple (single source of truth) */
-  --mn8: 91, 53, 166;             /* #5b35a6 */
-  --mn8-strong: rgba(var(--mn8), 0.95);
-  --mn8-mid: rgba(var(--mn8), 0.35);
-  --mn8-soft: rgba(var(--mn8), 0.18);
+  --mn8: 91, 53, 166; /* #5b35a6 */
 
   /* Surfaces */
   --stroke: rgba(255, 255, 255, 0.14);
@@ -42,9 +39,7 @@ a { color: inherit; text-decoration: none; }
   margin: 0 auto;
 }
 
-.page {
-  padding-bottom: 64px;
-}
+.page { padding-bottom: 90px; }
 
 /* ONE continuous canvas glow for the whole site */
 body::before {
@@ -68,14 +63,14 @@ body::before {
     );
 }
 
-/* Soft vignette to keep edges premium */
+/* Softer vignette (your old one was too aggressive = sections feel different) */
 body::after {
   content: "";
   position: fixed;
-  inset: -20%;
+  inset: -18%;
   z-index: -1;
   pointer-events: none;
-  background: radial-gradient(circle at 50% 40%, transparent 0%, rgba(0,0,0,0.55) 72%);
+  background: radial-gradient(circle at 50% 40%, transparent 0%, rgba(0,0,0,0.42) 76%);
 }
 
 /* Buttons */
@@ -98,7 +93,7 @@ body::after {
 
 .btn-primary {
   background: linear-gradient(180deg,
-    rgba(var(--mn8), 0.95),
+    rgba(var(--mn8), 0.96),
     rgba(60, 30, 110, 0.96)
   );
   box-shadow: 0 16px 34px rgba(40, 18, 90, 0.38);
@@ -109,12 +104,12 @@ body::after {
   font-size: 14px;
 }
 
-/* Sticky CTA – bottom control bar */
+/* Sticky CTA – bottom centered (FIXED) */
 .sticky-cta {
   position: fixed;
-  bottom: 24px;
-  left: 0%;
-  transform: translateX(0%) translateY(20px);
+  bottom: 22px;
+  left: 50%;
+  transform: translateX(-50%) translateY(18px);
   z-index: 80;
 
   opacity: 0;
@@ -129,16 +124,15 @@ body::after {
   transform: translateX(-50%) translateY(0px);
 }
 
-/* Optional premium container look */
+/* Premium sticky button feel */
 .sticky-cta .btn {
   padding: 14px 28px;
   font-size: 15px;
   border-radius: 999px;
-  box-shadow: 
+  box-shadow:
     0 20px 40px rgba(0,0,0,0.6),
     0 0 0 1px rgba(255,255,255,0.12);
 }
-
 
 /* HERO (fullscreen image + unified overlay) */
 .hero {
@@ -165,7 +159,7 @@ body::after {
     ),
     linear-gradient(180deg,
       rgba(0, 0, 0, 0.18),
-      rgba(0, 0, 0, 0.78)
+      rgba(0, 0, 0, 0.82)
     );
 }
 
@@ -210,23 +204,14 @@ body::after {
   font-size: 14px;
 }
 
-/* Sections: seamless (no section backgrounds, no “blocks”) */
+/* Sections: seamless (NO hard separators) */
 .section {
   padding: var(--section-pad) 0;
   position: relative;
 }
 
-/* Subtle divider (optional): looks seamless, not like a new section */
-.section + .section::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: min(var(--container), calc(100% - 48px));
-  transform: translateX(-50%);
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
-}
+/* Remove section divider lines entirely (your “out of sync” feeling) */
+.section + .section::before { content: none; }
 
 /* Titles + text */
 .section-title {
@@ -265,10 +250,10 @@ body::after {
   border-radius: var(--radius);
   padding: 34px 34px 28px;
 
-  /* Unified card surface: same everywhere */
+  /* SAME surface everywhere (more stable + less “different section” feel) */
   background:
     linear-gradient(180deg,
-      rgba(var(--mn8), 0.26),
+      rgba(var(--mn8), 0.22),
       rgba(7, 7, 10, 0.92)
     );
 
@@ -312,13 +297,13 @@ body::after {
   padding-bottom: 6px;
 }
 
-/* Split sections: title left, paragraph right */
+/* Split sections (process + begin qualification) */
 .section-split { padding-top: 72px; }
 
 .split {
   display: grid;
-  grid-template-columns: 320px 1fr;
-  gap: 44px;
+  grid-template-columns: 360px 1fr;
+  gap: 64px;
   align-items: start;
 }
 
@@ -326,24 +311,21 @@ body::after {
   margin: 0;
   font-family: ui-serif, Georgia, "Times New Roman", Times, serif;
   font-weight: 500;
-  font-size: 56px;
+  font-size: clamp(44px, 4.4vw, 72px);
+  line-height: 0.98;
   letter-spacing: 0.2px;
-  line-height: 1;
-  opacity: 0.95;
+  opacity: 0.96;
+  padding-top: 6px; /* baseline alignment with paragraph */
 }
 
-.split-title--top {
-  transform: translateY(-10px);
-}
+.split-title--top { transform: translateY(-10px); }
 
 .split-body { max-width: 860px; }
 
-.split-cta { margin-top: 18px; }
-
-/* Footer: seamless (no big hard blocks) */
+/* Footer: seamless */
 .footer {
-  padding: 42px 0 18px;
-  margin-top: 10px;
+  padding: 46px 0 22px;
+  margin-top: 8px;
 }
 
 .footer-inner {
@@ -363,8 +345,7 @@ body::after {
   :root { --section-pad: var(--section-pad-mobile); }
 
   .two-cards { grid-template-columns: 1fr; }
-  .split { grid-template-columns: 1fr; gap: 18px; }
-  .split-title { font-size: 44px; }
+  .split { grid-template-columns: 1fr; gap: 22px; }
   .hero-tags { gap: 18px; flex-wrap: wrap; }
   .card-title { font-size: 30px; }
 }
@@ -374,4 +355,7 @@ body::after {
   .hero-inner { padding: 86px 0 60px; }
   .hero-subtitle { font-size: 15px; }
   .card { padding: 28px 24px 22px; }
+
+  .sticky-cta { bottom: 16px; }
+  .sticky-cta .btn { width: calc(100vw - 56px); justify-content: center; }
 }
