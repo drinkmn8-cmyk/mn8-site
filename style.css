@@ -172,7 +172,7 @@ body::after {
   top: 18px;
   left: 50%;
   transform: translateX(-50%);
-  height: 34px;              /* adjust if needed */
+  height: 10px;              /* adjust if needed */
   width: auto;
   z-index: 6;
   opacity: 0.95;
