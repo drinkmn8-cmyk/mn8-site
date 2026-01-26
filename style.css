@@ -120,19 +120,6 @@ body::after{
     linear-gradient(180deg, rgba(0,0,0,.18), rgba(0,0,0,.82));
 }
 
-/* LOGO */
-.brand-logo{
-  position:absolute;
-  top:18px;
-  left:50%;
-  transform:translateX(-50%);
-  height:26px;
-  width:auto;
-  z-index:10;
-  opacity:.95;
-  filter:drop-shadow(0 10px 24px rgba(0,0,0,.55));
-}
-
 /* HERO CONTENT */
 .hero-inner{
   position:relative;
