@@ -1,12 +1,38 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MN8</title>
-    <meta name="description" content="Weight control built for full schedules and real responsibility." />
-    <link rel="stylesheet" href="./style.css" />
-  </head>
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <!-- LEFT: Logo -->
+    <a class="brand" href="#top" aria-label="MN8 Home">
+      <img class="brand-logo" src="./logo.png" alt="MN8" />
+    </a>
+
+    <!-- RIGHT: Mobile menu button (three dots) -->
+    <button class="menu-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menuPanel">
+      <span class="dots" aria-hidden="true">
+        <i></i><i></i><i></i>
+      </span>
+    </button>
+
+    <!-- Desktop nav -->
+    <nav class="nav" aria-label="Primary">
+      <a href="#what">What it is</a>
+      <a href="#process">Process</a>
+      <a href="#why">Why it works</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+  </div>
+
+  <!-- Mobile dropdown panel -->
+  <div class="menu-panel" id="menuPanel" hidden>
+    <div class="wrap menu-panel-inner">
+      <a href="#what" class="menu-link">What it is</a>
+      <a href="#process" class="menu-link">Process</a>
+      <a href="#why" class="menu-link">Why it works</a>
+      <a href="#faq" class="menu-link">FAQ</a>
+    </div>
+  </div>
+</header>
 
   <body>
     <!-- Top Nav -->
