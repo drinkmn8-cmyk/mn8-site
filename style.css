@@ -657,4 +657,76 @@ body::before, body::after{ display:none !important; }
   outline: none !important;
   box-shadow: none !important;
 }
+/* Logo image */
+.brand-logo{
+  height: 22px;
+  width: auto;
+  display: block;
+  opacity: .95;
+}
+
+/* Topbar layout: keep nav right, hide on mobile */
+.topbar-inner{
+  position: relative;
+}
+
+/* Three-dots menu button */
+.menu-btn{
+  display: none; /* only mobile */
+  border: 0;
+  background: transparent;
+  padding: 10px 8px;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.menu-btn:hover{
+  background: rgba(255,255,255,.06);
+}
+
+.dots{
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.dots i{
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.85);
+  display: inline-block;
+}
+
+/* Mobile dropdown menu */
+.menu-panel{
+  border-top: 1px solid rgba(255,255,255,.08);
+  background: rgba(7,7,10,.62);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.menu-panel-inner{
+  padding: 12px 0 14px;
+  display: grid;
+  gap: 8px;
+}
+
+.menu-link{
+  padding: 12px 12px;
+  border-radius: 14px;
+  color: rgba(255,255,255,.88);
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.08);
+}
+
+.menu-link:hover{
+  background: rgba(255,255,255,.06);
+}
+
+/* Responsive behavior */
+@media (max-width: 920px){
+  .nav{ display:none; }
+  .menu-btn{ display:inline-flex; }
+}
 
