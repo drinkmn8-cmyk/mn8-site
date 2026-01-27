@@ -91,10 +91,10 @@ body::after{
 }
 
 .brand-logo{
-  height:220px;
-  width:auto;
-  display:block;
-  opacity:.95;
+  height: 36px;          /* desktop size */
+  width: auto;
+  display: block;
+  opacity: .95;
 }
 
 .nav{
