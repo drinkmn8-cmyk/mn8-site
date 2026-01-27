@@ -478,50 +478,30 @@ body::after{
 .topbar-inner{
   min-height: 64px;
 }
-/* =========================
-   FIX: SELECT DROPDOWNS (WHITE ON WHITE)
-   ========================= */
+/* ===== Fix white-on-white native select dropdown ===== */
 
-select,
-input,
-textarea{
-  color: rgba(255,255,255,.92);
-}
-
-/* The closed select field */
+/* Select field itself */
 select{
-  background: rgba(255,255,255,.035);
-  border: 1px solid rgba(255,255,255,.10);
-  border-radius: 14px;
-  padding: 12px 14px;
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
+  background-color:#0f0f14 !important;
+  color:#ffffff !important;
+  border:1px solid rgba(255,255,255,.12) !important;
 }
 
-/* Options inside the opened menu (works in Chrome/Edge/Firefox) */
+/* Dropdown options */
 select option{
-  background: #0b0b10;
-  color: rgba(255,255,255,.92);
+  background-color:#0f0f14 !important;   /* dark background */
+  color:#ffffff !important;              /* white text */
 }
 
-/* If you have optgroups */
-select optgroup{
-  background: #0b0b10;
-  color: rgba(255,255,255,.70);
+/* Hover / selected state */
+select option:checked,
+select option:hover{
+  background-color: rgba(91,53,166,.35) !important;  /* MN8 purple tint */
+  color:#ffffff !important;
 }
 
-/* Placeholder option like "Select one" */
-select option[value=""]{
-  color: rgba(255,255,255,.55);
+/* Firefox fix */
+select:-moz-focusring{
+  color: transparent;
+  text-shadow: 0 0 0 #ffffff;
 }
-
-/* Focus state (clean, not neon) */
-select:focus,
-input:focus,
-textarea:focus{
-  outline: none;
-  border-color: rgba(var(--mn8), .45);
-  box-shadow: 0 0 0 3px rgba(var(--mn8), .12);
-}
-
