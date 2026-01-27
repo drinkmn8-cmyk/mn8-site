@@ -478,4 +478,50 @@ body::after{
 .topbar-inner{
   min-height: 64px;
 }
+/* =========================
+   FIX: SELECT DROPDOWNS (WHITE ON WHITE)
+   ========================= */
+
+select,
+input,
+textarea{
+  color: rgba(255,255,255,.92);
+}
+
+/* The closed select field */
+select{
+  background: rgba(255,255,255,.035);
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: 14px;
+  padding: 12px 14px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+/* Options inside the opened menu (works in Chrome/Edge/Firefox) */
+select option{
+  background: #0b0b10;
+  color: rgba(255,255,255,.92);
+}
+
+/* If you have optgroups */
+select optgroup{
+  background: #0b0b10;
+  color: rgba(255,255,255,.70);
+}
+
+/* Placeholder option like "Select one" */
+select option[value=""]{
+  color: rgba(255,255,255,.55);
+}
+
+/* Focus state (clean, not neon) */
+select:focus,
+input:focus,
+textarea:focus{
+  outline: none;
+  border-color: rgba(var(--mn8), .45);
+  box-shadow: 0 0 0 3px rgba(var(--mn8), .12);
+}
 
