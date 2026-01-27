@@ -451,3 +451,31 @@ body::after{
   .btn{ width:100%; }
   .hero-ctas .btn{ width:100%; }
 }
+/* ===== LOGO SIZE FIX (paste at very bottom) ===== */
+.brand-logo{
+  height: 44px;      /* desktop */
+  width: auto;
+  max-height: none;
+}
+
+@media (max-width: 920px){
+  .brand-logo{
+    height: 40px;
+  }
+}
+
+@media (max-width: 520px){
+  .brand-logo{
+    height: 42px;    /* mobile */
+  }
+}
+
+/* If the header ever clamps it, this prevents shrinking */
+.brand{
+  flex: 0 0 auto;
+}
+
+.topbar-inner{
+  min-height: 64px;
+}
+
