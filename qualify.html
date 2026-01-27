@@ -1,359 +1,175 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MN8 — Qualification</title>
-    <link rel="stylesheet" href="./style.css?v=1" />
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MN8 — Qualification</title>
 
-  <body id="top">
-    <!-- TOPBAR -->
-    <header class="topbar">
-      <div class="wrap topbar-inner">
-        <a class="brand" href="./index.html#top" aria-label="MN8 Home">
-          <img class="brand-logo" src="./logo.png" alt="MN8" />
-        </a>
+  <!-- Main site styles -->
+  <link rel="stylesheet" href="./style.css?v=2"/>
 
-        <nav class="nav" aria-label="Primary">
-          <a href="./index.html#what">What it is</a>
-          <a href="./index.html#process">Process</a>
-          <a href="./index.html#proof">Why it works</a>
-          <a href="./index.html#faq">FAQ</a>
-        </nav>
+  <!-- HARD FIX for native select dropdown rendering -->
+  <style>
+    /* Fix white-on-white dropdown issue */
+    select{
+      background-color:#0f0f14 !important;
+      color:#ffffff !important;
+      border:1px solid rgba(255,255,255,.12) !important;
+      appearance:none;
+      -webkit-appearance:none;
+      -moz-appearance:none;
+    }
 
-        <button
-          class="menu-btn"
-          type="button"
-          aria-label="Open menu"
-          aria-expanded="false"
-          aria-controls="menuPanel"
-        >
-          <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
-        </button>
-      </div>
+    select option{
+      background-color:#0f0f14 !important;
+      color:#ffffff !important;
+    }
 
-      <!-- MOBILE DROPDOWN PANEL -->
-      <div class="menu-panel" id="menuPanel" hidden>
-        <div class="wrap menu-panel-inner">
-          <a href="./index.html#what" class="menu-link">What it is</a>
-          <a href="./index.html#process" class="menu-link">Process</a>
-          <a href="./index.html#proof" class="menu-link">Why it works</a>
-          <a href="./index.html#faq" class="menu-link">FAQ</a>
-        </div>
-      </div>
-    </header>
+    select option:checked,
+    select option:hover{
+      background-color: rgba(91,53,166,.35) !important;
+      color:#ffffff !important;
+    }
 
-    <main>
-      <!-- HERO / INTRO -->
-      <section class="hero" style="min-height:auto; padding: 56px 0 26px;">
-        <div class="wrap hero-inner" style="padding: 26px 0 0; max-width: 980px;">
-          <div class="eyebrow reveal is-in">
-            <span class="pill">Private Fit Check</span>
-            <span class="divider"></span>
-            <span class="muted">Takes 60 seconds</span>
+    /* Firefox */
+    select:-moz-focusring{
+      color: transparent;
+      text-shadow: 0 0 0 #ffffff;
+    }
+  </style>
+</head>
+
+<body id="top">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="brand" href="./index.html" aria-label="MN8 Home">
+        <img class="brand-logo" src="./logo.png" alt="MN8"/>
+      </a>
+
+      <nav class="nav">
+        <a href="./index.html#what">What it is</a>
+        <a href="./index.html#process">Process</a>
+        <a href="./index.html#proof">Why it works</a>
+        <a href="./index.html#faq">FAQ</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- PAGE -->
+  <main class="section">
+    <div class="wrap">
+
+      <div class="card">
+
+        <h2 class="h2">Qualification</h2>
+        <p class="lead muted">
+          Private fit check. Simple. Direct. Built for full schedules.
+        </p>
+
+        <form method="POST" action="#" class="grid-2" style="margin-top:28px;">
+
+          <!-- Name -->
+          <div>
+            <label class="muted">Full name</label>
+            <input type="text" placeholder="Your name" required />
           </div>
 
-          <h1 class="hero-title reveal is-in" style="font-size: clamp(34px, 5vw, 56px);">
-            Qualification
-          </h1>
-
-          <p class="hero-subtitle reveal is-in">
-            This is not an application. It’s a fit filter. MN8 is built for people with real responsibility
-            who want control back without disruption. If aligned, you’ll receive next steps by email.
-          </p>
-
-          <div class="hero-ctas reveal is-in" style="margin-bottom: 0;">
-            <a class="btn btn-ghost" href="./index.html#top">Back</a>
-            <a class="btn btn-primary" href="#form">Start</a>
-          </div>
-        </div>
-      </section>
-
-      <!-- FORM -->
-      <section class="section" id="form" style="padding-top: 40px;">
-        <div class="wrap" style="max-width: 980px;">
-          <div class="section-head reveal is-in">
-            <h2 class="h2">Answer honestly.</h2>
-            <p class="lead">
-              The goal is alignment. Simple, private, built for full schedules.
-            </p>
+          <!-- Email -->
+          <div>
+            <label class="muted">Email</label>
+            <input type="email" placeholder="you@email.com" required />
           </div>
 
-          <!-- OPTION A: FormSubmit (email delivery) -->
-          <form
-            class="card reveal is-in"
-            action="https://formsubmit.co/YOUR_EMAIL_HERE"
-            method="POST"
-            style="padding: 26px;"
-          >
-            <!-- FormSubmit settings -->
-            <input type="hidden" name="_subject" value="MN8 — New Qualification Submission" />
-            <input type="hidden" name="_template" value="table" />
-            <input type="hidden" name="_captcha" value="false" />
-            <!-- after submit, send them to your local thank-you section -->
-            <input type="hidden" name="_next" value="./qualify.html#thanks" />
-
-            <!-- Honeypot (spam trap) -->
-            <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" />
-
-            <div class="grid-2" style="gap: 16px;">
-              <!-- Full name -->
-              <div>
-                <label class="muted" for="name" style="display:block; font-size:13px; margin-bottom:8px;">Full name</label>
-                <input
-                  id="name"
-                  name="Full name"
-                  type="text"
-                  placeholder="Your name"
-                  required
-                  style="width:100%; padding:14px 14px; border-radius:14px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.10); color:var(--text); outline:none;"
-                />
-              </div>
-
-              <!-- Email -->
-              <div>
-                <label class="muted" for="email" style="display:block; font-size:13px; margin-bottom:8px;">Email</label>
-                <input
-                  id="email"
-                  name="Email"
-                  type="email"
-                  placeholder="you@email.com"
-                  required
-                  style="width:100%; padding:14px 14px; border-radius:14px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.10); color:var(--text); outline:none;"
-                />
-              </div>
-            </div>
-
-            <div class="divider-space" style="height: 14px;"></div>
-
-            <!-- Q1 Identity -->
+          <!-- Identity -->
+          <div class="grid-2" style="grid-column:1/-1;">
             <div>
-              <label class="muted" for="identity" style="display:block; font-size:13px; margin-bottom:8px;">
-                Which best describes you?
-              </label>
-              <select
-                id="identity"
-                name="Identity"
-                required
-                style="width:100%; padding:14px 14px; border-radius:14px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.10); color:var(--text); outline:none;"
-              >
-                <option value="" disabled selected>Select one</option>
-                <option>High responsibility, low personal time</option>
-                <option>Busy professional managing multiple obligations</option>
-                <option>Full schedule, little space for complexity</option>
-                <option>Structured life, struggling with consistency</option>
-                <option>None of these</option>
+              <label class="muted">Which best describes you?</label>
+              <select required>
+                <option value="">Select one</option>
+                <option>High-responsibility professional</option>
+                <option>Business owner / entrepreneur</option>
+                <option>Parent with dense schedule</option>
+                <option>Leader / executive role</option>
+                <option>Other</option>
               </select>
             </div>
 
-            <div class="divider-space" style="height: 14px;"></div>
-
-            <!-- Q2 Pain -->
             <div>
-              <label class="muted" for="breaks" style="display:block; font-size:13px; margin-bottom:8px;">
-                What breaks consistency for you?
-              </label>
-              <select
-                id="breaks"
-                name="What breaks consistency"
-                required
-                style="width:100%; padding:14px 14px; border-radius:14px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.10); color:var(--text); outline:none;"
-              >
-                <option value="" disabled selected>Select one</option>
-                <option>Time pressure</option>
-                <option>Mental load</option>
-                <option>Schedule instability</option>
+              <label class="muted">What breaks consistency for you?</label>
+              <select required>
+                <option value="">Select one</option>
+                <option>Schedule overload</option>
                 <option>Decision fatigue</option>
-                <option>Travel / unpredictability</option>
-                <option>All of the above</option>
+                <option>Lack of structure</option>
+                <option>Burnout cycles</option>
+                <option>Inconsistency</option>
               </select>
-            </div>
-
-            <div class="divider-space" style="height: 14px;"></div>
-
-            <!-- Q3 Restarts -->
-            <div>
-              <label class="muted" for="restarts" style="display:block; font-size:13px; margin-bottom:8px;">
-                How often have you restarted?
-              </label>
-              <select
-                id="restarts"
-                name="Restart pattern"
-                required
-                style="width:100%; padding:14px 14px; border-radius:14px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.10); color:var(--text); outline:none;"
-              >
-                <option value="" disabled selected>Select one</option>
-                <option>Rarely</option>
-                <option>A few times</option>
-                <option>Many times</option>
-                <option>Constant cycle of restarts</option>
-              </select>
-            </div>
-
-            <div class="divider-space" style="height: 14px;"></div>
-
-            <!-- Q4 Outcome -->
-            <div>
-              <label class="muted" for="outcome" style="display:block; font-size:13px; margin-bottom:8px;">
-                What result would make this a win in 90 days?
-              </label>
-              <input
-                id="outcome"
-                name="90-day outcome"
-                type="text"
-                placeholder="Example: -10 lbs while keeping my schedule"
-                required
-                style="width:100%; padding:14px 14px; border-radius:14px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.10); color:var(--text); outline:none;"
-              />
-            </div>
-
-            <div class="divider-space" style="height: 14px;"></div>
-
-            <div class="grid-2" style="gap: 16px;">
-              <!-- Q5 Ready now -->
-              <div>
-                <label class="muted" for="ready" style="display:block; font-size:13px; margin-bottom:8px;">
-                  If accepted, ready to start immediately?
-                </label>
-                <select
-                  id="ready"
-                  name="Ready to start"
-                  required
-                  style="width:100%; padding:14px 14px; border-radius:14px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.10); color:var(--text); outline:none;"
-                >
-                  <option value="" disabled selected>Select one</option>
-                  <option>Yes</option>
-                  <option>No</option>
-                  <option>Not sure</option>
-                </select>
-              </div>
-
-              <!-- Q6 Daily structure -->
-              <div>
-                <label class="muted" for="structure" style="display:block; font-size:13px; margin-bottom:8px;">
-                  Can you follow a simple daily structure?
-                </label>
-                <select
-                  id="structure"
-                  name="Daily structure"
-                  required
-                  style="width:100%; padding:14px 14px; border-radius:14px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.10); color:var(--text); outline:none;"
-                >
-                  <option value="" disabled selected>Select one</option>
-                  <option>Yes</option>
-                  <option>If it fits my life</option>
-                  <option>No</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="divider-space" style="height: 14px;"></div>
-
-            <!-- Q7 Why MN8 -->
-            <div>
-              <label class="muted" for="why" style="display:block; font-size:13px; margin-bottom:8px;">
-                Why MN8 specifically?
-              </label>
-              <textarea
-                id="why"
-                name="Why MN8"
-                rows="3"
-                placeholder="One sentence is enough."
-                required
-                style="width:100%; padding:14px 14px; border-radius:14px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.10); color:var(--text); outline:none; resize:vertical;"
-              ></textarea>
-            </div>
-
-            <div class="divider-space" style="height: 14px;"></div>
-
-            <!-- Q8 Consequence -->
-            <div>
-              <label class="muted" for="consequence" style="display:block; font-size:13px; margin-bottom:8px;">
-                What happens if nothing changes in the next 6 months?
-              </label>
-              <textarea
-                id="consequence"
-                name="6-month consequence"
-                rows="3"
-                placeholder="Be real."
-                required
-                style="width:100%; padding:14px 14px; border-radius:14px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.10); color:var(--text); outline:none; resize:vertical;"
-              ></textarea>
-            </div>
-
-            <div class="divider-space" style="height: 18px;"></div>
-
-            <div class="cta-panel" style="background: transparent; border:0; padding:0;">
-              <button class="btn btn-primary" type="submit">Submit Qualification</button>
-              <span class="muted" style="font-size:13px;">
-                If aligned, you’ll receive next steps by email.
-              </span>
-            </div>
-
-            <div class="divider-space" style="height: 12px;"></div>
-
-            <p class="muted" style="font-size:12px; margin:0;">
-              This is a fit check. No tracking obsession. No lifestyle takeover. MN8 is built to hold under real responsibility.
-            </p>
-          </form>
-
-          <!-- THANK YOU (redirect target) -->
-          <div id="thanks" class="card" style="margin-top:16px; display:none;">
-            <h3 class="h3">Submitted.</h3>
-            <p class="p">If aligned, you’ll receive next steps by email.</p>
-            <div class="hero-ctas" style="margin-top:14px;">
-              <a class="btn btn-ghost" href="./index.html#top">Back to site</a>
             </div>
           </div>
-        </div>
-      </section>
 
-      <footer class="footer">
-        <div class="wrap footer-inner">
-          <span class="muted">MN8</span>
-          <span class="muted">Private system</span>
-        </div>
-      </footer>
-    </main>
+          <!-- Restarts -->
+          <div style="grid-column:1/-1;">
+            <label class="muted">How often have you restarted?</label>
+            <select required>
+              <option value="">Select one</option>
+              <option>Rarely</option>
+              <option>Occasionally</option>
+              <option>Frequently</option>
+              <option>Constant cycle</option>
+            </select>
+          </div>
 
-    <script>
-      // Minimal mobile menu toggle (works with your existing CSS)
-      (() => {
-        const btn = document.querySelector(".menu-btn");
-        const panel = document.getElementById("menuPanel");
-        if (!btn || !panel) return;
+          <!-- Outcome -->
+          <div style="grid-column:1/-1;">
+            <label class="muted">What result would make this a win in 90 days?</label>
+            <input type="text" placeholder="Example: -10lbs while keeping my schedule" />
+          </div>
 
-        const setOpen = (open) => {
-          btn.setAttribute("aria-expanded", String(open));
-          panel.hidden = !open;
-        };
+          <!-- Commitment -->
+          <div>
+            <label class="muted">If accepted, ready to start immediately?</label>
+            <select required>
+              <option value="">Select one</option>
+              <option>Yes</option>
+              <option>No</option>
+              <option>Within 30 days</option>
+            </select>
+          </div>
 
-        btn.addEventListener("click", () => {
-          const open = btn.getAttribute("aria-expanded") === "true";
-          setOpen(!open);
-        });
+          <div>
+            <label class="muted">Can you follow a simple daily structure?</label>
+            <select required>
+              <option value="">Select one</option>
+              <option>Yes</option>
+              <option>No</option>
+            </select>
+          </div>
 
-        panel.addEventListener("click", (e) => {
-          const a = e.target.closest("a");
-          if (a) setOpen(false);
-        });
+          <!-- Alignment -->
+          <div style="grid-column:1/-1;">
+            <label class="muted">Why MN8?</label>
+            <textarea placeholder="One sentence is enough." rows="3"></textarea>
+          </div>
 
-        window.addEventListener("keydown", (e) => {
-          if (e.key === "Escape") setOpen(false);
-        });
-      })();
+          <!-- Submit -->
+          <div style="grid-column:1/-1; display:flex; justify-content:flex-start; margin-top:18px;">
+            <button type="submit" class="btn btn-primary">
+              Submit Qualification
+            </button>
+          </div>
 
-      // Show thanks card if URL hash is #thanks
-      (() => {
-        if (location.hash === "#thanks") {
-          const el = document.getElementById("thanks");
-          if (el) el.style.display = "block";
-          const form = document.querySelector("form");
-          if (form) form.style.display = "none";
-          window.scrollTo({ top: 0, behavior: "smooth" });
-        }
-      })();
-    </script>
-  </body>
+        </form>
+
+        <p class="muted" style="margin-top:18px; font-size:13px;">
+          This is a fit check. If aligned, you’ll receive next steps by email.
+        </p>
+
+      </div>
+
+    </div>
+  </main>
+
+</body>
 </html>
