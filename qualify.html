@@ -4,377 +4,355 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MN8 — Qualification</title>
-
-    <!-- If you want to reuse your main site CSS, keep it.
-         If it causes conflicts, delete this line and this page still works (CSS below is self-contained). -->
-    <!-- <link rel="stylesheet" href="./style.css?v=1" /> -->
-
-    <style>
-      :root{
-        --bg:#07070a;
-        --text:rgba(255,255,255,.92);
-        --muted:rgba(255,255,255,.68);
-        --mn8: 91,53,166; /* #5b35a6 */
-        --stroke: rgba(255,255,255,.10);
-        --shadow: 0 10px 26px rgba(0,0,0,.32);
-        --radius: 18px;
-        --wrap: 980px;
-      }
-
-      *{ box-sizing:border-box; }
-      html,body{ height:100%; }
-      body{
-        margin:0;
-        background: var(--bg);
-        color: var(--text);
-        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-      }
-      a{ color:inherit; text-decoration:none; }
-      .wrap{ width:min(var(--wrap), calc(100% - 28px)); margin:0 auto; }
-
-      /* Clean background */
-      body::before{
-        content:"";
-        position:fixed;
-        inset:0;
-        z-index:-2;
-        pointer-events:none;
-        background: radial-gradient(1200px 700px at 50% 0%, rgba(var(--mn8), .08), transparent 70%);
-      }
-      body::after{
-        content:"";
-        position:fixed;
-        inset:0;
-        z-index:-1;
-        pointer-events:none;
-        background: radial-gradient(circle at 50% 40%, transparent 0%, rgba(0,0,0,.55) 78%);
-      }
-
-      /* Topbar */
-      .topbar{
-        position:sticky;
-        top:0;
-        z-index:50;
-        background: rgba(7,7,10,.72);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        border-bottom:1px solid rgba(255,255,255,.08);
-      }
-      .topbar-inner{
-        display:flex;
-        align-items:center;
-        justify-content:space-between;
-        padding: 14px 0;
-        gap: 14px;
-      }
-      .brand{ display:flex; align-items:center; gap:12px; }
-      .brand-logo{
-        height: 40px; /* change THIS to make logo bigger */
-        width:auto;
-        display:block;
-        opacity:.95;
-      }
-      .top-actions{ display:flex; gap:10px; align-items:center; }
-
-      /* Buttons */
-      .btn{
-        display:inline-flex;
-        align-items:center;
-        justify-content:center;
-        border-radius:999px;
-        padding: 12px 16px;
-        font-weight:600;
-        border:1px solid rgba(255,255,255,.12);
-        background: rgba(255,255,255,.05);
-        color:#fff;
-        transition: transform .2s ease, opacity .2s ease;
-        user-select:none;
-        white-space:nowrap;
-      }
-      .btn:hover{ transform: translateY(-1px); }
-      .btn:active{ transform: translateY(0); opacity:.92; }
-
-      .btn-primary{
-        background: rgba(var(--mn8), 1);
-        border:1px solid rgba(255,255,255,.10);
-        box-shadow: 0 8px 22px rgba(0,0,0,.28);
-      }
-
-      /* Layout */
-      .page{
-        padding: 38px 0 70px;
-      }
-
-      .hero{
-        padding: 26px 0 22px;
-      }
-
-      h1{
-        margin: 0 0 10px;
-        font-family: ui-serif, Georgia, "Times New Roman", Times, serif;
-        font-weight: 520;
-        letter-spacing: -.2px;
-        line-height: 1.08;
-        font-size: clamp(34px, 5vw, 54px);
-      }
-      .sub{
-        margin:0;
-        color: rgba(255,255,255,.78);
-        line-height: 1.65;
-        max-width: 70ch;
-        font-size: 15px;
-      }
-
-      .grid{
-        margin-top: 22px;
-        display:grid;
-        grid-template-columns: 1fr;
-        gap: 14px;
-      }
-
-      .card{
-        border-radius: var(--radius);
-        background: rgba(255,255,255,.035);
-        border:1px solid rgba(255,255,255,.08);
-        box-shadow: var(--shadow);
-        padding: 18px;
-      }
-
-      .label{
-        display:block;
-        margin: 0 0 8px;
-        font-size: 13px;
-        color: rgba(255,255,255,.80);
-        font-weight: 650;
-        letter-spacing: .1px;
-      }
-
-      input, select, textarea{
-        width:100%;
-        border-radius: 14px;
-        border:1px solid rgba(255,255,255,.10);
-        background: rgba(255,255,255,.04);
-        color: rgba(255,255,255,.92);
-        padding: 12px 12px;
-        outline: none;
-        font-size: 14px;
-      }
-      textarea{ min-height: 92px; resize: vertical; }
-      input::placeholder, textarea::placeholder{ color: rgba(255,255,255,.45); }
-
-      .row2{
-        display:grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 12px;
-      }
-
-      .hint{
-        margin: 10px 0 0;
-        font-size: 12px;
-        color: rgba(255,255,255,.60);
-        line-height: 1.55;
-      }
-
-      .actions{
-        display:flex;
-        align-items:center;
-        justify-content:space-between;
-        gap: 12px;
-        margin-top: 14px;
-        flex-wrap: wrap;
-      }
-
-      .status{
-        font-size: 13px;
-        color: rgba(255,255,255,.72);
-      }
-      .status.ok{ color: rgba(255,255,255,.86); }
-      .status.err{ color: rgba(255,255,255,.86); }
-
-      .hidden{ display:none !important; }
-
-      /* Mobile */
-      @media (max-width: 700px){
-        .row2{ grid-template-columns: 1fr; }
-        .top-actions .btn{ padding: 11px 14px; }
-        .brand-logo{ height: 44px; } /* mobile logo size */
-      }
-    </style>
+    <link rel="stylesheet" href="./style.css?v=1" />
   </head>
 
-  <body>
+  <body id="top">
     <!-- TOPBAR -->
     <header class="topbar">
       <div class="wrap topbar-inner">
-        <a class="brand" href="./index.html" aria-label="Back to MN8">
-          <img class="brand-logo" src="./logo.png?v=1" alt="MN8" />
+        <a class="brand" href="./index.html#top" aria-label="MN8 Home">
+          <img class="brand-logo" src="./logo.png" alt="MN8" />
         </a>
 
-        <div class="top-actions">
-          <a class="btn" href="./index.html">Back</a>
-          <a class="btn btn-primary" href="./index.html#what">How it works</a>
+        <nav class="nav" aria-label="Primary">
+          <a href="./index.html#what">What it is</a>
+          <a href="./index.html#process">Process</a>
+          <a href="./index.html#proof">Why it works</a>
+          <a href="./index.html#faq">FAQ</a>
+        </nav>
+
+        <button
+          class="menu-btn"
+          type="button"
+          aria-label="Open menu"
+          aria-expanded="false"
+          aria-controls="menuPanel"
+        >
+          <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        </button>
+      </div>
+
+      <!-- MOBILE DROPDOWN PANEL -->
+      <div class="menu-panel" id="menuPanel" hidden>
+        <div class="wrap menu-panel-inner">
+          <a href="./index.html#what" class="menu-link">What it is</a>
+          <a href="./index.html#process" class="menu-link">Process</a>
+          <a href="./index.html#proof" class="menu-link">Why it works</a>
+          <a href="./index.html#faq" class="menu-link">FAQ</a>
         </div>
       </div>
     </header>
 
-    <main class="page">
-      <div class="wrap">
-        <section class="hero">
-          <h1>Begin Qualification</h1>
-          <p class="sub">
-            MN8 is built for full schedules and real responsibility. This protects fit.
-            If approved, you receive next steps and private access.
+    <main>
+      <!-- HERO / INTRO -->
+      <section class="hero" style="min-height:auto; padding: 56px 0 26px;">
+        <div class="wrap hero-inner" style="padding: 26px 0 0; max-width: 980px;">
+          <div class="eyebrow reveal is-in">
+            <span class="pill">Private Fit Check</span>
+            <span class="divider"></span>
+            <span class="muted">Takes 60 seconds</span>
+          </div>
+
+          <h1 class="hero-title reveal is-in" style="font-size: clamp(34px, 5vw, 56px);">
+            Qualification
+          </h1>
+
+          <p class="hero-subtitle reveal is-in">
+            This is not an application. It’s a fit filter. MN8 is built for people with real responsibility
+            who want control back without disruption. If aligned, you’ll receive next steps by email.
           </p>
-        </section>
 
-        <section class="card" id="formCard">
-          <!-- IMPORTANT: paste your Apps Script Web App URL here -->
+          <div class="hero-ctas reveal is-in" style="margin-bottom: 0;">
+            <a class="btn btn-ghost" href="./index.html#top">Back</a>
+            <a class="btn btn-primary" href="#form">Start</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- FORM -->
+      <section class="section" id="form" style="padding-top: 40px;">
+        <div class="wrap" style="max-width: 980px;">
+          <div class="section-head reveal is-in">
+            <h2 class="h2">Answer honestly.</h2>
+            <p class="lead">
+              The goal is alignment. Simple, private, built for full schedules.
+            </p>
+          </div>
+
+          <!-- OPTION A: FormSubmit (email delivery) -->
           <form
-            id="qualifyForm"
+            class="card reveal is-in"
+            action="https://formsubmit.co/YOUR_EMAIL_HERE"
             method="POST"
-            action="PASTE_YOUR_WEB_APP_URL_HERE"
-            target="hiddenFrame"
+            style="padding: 26px;"
           >
-            <!-- Honeypot (spam trap): keep hidden -->
-            <input type="text" name="company" class="hidden" tabindex="-1" autocomplete="off" />
+            <!-- FormSubmit settings -->
+            <input type="hidden" name="_subject" value="MN8 — New Qualification Submission" />
+            <input type="hidden" name="_template" value="table" />
+            <input type="hidden" name="_captcha" value="false" />
+            <!-- after submit, send them to your local thank-you section -->
+            <input type="hidden" name="_next" value="./qualify.html#thanks" />
 
-            <!-- Context fields -->
-            <input type="hidden" name="pageUrl" id="pageUrl" />
-            <input type="hidden" name="userAgent" id="userAgent" />
+            <!-- Honeypot (spam trap) -->
+            <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" />
 
-            <div class="grid">
-              <div class="row2">
-                <div>
-                  <label class="label" for="fullName">Full name</label>
-                  <input id="fullName" name="fullName" type="text" placeholder="Your name" required />
-                </div>
-                <div>
-                  <label class="label" for="email">Email</label>
-                  <input id="email" name="email" type="email" placeholder="you@email.com" required />
-                </div>
-              </div>
-
-              <div class="row2">
-                <div>
-                  <label class="label" for="scheduleLoad">Current schedule load</label>
-                  <select id="scheduleLoad" name="scheduleLoad" required>
-                    <option value="" selected disabled>Select one</option>
-                    <option>40–50 hrs/week</option>
-                    <option>50–60 hrs/week</option>
-                    <option>60+ hrs/week</option>
-                    <option>Shift / irregular schedule</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label class="label" for="mainFriction">What breaks weight control for you most?</label>
-                  <select id="mainFriction" name="mainFriction" required>
-                    <option value="" selected disabled>Select one</option>
-                    <option>No time</option>
-                    <option>Stress eating</option>
-                    <option>Inconsistency</option>
-                    <option>Travel / events</option>
-                    <option>Energy crashes</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="row2">
-                <div>
-                  <label class="label" for="restarts">How many restarts in the last 12 months?</label>
-                  <select id="restarts" name="restarts" required>
-                    <option value="" selected disabled>Select one</option>
-                    <option>0–1</option>
-                    <option>2–3</option>
-                    <option>4–6</option>
-                    <option>7+</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label class="label" for="readyNow">If approved, ready to start immediately?</label>
-                  <select id="readyNow" name="readyNow" required>
-                    <option value="" selected disabled>Select one</option>
-                    <option>Yes</option>
-                    <option>No</option>
-                  </select>
-                </div>
-              </div>
-
+            <div class="grid-2" style="gap: 16px;">
+              <!-- Full name -->
               <div>
-                <label class="label" for="outcome90">What outcome do you want in the next 90 days?</label>
-                <input id="outcome90" name="outcome90" type="text" placeholder="Example: -10lbs while keeping my schedule" required />
+                <label class="muted" for="name" style="display:block; font-size:13px; margin-bottom:8px;">Full name</label>
+                <input
+                  id="name"
+                  name="Full name"
+                  type="text"
+                  placeholder="Your name"
+                  required
+                  style="width:100%; padding:14px 14px; border-radius:14px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.10); color:var(--text); outline:none;"
+                />
               </div>
 
-              <div class="row2">
-                <div>
-                  <label class="label" for="commitDaily">Willing to follow a simple daily structure?</label>
-                  <select id="commitDaily" name="commitDaily" required>
-                    <option value="" selected disabled>Select one</option>
-                    <option>Yes</option>
-                    <option>No</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label class="label" for="notes">Anything we should know?</label>
-                  <input id="notes" name="notes" type="text" placeholder="Optional" />
-                </div>
+              <!-- Email -->
+              <div>
+                <label class="muted" for="email" style="display:block; font-size:13px; margin-bottom:8px;">Email</label>
+                <input
+                  id="email"
+                  name="Email"
+                  type="email"
+                  placeholder="you@email.com"
+                  required
+                  style="width:100%; padding:14px 14px; border-radius:14px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.10); color:var(--text); outline:none;"
+                />
               </div>
-
-              <div class="actions">
-                <button class="btn btn-primary" type="submit" id="submitBtn">Submit Qualification</button>
-                <span class="status" id="status">You’ll receive next steps by email if approved.</span>
-              </div>
-
-              <p class="hint">
-                This is a fit check. No tracking obsession, no lifestyle takeover. MN8 is built to hold under real responsibility.
-              </p>
             </div>
+
+            <div class="divider-space" style="height: 14px;"></div>
+
+            <!-- Q1 Identity -->
+            <div>
+              <label class="muted" for="identity" style="display:block; font-size:13px; margin-bottom:8px;">
+                Which best describes you?
+              </label>
+              <select
+                id="identity"
+                name="Identity"
+                required
+                style="width:100%; padding:14px 14px; border-radius:14px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.10); color:var(--text); outline:none;"
+              >
+                <option value="" disabled selected>Select one</option>
+                <option>High responsibility, low personal time</option>
+                <option>Busy professional managing multiple obligations</option>
+                <option>Full schedule, little space for complexity</option>
+                <option>Structured life, struggling with consistency</option>
+                <option>None of these</option>
+              </select>
+            </div>
+
+            <div class="divider-space" style="height: 14px;"></div>
+
+            <!-- Q2 Pain -->
+            <div>
+              <label class="muted" for="breaks" style="display:block; font-size:13px; margin-bottom:8px;">
+                What breaks consistency for you?
+              </label>
+              <select
+                id="breaks"
+                name="What breaks consistency"
+                required
+                style="width:100%; padding:14px 14px; border-radius:14px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.10); color:var(--text); outline:none;"
+              >
+                <option value="" disabled selected>Select one</option>
+                <option>Time pressure</option>
+                <option>Mental load</option>
+                <option>Schedule instability</option>
+                <option>Decision fatigue</option>
+                <option>Travel / unpredictability</option>
+                <option>All of the above</option>
+              </select>
+            </div>
+
+            <div class="divider-space" style="height: 14px;"></div>
+
+            <!-- Q3 Restarts -->
+            <div>
+              <label class="muted" for="restarts" style="display:block; font-size:13px; margin-bottom:8px;">
+                How often have you restarted?
+              </label>
+              <select
+                id="restarts"
+                name="Restart pattern"
+                required
+                style="width:100%; padding:14px 14px; border-radius:14px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.10); color:var(--text); outline:none;"
+              >
+                <option value="" disabled selected>Select one</option>
+                <option>Rarely</option>
+                <option>A few times</option>
+                <option>Many times</option>
+                <option>Constant cycle of restarts</option>
+              </select>
+            </div>
+
+            <div class="divider-space" style="height: 14px;"></div>
+
+            <!-- Q4 Outcome -->
+            <div>
+              <label class="muted" for="outcome" style="display:block; font-size:13px; margin-bottom:8px;">
+                What result would make this a win in 90 days?
+              </label>
+              <input
+                id="outcome"
+                name="90-day outcome"
+                type="text"
+                placeholder="Example: -10 lbs while keeping my schedule"
+                required
+                style="width:100%; padding:14px 14px; border-radius:14px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.10); color:var(--text); outline:none;"
+              />
+            </div>
+
+            <div class="divider-space" style="height: 14px;"></div>
+
+            <div class="grid-2" style="gap: 16px;">
+              <!-- Q5 Ready now -->
+              <div>
+                <label class="muted" for="ready" style="display:block; font-size:13px; margin-bottom:8px;">
+                  If accepted, ready to start immediately?
+                </label>
+                <select
+                  id="ready"
+                  name="Ready to start"
+                  required
+                  style="width:100%; padding:14px 14px; border-radius:14px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.10); color:var(--text); outline:none;"
+                >
+                  <option value="" disabled selected>Select one</option>
+                  <option>Yes</option>
+                  <option>No</option>
+                  <option>Not sure</option>
+                </select>
+              </div>
+
+              <!-- Q6 Daily structure -->
+              <div>
+                <label class="muted" for="structure" style="display:block; font-size:13px; margin-bottom:8px;">
+                  Can you follow a simple daily structure?
+                </label>
+                <select
+                  id="structure"
+                  name="Daily structure"
+                  required
+                  style="width:100%; padding:14px 14px; border-radius:14px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.10); color:var(--text); outline:none;"
+                >
+                  <option value="" disabled selected>Select one</option>
+                  <option>Yes</option>
+                  <option>If it fits my life</option>
+                  <option>No</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="divider-space" style="height: 14px;"></div>
+
+            <!-- Q7 Why MN8 -->
+            <div>
+              <label class="muted" for="why" style="display:block; font-size:13px; margin-bottom:8px;">
+                Why MN8 specifically?
+              </label>
+              <textarea
+                id="why"
+                name="Why MN8"
+                rows="3"
+                placeholder="One sentence is enough."
+                required
+                style="width:100%; padding:14px 14px; border-radius:14px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.10); color:var(--text); outline:none; resize:vertical;"
+              ></textarea>
+            </div>
+
+            <div class="divider-space" style="height: 14px;"></div>
+
+            <!-- Q8 Consequence -->
+            <div>
+              <label class="muted" for="consequence" style="display:block; font-size:13px; margin-bottom:8px;">
+                What happens if nothing changes in the next 6 months?
+              </label>
+              <textarea
+                id="consequence"
+                name="6-month consequence"
+                rows="3"
+                placeholder="Be real."
+                required
+                style="width:100%; padding:14px 14px; border-radius:14px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.10); color:var(--text); outline:none; resize:vertical;"
+              ></textarea>
+            </div>
+
+            <div class="divider-space" style="height: 18px;"></div>
+
+            <div class="cta-panel" style="background: transparent; border:0; padding:0;">
+              <button class="btn btn-primary" type="submit">Submit Qualification</button>
+              <span class="muted" style="font-size:13px;">
+                If aligned, you’ll receive next steps by email.
+              </span>
+            </div>
+
+            <div class="divider-space" style="height: 12px;"></div>
+
+            <p class="muted" style="font-size:12px; margin:0;">
+              This is a fit check. No tracking obsession. No lifestyle takeover. MN8 is built to hold under real responsibility.
+            </p>
           </form>
 
-          <!-- Hidden iframe to avoid CORS issues with Apps Script -->
-          <iframe name="hiddenFrame" id="hiddenFrame" class="hidden"></iframe>
-        </section>
+          <!-- THANK YOU (redirect target) -->
+          <div id="thanks" class="card" style="margin-top:16px; display:none;">
+            <h3 class="h3">Submitted.</h3>
+            <p class="p">If aligned, you’ll receive next steps by email.</p>
+            <div class="hero-ctas" style="margin-top:14px;">
+              <a class="btn btn-ghost" href="./index.html#top">Back to site</a>
+            </div>
+          </div>
+        </div>
+      </section>
 
-        <!-- Success state -->
-        <section class="card hidden" id="successCard">
-          <h2 style="margin:0 0 10px; font-family: ui-serif, Georgia, 'Times New Roman', Times, serif; font-weight:520; letter-spacing:-.15px;">
-            Application received.
-          </h2>
-          <p class="sub" style="margin:0 0 16px;">
-            If it’s a fit, you’ll receive next steps and private access by email.
-          </p>
-          <a class="btn btn-primary" href="./index.html">Back to MN8</a>
-        </section>
-      </div>
+      <footer class="footer">
+        <div class="wrap footer-inner">
+          <span class="muted">MN8</span>
+          <span class="muted">Private system</span>
+        </div>
+      </footer>
     </main>
 
     <script>
-      (function(){
-        // Context fields
-        document.getElementById("pageUrl").value = window.location.href;
-        document.getElementById("userAgent").value = navigator.userAgent;
+      // Minimal mobile menu toggle (works with your existing CSS)
+      (() => {
+        const btn = document.querySelector(".menu-btn");
+        const panel = document.getElementById("menuPanel");
+        if (!btn || !panel) return;
 
-        const form = document.getElementById("qualifyForm");
-        const status = document.getElementById("status");
-        const submitBtn = document.getElementById("submitBtn");
-        const formCard = document.getElementById("formCard");
-        const successCard = document.getElementById("successCard");
+        const setOpen = (open) => {
+          btn.setAttribute("aria-expanded", String(open));
+          panel.hidden = !open;
+        };
 
-        // Because we're submitting to an iframe, we can't reliably read response.
-        // So we show success immediately after submit.
-        form.addEventListener("submit", function(){
-          submitBtn.disabled = true;
-          submitBtn.style.opacity = "0.85";
-          status.textContent = "Submitting…";
-
-          // swap UI
-          setTimeout(() => {
-            formCard.classList.add("hidden");
-            successCard.classList.remove("hidden");
-          }, 450);
+        btn.addEventListener("click", () => {
+          const open = btn.getAttribute("aria-expanded") === "true";
+          setOpen(!open);
         });
+
+        panel.addEventListener("click", (e) => {
+          const a = e.target.closest("a");
+          if (a) setOpen(false);
+        });
+
+        window.addEventListener("keydown", (e) => {
+          if (e.key === "Escape") setOpen(false);
+        });
+      })();
+
+      // Show thanks card if URL hash is #thanks
+      (() => {
+        if (location.hash === "#thanks") {
+          const el = document.getElementById("thanks");
+          if (el) el.style.display = "block";
+          const form = document.querySelector("form");
+          if (form) form.style.display = "none";
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
       })();
     </script>
   </body>
