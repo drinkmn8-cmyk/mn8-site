@@ -4,36 +4,378 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MN8 — Qualification</title>
-    <link rel="stylesheet" href="./style.css" />
+
+    <!-- If you want to reuse your main site CSS, keep it.
+         If it causes conflicts, delete this line and this page still works (CSS below is self-contained). -->
+    <!-- <link rel="stylesheet" href="./style.css?v=1" /> -->
+
+    <style>
+      :root{
+        --bg:#07070a;
+        --text:rgba(255,255,255,.92);
+        --muted:rgba(255,255,255,.68);
+        --mn8: 91,53,166; /* #5b35a6 */
+        --stroke: rgba(255,255,255,.10);
+        --shadow: 0 10px 26px rgba(0,0,0,.32);
+        --radius: 18px;
+        --wrap: 980px;
+      }
+
+      *{ box-sizing:border-box; }
+      html,body{ height:100%; }
+      body{
+        margin:0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      }
+      a{ color:inherit; text-decoration:none; }
+      .wrap{ width:min(var(--wrap), calc(100% - 28px)); margin:0 auto; }
+
+      /* Clean background */
+      body::before{
+        content:"";
+        position:fixed;
+        inset:0;
+        z-index:-2;
+        pointer-events:none;
+        background: radial-gradient(1200px 700px at 50% 0%, rgba(var(--mn8), .08), transparent 70%);
+      }
+      body::after{
+        content:"";
+        position:fixed;
+        inset:0;
+        z-index:-1;
+        pointer-events:none;
+        background: radial-gradient(circle at 50% 40%, transparent 0%, rgba(0,0,0,.55) 78%);
+      }
+
+      /* Topbar */
+      .topbar{
+        position:sticky;
+        top:0;
+        z-index:50;
+        background: rgba(7,7,10,.72);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-bottom:1px solid rgba(255,255,255,.08);
+      }
+      .topbar-inner{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        padding: 14px 0;
+        gap: 14px;
+      }
+      .brand{ display:flex; align-items:center; gap:12px; }
+      .brand-logo{
+        height: 40px; /* change THIS to make logo bigger */
+        width:auto;
+        display:block;
+        opacity:.95;
+      }
+      .top-actions{ display:flex; gap:10px; align-items:center; }
+
+      /* Buttons */
+      .btn{
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        border-radius:999px;
+        padding: 12px 16px;
+        font-weight:600;
+        border:1px solid rgba(255,255,255,.12);
+        background: rgba(255,255,255,.05);
+        color:#fff;
+        transition: transform .2s ease, opacity .2s ease;
+        user-select:none;
+        white-space:nowrap;
+      }
+      .btn:hover{ transform: translateY(-1px); }
+      .btn:active{ transform: translateY(0); opacity:.92; }
+
+      .btn-primary{
+        background: rgba(var(--mn8), 1);
+        border:1px solid rgba(255,255,255,.10);
+        box-shadow: 0 8px 22px rgba(0,0,0,.28);
+      }
+
+      /* Layout */
+      .page{
+        padding: 38px 0 70px;
+      }
+
+      .hero{
+        padding: 26px 0 22px;
+      }
+
+      h1{
+        margin: 0 0 10px;
+        font-family: ui-serif, Georgia, "Times New Roman", Times, serif;
+        font-weight: 520;
+        letter-spacing: -.2px;
+        line-height: 1.08;
+        font-size: clamp(34px, 5vw, 54px);
+      }
+      .sub{
+        margin:0;
+        color: rgba(255,255,255,.78);
+        line-height: 1.65;
+        max-width: 70ch;
+        font-size: 15px;
+      }
+
+      .grid{
+        margin-top: 22px;
+        display:grid;
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+
+      .card{
+        border-radius: var(--radius);
+        background: rgba(255,255,255,.035);
+        border:1px solid rgba(255,255,255,.08);
+        box-shadow: var(--shadow);
+        padding: 18px;
+      }
+
+      .label{
+        display:block;
+        margin: 0 0 8px;
+        font-size: 13px;
+        color: rgba(255,255,255,.80);
+        font-weight: 650;
+        letter-spacing: .1px;
+      }
+
+      input, select, textarea{
+        width:100%;
+        border-radius: 14px;
+        border:1px solid rgba(255,255,255,.10);
+        background: rgba(255,255,255,.04);
+        color: rgba(255,255,255,.92);
+        padding: 12px 12px;
+        outline: none;
+        font-size: 14px;
+      }
+      textarea{ min-height: 92px; resize: vertical; }
+      input::placeholder, textarea::placeholder{ color: rgba(255,255,255,.45); }
+
+      .row2{
+        display:grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
+      .hint{
+        margin: 10px 0 0;
+        font-size: 12px;
+        color: rgba(255,255,255,.60);
+        line-height: 1.55;
+      }
+
+      .actions{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap: 12px;
+        margin-top: 14px;
+        flex-wrap: wrap;
+      }
+
+      .status{
+        font-size: 13px;
+        color: rgba(255,255,255,.72);
+      }
+      .status.ok{ color: rgba(255,255,255,.86); }
+      .status.err{ color: rgba(255,255,255,.86); }
+
+      .hidden{ display:none !important; }
+
+      /* Mobile */
+      @media (max-width: 700px){
+        .row2{ grid-template-columns: 1fr; }
+        .top-actions .btn{ padding: 11px 14px; }
+        .brand-logo{ height: 44px; } /* mobile logo size */
+      }
+    </style>
   </head>
+
   <body>
-    <div class="sticky-cta">
-      <a class="btn btn-small" href="./index.html">Back</a>
-    </div>
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="wrap topbar-inner">
+        <a class="brand" href="./index.html" aria-label="Back to MN8">
+          <img class="brand-logo" src="./logo.png?v=1" alt="MN8" />
+        </a>
+
+        <div class="top-actions">
+          <a class="btn" href="./index.html">Back</a>
+          <a class="btn btn-primary" href="./index.html#what">How it works</a>
+        </div>
+      </div>
+    </header>
 
     <main class="page">
-      <section class="section" style="border-top:none;">
-        <div class="container">
-          <h1 class="section-title">Begin qualification</h1>
-
-          <p class="lead-paragraph">
-            MN8 is a private system and access is limited. This step is not a sign-up it’s a qualification check
-            to ensure fit. If you qualify, you’ll receive next steps and private access instructions. If not,
-            you won’t be moved forward.
+      <div class="wrap">
+        <section class="hero">
+          <h1>Begin Qualification</h1>
+          <p class="sub">
+            MN8 is built for full schedules and real responsibility. This protects fit.
+            If approved, you receive next steps and private access.
           </p>
+        </section>
 
-          <div style="height:26px;"></div>
+        <section class="card" id="formCard">
+          <!-- IMPORTANT: paste your Apps Script Web App URL here -->
+          <form
+            id="qualifyForm"
+            method="POST"
+            action="PASTE_YOUR_WEB_APP_URL_HERE"
+            target="hiddenFrame"
+          >
+            <!-- Honeypot (spam trap): keep hidden -->
+            <input type="text" name="company" class="hidden" tabindex="-1" autocomplete="off" />
 
-          <!-- Placeholder form block (you can replace with Typeform/Tally/Google Form embed) -->
-          <div class="card">
-            <h2 class="card-title">Qualification form</h2>
-            <p class="card-text">
-              Embed your form here (Typeform/Tally/Google Form), or build a simple HTML form and route it to your email tool.
-            </p>
-          </div>
-        </div>
-      </section>
+            <!-- Context fields -->
+            <input type="hidden" name="pageUrl" id="pageUrl" />
+            <input type="hidden" name="userAgent" id="userAgent" />
+
+            <div class="grid">
+              <div class="row2">
+                <div>
+                  <label class="label" for="fullName">Full name</label>
+                  <input id="fullName" name="fullName" type="text" placeholder="Your name" required />
+                </div>
+                <div>
+                  <label class="label" for="email">Email</label>
+                  <input id="email" name="email" type="email" placeholder="you@email.com" required />
+                </div>
+              </div>
+
+              <div class="row2">
+                <div>
+                  <label class="label" for="scheduleLoad">Current schedule load</label>
+                  <select id="scheduleLoad" name="scheduleLoad" required>
+                    <option value="" selected disabled>Select one</option>
+                    <option>40–50 hrs/week</option>
+                    <option>50–60 hrs/week</option>
+                    <option>60+ hrs/week</option>
+                    <option>Shift / irregular schedule</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="label" for="mainFriction">What breaks weight control for you most?</label>
+                  <select id="mainFriction" name="mainFriction" required>
+                    <option value="" selected disabled>Select one</option>
+                    <option>No time</option>
+                    <option>Stress eating</option>
+                    <option>Inconsistency</option>
+                    <option>Travel / events</option>
+                    <option>Energy crashes</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row2">
+                <div>
+                  <label class="label" for="restarts">How many restarts in the last 12 months?</label>
+                  <select id="restarts" name="restarts" required>
+                    <option value="" selected disabled>Select one</option>
+                    <option>0–1</option>
+                    <option>2–3</option>
+                    <option>4–6</option>
+                    <option>7+</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="label" for="readyNow">If approved, ready to start immediately?</label>
+                  <select id="readyNow" name="readyNow" required>
+                    <option value="" selected disabled>Select one</option>
+                    <option>Yes</option>
+                    <option>No</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label class="label" for="outcome90">What outcome do you want in the next 90 days?</label>
+                <input id="outcome90" name="outcome90" type="text" placeholder="Example: -10lbs while keeping my schedule" required />
+              </div>
+
+              <div class="row2">
+                <div>
+                  <label class="label" for="commitDaily">Willing to follow a simple daily structure?</label>
+                  <select id="commitDaily" name="commitDaily" required>
+                    <option value="" selected disabled>Select one</option>
+                    <option>Yes</option>
+                    <option>No</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="label" for="notes">Anything we should know?</label>
+                  <input id="notes" name="notes" type="text" placeholder="Optional" />
+                </div>
+              </div>
+
+              <div class="actions">
+                <button class="btn btn-primary" type="submit" id="submitBtn">Submit Qualification</button>
+                <span class="status" id="status">You’ll receive next steps by email if approved.</span>
+              </div>
+
+              <p class="hint">
+                This is a fit check. No tracking obsession, no lifestyle takeover. MN8 is built to hold under real responsibility.
+              </p>
+            </div>
+          </form>
+
+          <!-- Hidden iframe to avoid CORS issues with Apps Script -->
+          <iframe name="hiddenFrame" id="hiddenFrame" class="hidden"></iframe>
+        </section>
+
+        <!-- Success state -->
+        <section class="card hidden" id="successCard">
+          <h2 style="margin:0 0 10px; font-family: ui-serif, Georgia, 'Times New Roman', Times, serif; font-weight:520; letter-spacing:-.15px;">
+            Application received.
+          </h2>
+          <p class="sub" style="margin:0 0 16px;">
+            If it’s a fit, you’ll receive next steps and private access by email.
+          </p>
+          <a class="btn btn-primary" href="./index.html">Back to MN8</a>
+        </section>
+      </div>
     </main>
+
+    <script>
+      (function(){
+        // Context fields
+        document.getElementById("pageUrl").value = window.location.href;
+        document.getElementById("userAgent").value = navigator.userAgent;
+
+        const form = document.getElementById("qualifyForm");
+        const status = document.getElementById("status");
+        const submitBtn = document.getElementById("submitBtn");
+        const formCard = document.getElementById("formCard");
+        const successCard = document.getElementById("successCard");
+
+        // Because we're submitting to an iframe, we can't reliably read response.
+        // So we show success immediately after submit.
+        form.addEventListener("submit", function(){
+          submitBtn.disabled = true;
+          submitBtn.style.opacity = "0.85";
+          status.textContent = "Submitting…";
+
+          // swap UI
+          setTimeout(() => {
+            formCard.classList.add("hidden");
+            successCard.classList.remove("hidden");
+          }, 450);
+        });
+      })();
+    </script>
   </body>
 </html>
-
