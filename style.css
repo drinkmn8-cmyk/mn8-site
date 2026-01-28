@@ -91,7 +91,7 @@ body::after{
 }
 
 .brand-logo{
-  height: 50px;          /* desktop size */
+  height: 100px;          /* desktop size */
   width: auto;
   display: block;
   opacity: .95;
