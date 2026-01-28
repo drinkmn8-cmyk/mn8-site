@@ -7,6 +7,29 @@
 
     <!-- IMPORTANT: bump v= number anytime you change CSS to break cache -->
     <link rel="stylesheet" href="./style.css?v=6" />
+
+    <!-- Fix native select dropdown (white-on-white) without changing your site style -->
+    <style>
+      /* Native selects are stubborn. Force readable dropdown UI. */
+      select.control {
+        color-scheme: dark;
+      }
+      select.control,
+      select.control option,
+      select.control optgroup {
+        background-color: #0f0f14 !important;
+        color: rgba(255,255,255,.92) !important;
+      }
+      select.control:focus {
+        outline: none;
+        box-shadow: 0 0 0 4px rgba(91,53,166,.20);
+        border-color: rgba(91,53,166,.55);
+      }
+      /* Placeholder option */
+      select.control option[disabled] {
+        color: rgba(255,255,255,.55) !important;
+      }
+    </style>
   </head>
 
   <body id="top">
@@ -34,26 +57,45 @@
           <div class="form-card">
             <h1 class="form-title">Qualification</h1>
 
-            <form id="qualifyForm">
+            <form id="qualifyForm" novalidate>
+              <!-- Optional client timestamp (Apps Script should still set the real timestamp) -->
+              <input type="hidden" id="clientTimestamp" name="clientTimestamp" value="" />
+
               <div class="form-grid">
                 <div class="field">
                   <label for="fullName">Full name</label>
-                  <input class="control" id="fullName" name="fullName" type="text" placeholder="Your name" required />
+                  <input
+                    class="control"
+                    id="fullName"
+                    name="fullName"
+                    type="text"
+                    placeholder="Your name"
+                    autocomplete="name"
+                    required
+                  />
                 </div>
 
                 <div class="field">
                   <label for="email">Email</label>
-                  <input class="control" id="email" name="email" type="email" placeholder="you@email.com" required />
+                  <input
+                    class="control"
+                    id="email"
+                    name="email"
+                    type="email"
+                    placeholder="you@email.com"
+                    autocomplete="email"
+                    required
+                  />
                 </div>
 
                 <div class="field" style="grid-column: 1 / -1;">
                   <label for="describe">Which best describes you?</label>
                   <select class="control" id="describe" name="describe" required>
                     <option value="" selected disabled>Select one</option>
-                    <option>High-responsibility professional</option>
-                    <option>Entrepreneur / operator</option>
-                    <option>Busy parent with a full schedule</option>
-                    <option>High performer rebuilding consistency</option>
+                    <option value="High-responsibility professional">High-responsibility professional</option>
+                    <option value="Entrepreneur / operator">Entrepreneur / operator</option>
+                    <option value="Busy parent with a full schedule">Busy parent with a full schedule</option>
+                    <option value="High performer rebuilding consistency">High performer rebuilding consistency</option>
                   </select>
                 </div>
 
@@ -61,10 +103,10 @@
                   <label for="breaks">What breaks consistency for you?</label>
                   <select class="control" id="breaks" name="breaks" required>
                     <option value="" selected disabled>Select one</option>
-                    <option>Schedule overload / no time margin</option>
-                    <option>Decision fatigue / mental load</option>
-                    <option>Travel / unpredictability</option>
-                    <option>Stress eating / low control at night</option>
+                    <option value="Schedule overload / no time margin">Schedule overload / no time margin</option>
+                    <option value="Decision fatigue / mental load">Decision fatigue / mental load</option>
+                    <option value="Travel / unpredictability">Travel / unpredictability</option>
+                    <option value="Stress eating / low control at night">Stress eating / low control at night</option>
                   </select>
                 </div>
 
@@ -72,10 +114,10 @@
                   <label for="restarts">How often have you restarted?</label>
                   <select class="control" id="restarts" name="restarts" required>
                     <option value="" selected disabled>Select one</option>
-                    <option>Rarely</option>
-                    <option>A few times a year</option>
-                    <option>Every 1–2 months</option>
-                    <option>Constant cycle</option>
+                    <option value="Rarely">Rarely</option>
+                    <option value="A few times a year">A few times a year</option>
+                    <option value="Every 1–2 months">Every 1–2 months</option>
+                    <option value="Constant cycle">Constant cycle</option>
                   </select>
                 </div>
 
@@ -95,9 +137,9 @@
                   <label for="ready">If accepted, ready to start immediately?</label>
                   <select class="control" id="ready" name="ready" required>
                     <option value="" selected disabled>Select one</option>
-                    <option>Yes</option>
-                    <option>Within 7 days</option>
-                    <option>Not yet</option>
+                    <option value="Yes">Yes</option>
+                    <option value="Within 7 days">Within 7 days</option>
+                    <option value="Not yet">Not yet</option>
                   </select>
                 </div>
 
@@ -105,9 +147,9 @@
                   <label for="structure">Can you follow a simple daily structure?</label>
                   <select class="control" id="structure" name="structure" required>
                     <option value="" selected disabled>Select one</option>
-                    <option>Yes</option>
-                    <option>Probably</option>
-                    <option>No</option>
+                    <option value="Yes">Yes</option>
+                    <option value="Probably">Probably</option>
+                    <option value="No">No</option>
                   </select>
                 </div>
 
@@ -118,8 +160,8 @@
               </div>
 
               <div class="form-actions">
-                <button class="btn btn-primary" type="submit">Submit Qualification</button>
-                <span class="form-note">You’ll receive next steps by email if approved.</span>
+                <button class="btn btn-primary" id="submitBtn" type="submit">Submit Qualification</button>
+                <span class="form-note" id="formNote">You’ll receive next steps by email if approved.</span>
               </div>
             </form>
           </div>
@@ -127,34 +169,76 @@
       </section>
     </main>
 
-<script>
-  const ENDPOINT_URL = "https://script.google.com/macros/s/AKfycbxqDOYqKpkiEnGacDxwfkPRnTxwPv6aqsMC613HsKtEflxR7R50u8hQkYC8vgP4AdEw/exec";
-  const form = document.getElementById("qualifyForm");
+    <script>
+      const ENDPOINT_URL =
+        "https://script.google.com/macros/s/AKfycbxqDOYqKpkiEnGacDxwfkPRnTxwPv6aqsMC613HsKtEflxR7R50u8hQkYC8vgP4AdEw/exec";
 
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
+      const form = document.getElementById("qualifyForm");
+      const submitBtn = document.getElementById("submitBtn");
+      const formNote = document.getElementById("formNote");
+      const clientTs = document.getElementById("clientTimestamp");
 
-    const payload = Object.fromEntries(new FormData(form).entries());
-    payload.userAgent = navigator.userAgent;
-    payload.pageUrl = location.href;
+      // optional client timestamp (Apps Script should still add the real timestamp)
+      clientTs.value = new Date().toISOString();
 
-    try {
-      const res = await fetch(ENDPOINT_URL, {
-        method: "POST",
-        headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: JSON.stringify(payload),
+      function setLoading(isLoading) {
+        submitBtn.disabled = isLoading;
+        submitBtn.textContent = isLoading ? "Submitting..." : "Submit Qualification";
+        formNote.textContent = isLoading
+          ? "Submitting securely…"
+          : "You’ll receive next steps by email if approved.";
+      }
+
+      function basicValidate() {
+        // Let browser do its thing first
+        if (!form.checkValidity()) {
+          form.reportValidity();
+          return false;
+        }
+        return true;
+      }
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        if (!basicValidate()) return;
+
+        const payload = Object.fromEntries(new FormData(form).entries());
+        payload.userAgent = navigator.userAgent;
+        payload.pageUrl = location.href;
+
+        try {
+          setLoading(true);
+
+          const res = await fetch(ENDPOINT_URL, {
+            method: "POST",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify(payload),
+          });
+
+          const raw = await res.text();
+
+          // Apps Script sometimes returns text, sometimes JSON. Handle both.
+          let out;
+          try {
+            out = JSON.parse(raw);
+          } catch {
+            out = { ok: true, raw };
+          }
+
+          if (!res.ok || out.ok === false) {
+            throw new Error(out.error || "Submission failed");
+          }
+
+          alert("Submitted. You'll receive next steps by email if approved.");
+          form.reset();
+          clientTs.value = new Date().toISOString();
+        } catch (err) {
+          console.error(err);
+          alert("Submission failed. Please try again.");
+        } finally {
+          setLoading(false);
+        }
       });
-
-      const out = await res.json();
-      if (!out.ok) throw new Error(out.error || "Submission failed");
-
-      alert("Submitted. You'll receive next steps by email if approved.");
-      form.reset();
-    } catch (err) {
-      console.error(err);
-      alert("Submission failed. Try again.");
-    }
-  });
-</script>
+    </script>
   </body>
 </html>
