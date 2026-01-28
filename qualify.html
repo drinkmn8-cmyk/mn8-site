@@ -169,76 +169,61 @@
       </section>
     </main>
 
-    <script>
-      const ENDPOINT_URL =
-        "https://script.google.com/macros/s/AKfycbxvx5nXjAFnqcypngH4UUHX-2rOluFE4fK1KhnzLbFjZjfNB5Sgzi9Vz7ad_A1V5vbk/exec";
+<script>
+  const ENDPOINT_URL =
+    "https://script.google.com/macros/s/AKfycbxqDOYqKpkiEnGacDxwfkPRnTxwPv6aqsMC613HsKtEflxR7R50u8hQkYC8vgP4AdEw/exec";
 
-      const form = document.getElementById("qualifyForm");
-      const submitBtn = document.getElementById("submitBtn");
-      const formNote = document.getElementById("formNote");
-      const clientTs = document.getElementById("clientTimestamp");
+  const form = document.getElementById("qualifyForm");
+  const submitBtn = document.getElementById("submitBtn");
+  const formNote = document.getElementById("formNote");
+  const clientTs = document.getElementById("clientTimestamp");
 
-      // optional client timestamp (Apps Script should still add the real timestamp)
-      clientTs.value = new Date().toISOString();
+  clientTs.value = new Date().toISOString();
 
-      function setLoading(isLoading) {
-        submitBtn.disabled = isLoading;
-        submitBtn.textContent = isLoading ? "Submitting..." : "Submit Qualification";
-        formNote.textContent = isLoading
-          ? "Submitting securely…"
-          : "You’ll receive next steps by email if approved.";
-      }
+  function setLoading(isLoading) {
+    submitBtn.disabled = isLoading;
+    submitBtn.textContent = isLoading ? "Submitting..." : "Submit Qualification";
+    formNote.textContent = isLoading
+      ? "Submitting securely…"
+      : "You’ll receive next steps by email if approved.";
+  }
 
-      function basicValidate() {
-        // Let browser do its thing first
-        if (!form.checkValidity()) {
-          form.reportValidity();
-          return false;
-        }
-        return true;
-      }
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        if (!basicValidate()) return;
+    // browser validation
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
 
-        const payload = Object.fromEntries(new FormData(form).entries());
-        payload.userAgent = navigator.userAgent;
-        payload.pageUrl = location.href;
+    const payload = Object.fromEntries(new FormData(form).entries());
+    payload.userAgent = navigator.userAgent;
+    payload.pageUrl = location.href;
+    payload.clientTimestamp = new Date().toISOString();
 
-        try {
-          setLoading(true);
+    try {
+      setLoading(true);
 
-          const res = await fetch(ENDPOINT_URL, {
-            method: "POST",
-            headers: { "Content-Type": "text/plain;charset=utf-8" },
-            body: JSON.stringify(payload),
-          });
-
-          const raw = await res.text();
-
-          // Apps Script sometimes returns text, sometimes JSON. Handle both.
-          let out;
-          try {
-            out = JSON.parse(raw);
-          } catch {
-            out = { ok: true, raw };
-          }
-
-          if (!res.ok || out.ok === false) {
-            throw new Error(out.error || "Submission failed");
-          }
-
-          alert("Submitted. You'll receive next steps by email if approved.");
-          form.reset();
-          clientTs.value = new Date().toISOString();
-        } catch (err) {
-          console.error(err);
-          alert("Submission failed. Please try again.");
-        } finally {
-          setLoading(false);
-        }
+      // KEY CHANGE: no-cors, don't try to read response (CORS will block it)
+      await fetch(ENDPOINT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload),
       });
-    </script>
+
+      // If the request was sent, we treat as success.
+      alert("Submitted. You’ll receive next steps by email if approved.");
+      form.reset();
+      clientTs.value = new Date().toISOString();
+    } catch (err) {
+      console.error(err);
+      alert("Submission failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  });
+</script>
   </body>
 </html>
