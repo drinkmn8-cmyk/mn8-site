@@ -573,4 +573,13 @@ select.control option{
 @media (max-width: 920px){
   .form-grid{ grid-template-columns: 1fr; }
 }
+/* FORCE LOGO SIZE — FINAL OVERRIDE */
+header.topbar .brand .brand-logo{
+  height: 72px !important;
+  width: auto !important;
+  max-height: none !important;
+  max-width: none !important;
+  display: block !important;
+}
+
 
