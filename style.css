@@ -478,30 +478,3 @@ body::after{
 .topbar-inner{
   min-height: 64px;
 }
-/* ===== Fix white-on-white native select dropdown ===== */
-
-/* Select field itself */
-select{
-  background-color:#0f0f14 !important;
-  color:#ffffff !important;
-  border:1px solid rgba(255,255,255,.12) !important;
-}
-
-/* Dropdown options */
-select option{
-  background-color:#0f0f14 !important;   /* dark background */
-  color:#ffffff !important;              /* white text */
-}
-
-/* Hover / selected state */
-select option:checked,
-select option:hover{
-  background-color: rgba(91,53,166,.35) !important;  /* MN8 purple tint */
-  color:#ffffff !important;
-}
-
-/* Firefox fix */
-select:-moz-focusring{
-  color: transparent;
-  text-shadow: 0 0 0 #ffffff;
-}
