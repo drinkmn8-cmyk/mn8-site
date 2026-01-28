@@ -67,14 +67,12 @@ body::after{
 /* =========================
    TOPBAR
    ========================= */
-.topbar{
-  position:sticky;
-  top:0;
-  z-index:50;
-  background: rgba(7,7,10,.72);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-bottom:1px solid rgba(255,255,255,.08);
+.topbar,
+.topbar-inner,
+.brand{
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
 }
 
 .topbar-inner{
@@ -91,10 +89,12 @@ body::after{
 }
 
 .brand-logo{
-  height: 100px;          /* desktop size */
-  width: auto;
-  display: block;
-  opacity: .95;
+  height: 56px !important;   /* CHANGE THIS */
+  width: auto !important;
+  max-height: none !important;
+  max-width: none !important;
+  display: block !important;
+  object-fit: contain !important;
 }
 
 .nav{
