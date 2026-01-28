@@ -5,50 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>MN8 — Qualification</title>
 
-  <!-- Main site styles -->
-  <link rel="stylesheet" href="./style.css?v=2"/>
+  <!-- keep your existing styles -->
+  <link rel="stylesheet" href="./style.css?v=3" />
 
-  <!-- HARD FIX for native select dropdown rendering -->
+  <!-- ONLY fix: dropdown (white-on-white) -->
   <style>
-    /* Fix white-on-white dropdown issue */
-    select{
-      background-color:#0f0f14 !important;
-      color:#ffffff !important;
-      border:1px solid rgba(255,255,255,.12) !important;
-      appearance:none;
-      -webkit-appearance:none;
-      -moz-appearance:none;
-    }
-
-    select option{
-      background-color:#0f0f14 !important;
-      color:#ffffff !important;
-    }
-
-    select option:checked,
-    select option:hover{
-      background-color: rgba(91,53,166,.35) !important;
-      color:#ffffff !important;
-    }
-
-    /* Firefox */
-    select:-moz-focusring{
-      color: transparent;
-      text-shadow: 0 0 0 #ffffff;
-    }
+    /* Dropdown list colors (browser-native) */
+    select { color-scheme: dark; }
+    select option { background:#0f0f14; color:#fff; }
   </style>
 </head>
 
 <body id="top">
 
-  <!-- TOPBAR -->
+  <!-- TOPBAR (exact vibe from your screenshot) -->
   <header class="topbar">
     <div class="wrap topbar-inner">
       <a class="brand" href="./index.html" aria-label="MN8 Home">
-        <img class="brand-logo" src="./logo.png" alt="MN8"/>
+        <img class="brand-logo" src="./logo.png" alt="MN8" />
       </a>
 
-      <nav class="nav">
+      <nav class="nav" aria-label="Primary">
         <a href="./index.html#what">What it is</a>
         <a href="./index.html#process">Process</a>
         <a href="./index.html#proof">Why it works</a>
@@ -57,119 +34,125 @@
     </div>
   </header>
 
-  <!-- PAGE -->
   <main class="section">
     <div class="wrap">
 
-      <div class="card">
+      <!-- CARD (same look/spacing) -->
+      <section class="card">
 
-        <h2 class="h2">Qualification</h2>
-        <p class="lead muted">
-          Private fit check. Simple. Direct. Built for full schedules.
-        </p>
+        <!-- TITLE ONLY (per your request) -->
+        <h2 class="h2" style="margin-bottom:18px;">Qualification</h2>
 
-        <form method="POST" action="#" class="grid-2" style="margin-top:28px;">
+        <!-- FORM (field order + layout matches screenshot) -->
+        <form class="steps" action="#" method="POST" autocomplete="on">
 
-          <!-- Name -->
-          <div>
-            <label class="muted">Full name</label>
-            <input type="text" placeholder="Your name" required />
-          </div>
-
-          <!-- Email -->
-          <div>
-            <label class="muted">Email</label>
-            <input type="email" placeholder="you@email.com" required />
-          </div>
-
-          <!-- Identity -->
-          <div class="grid-2" style="grid-column:1/-1;">
+          <!-- Row 1: Full name + Email -->
+          <div class="grid-2">
             <div>
-              <label class="muted">Which best describes you?</label>
-              <select required>
-                <option value="">Select one</option>
-                <option>High-responsibility professional</option>
-                <option>Business owner / entrepreneur</option>
-                <option>Parent with dense schedule</option>
-                <option>Leader / executive role</option>
-                <option>Other</option>
-              </select>
+              <label class="muted" for="fullName">Full name</label>
+              <input id="fullName" name="fullName" type="text" placeholder="Your name" required />
             </div>
 
             <div>
-              <label class="muted">What breaks consistency for you?</label>
-              <select required>
-                <option value="">Select one</option>
-                <option>Schedule overload</option>
-                <option>Decision fatigue</option>
-                <option>Lack of structure</option>
-                <option>Burnout cycles</option>
-                <option>Inconsistency</option>
-              </select>
+              <label class="muted" for="email">Email</label>
+              <input id="email" name="email" type="email" placeholder="you@email.com" required />
             </div>
           </div>
 
-          <!-- Restarts -->
-          <div style="grid-column:1/-1;">
-            <label class="muted">How often have you restarted?</label>
-            <select required>
+          <!-- Which best describes you? -->
+          <div>
+            <label class="muted" for="describe">Which best describes you?</label>
+            <select id="describe" name="describe" required>
+              <option value="">Select one</option>
+              <option>High-responsibility professional</option>
+              <option>Entrepreneur / business owner</option>
+              <option>Parent with a dense schedule</option>
+              <option>Leadership / executive role</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <!-- What breaks consistency -->
+          <div>
+            <label class="muted" for="breaks">What breaks consistency for you?</label>
+            <select id="breaks" name="breaks" required>
+              <option value="">Select one</option>
+              <option>Schedule overload</option>
+              <option>Decision fatigue</option>
+              <option>Travel / irregular days</option>
+              <option>Stress / burnout</option>
+              <option>All-or-nothing mindset</option>
+            </select>
+          </div>
+
+          <!-- How often restarted -->
+          <div>
+            <label class="muted" for="restarts">How often have you restarted?</label>
+            <select id="restarts" name="restarts" required>
               <option value="">Select one</option>
               <option>Rarely</option>
-              <option>Occasionally</option>
-              <option>Frequently</option>
+              <option>Sometimes</option>
+              <option>Often</option>
               <option>Constant cycle</option>
             </select>
           </div>
 
-          <!-- Outcome -->
-          <div style="grid-column:1/-1;">
-            <label class="muted">What result would make this a win in 90 days?</label>
-            <input type="text" placeholder="Example: -10lbs while keeping my schedule" />
-          </div>
-
-          <!-- Commitment -->
+          <!-- 90 days outcome -->
           <div>
-            <label class="muted">If accepted, ready to start immediately?</label>
-            <select required>
-              <option value="">Select one</option>
-              <option>Yes</option>
-              <option>No</option>
-              <option>Within 30 days</option>
-            </select>
+            <label class="muted" for="win90">What result would make this a win in 90 days?</label>
+            <input
+              id="win90"
+              name="win90"
+              type="text"
+              placeholder="Example: -10 lbs while keeping my schedule"
+            />
           </div>
 
+          <!-- Row: start immediately + daily structure -->
+          <div class="grid-2">
+            <div>
+              <label class="muted" for="startNow">If accepted, ready to start immediately?</label>
+              <select id="startNow" name="startNow" required>
+                <option value="">Select one</option>
+                <option>Yes</option>
+                <option>No</option>
+                <option>Within 30 days</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="muted" for="dailyStructure">Can you follow a simple daily structure?</label>
+              <select id="dailyStructure" name="dailyStructure" required>
+                <option value="">Select one</option>
+                <option>Yes</option>
+                <option>No</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Why MN8 -->
           <div>
-            <label class="muted">Can you follow a simple daily structure?</label>
-            <select required>
-              <option value="">Select one</option>
-              <option>Yes</option>
-              <option>No</option>
-            </select>
-          </div>
-
-          <!-- Alignment -->
-          <div style="grid-column:1/-1;">
-            <label class="muted">Why MN8?</label>
-            <textarea placeholder="One sentence is enough." rows="3"></textarea>
+            <label class="muted" for="why">Why MN8 specifically?</label>
+            <textarea
+              id="why"
+              name="why"
+              rows="3"
+              placeholder="One sentence is enough."
+            ></textarea>
           </div>
 
           <!-- Submit -->
-          <div style="grid-column:1/-1; display:flex; justify-content:flex-start; margin-top:18px;">
-            <button type="submit" class="btn btn-primary">
-              Submit Qualification
-            </button>
+          <div style="margin-top:10px;">
+            <button class="btn btn-primary" type="submit">Submit Qualification</button>
           </div>
 
         </form>
-
-        <p class="muted" style="margin-top:18px; font-size:13px;">
-          This is a fit check. If aligned, you’ll receive next steps by email.
-        </p>
-
-      </div>
+      </section>
 
     </div>
   </main>
 
+  <script src="./script.js?v=3" defer></script>
 </body>
 </html>
+
