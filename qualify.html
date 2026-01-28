@@ -127,13 +127,34 @@
       </section>
     </main>
 
-    <script>
-      // Front-end only (no backend). Replace later with your storage option.
-      document.getElementById("qualifyForm").addEventListener("submit", (e) => {
-        e.preventDefault();
-        alert("Submitted. You'll receive next steps by email if approved.");
-        e.target.reset();
+<script>
+  const ENDPOINT_URL = "https://script.google.com/macros/s/AKfycbxqDOYqKpkiEnGacDxwfkPRnTxwPv6aqsMC613HsKtEflxR7R50u8hQkYC8vgP4AdEw/exec";
+  const form = document.getElementById("qualifyForm");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const payload = Object.fromEntries(new FormData(form).entries());
+    payload.userAgent = navigator.userAgent;
+    payload.pageUrl = location.href;
+
+    try {
+      const res = await fetch(ENDPOINT_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload),
       });
-    </script>
+
+      const out = await res.json();
+      if (!out.ok) throw new Error(out.error || "Submission failed");
+
+      alert("Submitted. You'll receive next steps by email if approved.");
+      form.reset();
+    } catch (err) {
+      console.error(err);
+      alert("Submission failed. Try again.");
+    }
+  });
+</script>
   </body>
 </html>
