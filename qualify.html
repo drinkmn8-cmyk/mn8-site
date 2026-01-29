@@ -171,27 +171,35 @@
 
 <script>
   const ENDPOINT_URL =
-  "https://script.google.com/macros/s/AKfycby507iyY9bLh22nI8p4jlMFi142Oy8H28VAsmuQqL7uX_NisrZs7nrCshU7bpXp9xEB/exec";
-  
+    "https://script.google.com/macros/s/AKfycby507iyY9bLh22nI8p4jlMFi142Oy8H28VAsmuQqL7uX_NisrZs7nrCshU7bpXp9xEB/exec";
+
   const form = document.getElementById("qualifyForm");
   const submitBtn = document.getElementById("submitBtn");
   const formNote = document.getElementById("formNote");
   const clientTs = document.getElementById("clientTimestamp");
 
-  clientTs.value = new Date().toISOString();
+  if (clientTs) clientTs.value = new Date().toISOString();
 
   function setLoading(isLoading) {
+    if (!submitBtn) return;
     submitBtn.disabled = isLoading;
     submitBtn.textContent = isLoading ? "Submitting..." : "Submit Qualification";
-    formNote.textContent = isLoading
-      ? "Submitting securely…"
-      : "You’ll receive next steps by email if approved.";
+    if (formNote) {
+      formNote.textContent = isLoading
+        ? "Submitting securely…"
+        : "You’ll receive next steps by email if approved.";
+    }
+  }
+
+  function timeout(ms) {
+    const controller = new AbortController();
+    const id = setTimeout(() => controller.abort(), ms);
+    return { controller, id };
   }
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    // browser validation
     if (!form.checkValidity()) {
       form.reportValidity();
       return;
@@ -202,25 +210,29 @@
     payload.pageUrl = location.href;
     payload.clientTimestamp = new Date().toISOString();
 
+    const { controller, id } = timeout(12000);
+
     try {
       setLoading(true);
 
-      // KEY CHANGE: no-cors, don't try to read response (CORS will block it)
+      // Important: no-cors + no custom headers for max compatibility
       await fetch(ENDPOINT_URL, {
         method: "POST",
         mode: "no-cors",
-        headers: { "Content-Type": "text/plain;charset=utf-8" },
         body: JSON.stringify(payload),
+        signal: controller.signal,
       });
 
-      // If the request was sent, we treat as success.
+      // With no-cors, you cannot read the response.
+      // So “success” only means “request sent”.
       alert("Submitted. You’ll receive next steps by email if approved.");
       form.reset();
-      clientTs.value = new Date().toISOString();
+      if (clientTs) clientTs.value = new Date().toISOString();
     } catch (err) {
       console.error(err);
       alert("Submission failed. Please try again.");
     } finally {
+      clearTimeout(id);
       setLoading(false);
     }
   });
