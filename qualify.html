@@ -170,69 +170,46 @@
     </main>
 
 <script>
-  const ENDPOINT_URL =
-    "https://script.google.com/macros/s/AKfycby507iyY9bLh22nI8p4jlMFi142Oy8H28VAsmuQqL7uX_NisrZs7nrCshU7bpXp9xEB/exec";
+  // 1) Change these two values
+  const SUPABASE_URL = "https://YOUR_PROJECT_REF.supabase.co";
+  const SUBMIT_ENDPOINT = `${SUPABASE_URL}/functions/v1/submit-qualification`;
 
   const form = document.getElementById("qualifyForm");
   const submitBtn = document.getElementById("submitBtn");
   const formNote = document.getElementById("formNote");
-  const clientTs = document.getElementById("clientTimestamp");
-
-  if (clientTs) clientTs.value = new Date().toISOString();
 
   function setLoading(isLoading) {
-    if (!submitBtn) return;
     submitBtn.disabled = isLoading;
     submitBtn.textContent = isLoading ? "Submitting..." : "Submit Qualification";
-    if (formNote) {
-      formNote.textContent = isLoading
-        ? "Submitting securely…"
-        : "You’ll receive next steps by email if approved.";
-    }
-  }
-
-  function timeout(ms) {
-    const controller = new AbortController();
-    const id = setTimeout(() => controller.abort(), ms);
-    return { controller, id };
+    formNote.textContent = isLoading ? "Submitting…" : "You’ll receive next steps immediately.";
   }
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-
-    if (!form.checkValidity()) {
-      form.reportValidity();
-      return;
-    }
+    if (!form.checkValidity()) { form.reportValidity(); return; }
 
     const payload = Object.fromEntries(new FormData(form).entries());
     payload.userAgent = navigator.userAgent;
     payload.pageUrl = location.href;
     payload.clientTimestamp = new Date().toISOString();
 
-    const { controller, id } = timeout(12000);
-
     try {
       setLoading(true);
 
-      // Important: no-cors + no custom headers for max compatibility
-      await fetch(ENDPOINT_URL, {
+      const res = await fetch(SUBMIT_ENDPOINT, {
         method: "POST",
-        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
-        signal: controller.signal,
       });
 
-      // With no-cors, you cannot read the response.
-      // So “success” only means “request sent”.
-      alert("Submitted. You’ll receive next steps by email if approved.");
-      form.reset();
-      if (clientTs) clientTs.value = new Date().toISOString();
+      const out = await res.json();
+      if (!res.ok || !out.ok) throw new Error(out.error || "Submission failed");
+
+      // redirect immediately
+      window.location.href = out.redirectUrl;
     } catch (err) {
       console.error(err);
       alert("Submission failed. Please try again.");
-    } finally {
-      clearTimeout(id);
       setLoading(false);
     }
   });
