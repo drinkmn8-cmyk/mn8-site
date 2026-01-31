@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Accepted — MN8</title>
+  <link rel="stylesheet" href="./style.css?v=2" />
+</head>
+<body id="top">
+  <main class="section">
+    <div class="wrap">
+      <div class="form-card">
+        <h1 class="form-title">Accepted</h1>
+        <p class="p">You’re in. Redirecting to private access…</p>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const params = new URLSearchParams(location.search);
+    const t = params.get("t");
+    if (!t) location.href = "./not-accepted.html";
+    // Pass token through to private page
+    location.href = `./private.html?t=${encodeURIComponent(t)}`;
+  </script>
+</body>
+</html>
