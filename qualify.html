@@ -170,61 +170,56 @@
     </main>
 
 <script>
-  // 1) Change these two values
-  const SUPABASE_URL = "https://YOUR_PROJECT_REF.supabase.co";
-  const SUBMIT_ENDPOINT = `${SUPABASE_URL}/functions/v1/submit-qualification`;
+const ENDPOINT_URL = "https://script.google.com/macros/s/AKfycbx46HIAfpG09xLlB30CkGQlujLvjt3AxwsSsJlsyPb7M8jFNZQJoN-Es-G0vV35BkAe/exec";
 
-  const form = document.getElementById("qualifyForm");
-  const submitBtn = document.getElementById("submitBtn");
-  const formNote = document.getElementById("formNote");
+const form = document.getElementById("qualifyForm");
+const submitBtn = document.getElementById("submitBtn");
+const formNote = document.getElementById("formNote");
+const clientTs = document.getElementById("clientTimestamp");
 
-  function setLoading(isLoading) {
-    submitBtn.disabled = isLoading;
-    submitBtn.textContent = isLoading ? "Submitting..." : "Submit Qualification";
-    formNote.textContent = isLoading ? "Submitting…" : "You’ll receive next steps immediately.";
+clientTs.value = new Date().toISOString();
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  if (!form.checkValidity()) {
+    form.reportValidity();
+    return;
   }
 
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    if (!form.checkValidity()) { form.reportValidity(); return; }
+  const payload = Object.fromEntries(new FormData(form).entries());
+  payload.userAgent = navigator.userAgent;
+  payload.pageUrl = location.href;
+  payload.clientTimestamp = new Date().toISOString();
 
-    const payload = Object.fromEntries(new FormData(form).entries());
-    payload.userAgent = navigator.userAgent;
-    payload.pageUrl = location.href;
-    payload.clientTimestamp = new Date().toISOString();
+  try {
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Submitting…";
 
-    try {
-      setLoading(true);
+    const res = await fetch(ENDPOINT_URL, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(payload),
+    });
 
-      const res = await fetch(SUBMIT_ENDPOINT, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
+    const out = await res.json();
 
-      const out = await res.json();
-      if (!res.ok || !out.ok) throw new Error(out.error || "Submission failed");
+    if (!out.ok) throw new Error(out.error || "Submission failed");
 
-      // redirect immediately
-      window.location.href = out.redirectUrl;
-    } catch (err) {
-      console.error(err);
-      alert("Submission failed. Please try again.");
-      setLoading(false);
-    }
-  });
+    console.log("Supabase applicant ID:", out.supabase_id);
 
-const res = await fetch(ENDPOINT_URL, {
-  method: "POST",
-  headers: { "Content-Type": "text/plain;charset=utf-8" },
-  body: JSON.stringify(payload),
+    alert("Submitted. You’ll receive next steps by email if approved.");
+    form.reset();
+    clientTs.value = new Date().toISOString();
+
+  } catch (err) {
+    console.error(err);
+    alert("Submission failed. Please try again.");
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Submit Qualification";
+  }
 });
-
-const out = await res.json();
-if (!out.ok) throw new Error(out.error || "Submission failed");
-
-// optional: log the supabase id
-console.log("Supabase applicant id:", out.supabase_id);
 </script>
   </body>
 </html>
