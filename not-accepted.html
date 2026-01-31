@@ -1,22 +1,100 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Not Approved — MN8</title>
-  <link rel="stylesheet" href="./style.css?v=2" />
-</head>
-<body id="top">
-  <main class="section">
-    <div class="wrap">
-      <div class="form-card">
-        <h1 class="form-title">Not approved</h1>
-        <p class="p">MN8 isn’t a fit right now. If your schedule changes, you can reapply.</p>
-        <div style="margin-top:16px">
-          <a class="btn btn-ghost btn-sm" href="./index.html#top">Back to MN8</a>
-        </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MN8 — Not a Fit</title>
+
+    <!-- IMPORTANT: bump v= number anytime you change CSS to break cache -->
+    <link rel="stylesheet" href="./style.css?v=6" />
+
+    <meta name="robots" content="noindex, nofollow" />
+  </head>
+
+  <body id="top">
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="wrap topbar-inner">
+        <a class="brand" href="./index.html#top" aria-label="MN8 Home">
+          <img class="brand-logo" src="./logo.svg" alt="MN8" />
+        </a>
+
+        <a class="btn btn-ghost btn-sm" href="./index.html#top">Back</a>
       </div>
-    </div>
-  </main>
-</body>
+    </header>
+
+    <main>
+      <section class="section">
+        <div class="wrap">
+          <div class="form-card">
+            <h1 class="form-title">Not a fit right now</h1>
+
+            <p class="lead" style="margin-top: 10px;">
+              MN8 is private on purpose.
+              <span class="muted">We only accept applicants who match the system.</span>
+            </p>
+
+            <div class="callout" style="margin-top: 18px;">
+              <div class="callout-line"></div>
+              <p class="callout-text" id="reasonText">
+                Decision recorded.
+              </p>
+            </div>
+
+            <div class="grid-2" style="margin-top: 18px;">
+              <article class="card">
+                <h3 class="h3">What to do next</h3>
+                <ul class="list">
+                  <li>Come back when you’re ready to start immediately.</li>
+                  <li>Come back when you can follow a simple daily structure.</li>
+                  <li>Come back with a specific 90-day target.</li>
+                </ul>
+                <div class="card-note">This isn’t rejection. It’s protection.</div>
+              </article>
+
+              <article class="card">
+                <h3 class="h3">If you want in later</h3>
+                <p class="p">
+                  Re-apply when your schedule and readiness match the system.
+                  MN8 works best when execution can start today — not “soon.”
+                </p>
+                <div class="card-note">We care about outcomes, not optimism.</div>
+              </article>
+            </div>
+
+            <div class="form-actions" style="margin-top: 18px;">
+              <a class="btn btn-primary" href="./index.html#process">See the process</a>
+              <a class="btn btn-ghost" href="./qualify.html">Re-apply</a>
+            </div>
+
+            <p class="muted" style="margin-top: 14px; font-size: 12px;">
+              If you believe this was a mistake, re-apply with a clearer response.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const reason = params.get("reason") || "";
+      const reasonText = document.getElementById("reasonText");
+
+      // Map system reasons into clean user-facing language
+      const reasonMap = {
+        "Invalid email": "We couldn’t verify a valid email.",
+        "Not ready to start immediately": "MN8 is for people starting immediately.",
+        "Cannot follow daily structure": "MN8 requires a simple daily structure.",
+        "Too inconsistent right now": "MN8 requires baseline consistency.",
+        "Low intent response": "Your response didn’t show enough intent or clarity.",
+        "Not the target profile": "MN8 is designed for a specific profile.",
+        "Goal not specific enough": "Your 90-day goal wasn’t specific enough."
+      };
+
+      if (reason) {
+        const decoded = decodeURIComponent(reason);
+        reasonText.textContent = reasonMap[decoded] || decoded;
+      }
+    </script>
+  </body>
 </html>
