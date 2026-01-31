@@ -4,34 +4,42 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Private — MN8</title>
-  <link rel="stylesheet" href="./style.css?v=2" />
+
+  <!-- IMPORTANT: bump v= number anytime you change CSS to break cache -->
+  <link rel="stylesheet" href="./style.css?v=6" />
+
   <style>
-    /* hide content until verified */
-    .locked { display:none; }
-    .deny { display:none; }
-    .deny.is-on { display:block; }
-    .locked.is-on { display:block; }
+    /* default locked */
+    #content { display: none; }
+    #deny { display: none; }
+
+    /* states */
+    #content.is-on { display: block; }
+    #deny.is-on { display: block; }
   </style>
 </head>
+
 <body id="top">
   <main class="section">
     <div class="wrap">
 
-      <div class="form-card deny" id="deny">
+      <!-- DENIED -->
+      <div class="form-card" id="deny">
         <h1 class="form-title">Access denied</h1>
-        <p class="p">This link is invalid, expired, or already used.</p>
+        <p class="p" id="denyMsg">This link is invalid, expired, or already used.</p>
+
         <div style="margin-top:16px">
           <a class="btn btn-ghost btn-sm" href="./index.html#top">Back</a>
         </div>
       </div>
 
-      <div class="locked" id="content">
+      <!-- PRIVATE CONTENT -->
+      <div id="content">
         <div class="section-head">
           <h2 class="h2">Private Access</h2>
           <p class="lead">Welcome to MN8.</p>
         </div>
 
-        <!-- Replace this with your video + private content -->
         <div class="card">
           <h3 class="h3">Start here</h3>
           <p class="p">Embed your private video here and your next steps.</p>
@@ -41,36 +49,74 @@
     </div>
   </main>
 
-<script>
-  const VERIFY_ENDPOINT = "YOUR_NEW_APPS_SCRIPT_EXEC_URL"; // same exec URL
-  const params = new URLSearchParams(window.location.search);
-  const token = params.get("token") || "";
+  <script>
+    // Use the SAME Apps Script "exec" URL (the web app URL)
+    const VERIFY_ENDPOINT =
+      "https://script.google.com/macros/s/AKfycbx46HIAfpG09xLlB30CkGQlujLvjt3AxwsSsJlsyPb7M8jFNZQJoN-Es-G0vV35BkAe/exec"; // <-- paste your exec URL here
 
-  async function verify() {
-    if (!token) {
-      window.location.href = "./not-accepted.html?reason=" + encodeURIComponent("Missing access token");
-      return;
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get("token") || "";
+
+    const denyEl = document.getElementById("deny");
+    const denyMsg = document.getElementById("denyMsg");
+    const contentEl = document.getElementById("content");
+
+    function deny(reason) {
+      // Keep it clean for users, but still informative
+      const map = {
+        missing_token: "Missing access token. Please use your original link.",
+        invalid: "This link is invalid.",
+        expired: "This link expired. Please re-apply.",
+        used: "This link was already used.",
+        revoked: "This link is no longer active.",
+        verification_error: "Verification failed. Please try again."
+      };
+
+      denyMsg.textContent = map[reason] || "This link is invalid, expired, or already used.";
+      denyEl.classList.add("is-on");
+      contentEl.classList.remove("is-on");
     }
 
-    const res = await fetch(`${VERIFY_ENDPOINT}?token=${encodeURIComponent(token)}`);
-    const out = await res.json();
-
-    if (!out.ok || out.status !== "active") {
-      // expired / invalid / used / revoked
-      window.location.href =
-        "./not-accepted.html?reason=" + encodeURIComponent(out.status || "invalid");
-      return;
+    function allow() {
+      contentEl.classList.add("is-on");
+      denyEl.classList.remove("is-on");
     }
 
-    // ✅ Valid token: reveal the private content
-    document.documentElement.classList.add("access-ok");
-    document.getElementById("lockedBlock").hidden = true;
-    document.getElementById("privateBlock").hidden = false;
-  }
+    async function verifyToken() {
+      if (!token) {
+        deny("missing_token");
+        return;
+      }
 
-  verify().catch(() => {
-    window.location.href = "./not-accepted.html?reason=" + encodeURIComponent("verification_error");
-  });
-</script>
+      // Cache-bust so browsers don’t re-use an old response
+      const url = `${VERIFY_ENDPOINT}?token=${encodeURIComponent(token)}&t=${Date.now()}`;
+
+      let out;
+      try {
+        const res = await fetch(url, { method: "GET" });
+        out = await res.json();
+      } catch (e) {
+        deny("verification_error");
+        return;
+      }
+
+      // Expected shape:
+      // { ok: true, status: "active" } or { ok:false, status:"expired" }
+      if (!out || out.ok !== true) {
+        deny(out?.status || "invalid");
+        return;
+      }
+
+      if (out.status !== "active") {
+        deny(out.status || "invalid");
+        return;
+      }
+
+      // ✅ verified
+      allow();
+    }
+
+    verifyToken();
+  </script>
 </body>
 </html>
