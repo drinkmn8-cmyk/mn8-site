@@ -41,39 +41,36 @@
     </div>
   </main>
 
-  <script>
-    const SUPABASE_URL = "https://script.google.com/macros/s/AKfycbx46HIAfpG09xLlB30CkGQlujLvjt3AxwsSsJlsyPb7M8jFNZQJoN-Es-G0vV35BkAe/exec";
-    const CONSUME_ENDPOINT = `${SUPABASE_URL}/functions/v1/consume-token`;
+<script>
+  const VERIFY_ENDPOINT = "YOUR_NEW_APPS_SCRIPT_EXEC_URL"; // same exec URL
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get("token") || "";
 
-    const deny = document.getElementById("deny");
-    const content = document.getElementById("content");
-
-    async function run() {
-      const params = new URLSearchParams(location.search);
-      const token = params.get("t");
-      if (!token) { deny.classList.add("is-on"); return; }
-
-      try {
-        const res = await fetch(CONSUME_ENDPOINT, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ token }),
-        });
-
-        const out = await res.json();
-        if (!res.ok || !out.ok) throw new Error(out.error || "Denied");
-
-        // Access granted
-        content.classList.add("is-on");
-
-        // Optional: remove token from URL so it can't be copy/pasted after access
-        history.replaceState({}, "", "./private.html");
-      } catch (e) {
-        deny.classList.add("is-on");
-      }
+  async function verify() {
+    if (!token) {
+      window.location.href = "./not-accepted.html?reason=" + encodeURIComponent("Missing access token");
+      return;
     }
 
-    run();
-  </script>
+    const res = await fetch(`${VERIFY_ENDPOINT}?token=${encodeURIComponent(token)}`);
+    const out = await res.json();
+
+    if (!out.ok || out.status !== "active") {
+      // expired / invalid / used / revoked
+      window.location.href =
+        "./not-accepted.html?reason=" + encodeURIComponent(out.status || "invalid");
+      return;
+    }
+
+    // ✅ Valid token: reveal the private content
+    document.documentElement.classList.add("access-ok");
+    document.getElementById("lockedBlock").hidden = true;
+    document.getElementById("privateBlock").hidden = false;
+  }
+
+  verify().catch(() => {
+    window.location.href = "./not-accepted.html?reason=" + encodeURIComponent("verification_error");
+  });
+</script>
 </body>
 </html>
