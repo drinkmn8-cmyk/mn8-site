@@ -16,12 +16,17 @@
     </div>
   </main>
 
-  <script>
-    const params = new URLSearchParams(location.search);
-    const t = params.get("t");
-    if (!t) location.href = "./not-accepted.html";
-    // Pass token through to private page
-    location.href = `./private.html?t=${encodeURIComponent(t)}`;
-  </script>
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get("token") || "";
+
+  // If token missing, don’t pretend
+  if (!token) {
+    window.location.href = "./not-accepted.html?reason=" + encodeURIComponent("Missing access token");
+  } else {
+    // Send them to private page with token
+    window.location.href = `./private.html?token=${encodeURIComponent(token)}`;
+  }
+</script>
 </body>
 </html>
