@@ -170,56 +170,66 @@
     </main>
 
 <script>
-const ENDPOINT_URL = "https://script.google.com/macros/s/AKfycbx46HIAfpG09xLlB30CkGQlujLvjt3AxwsSsJlsyPb7M8jFNZQJoN-Es-G0vV35BkAe/exec";
+  const ENDPOINT_URL =
+    "https://script.google.com/macros/s/AKfycbx46HIAfpG09xLlB30CkGQlujLvjt3AxwsSsJlsyPb7M8jFNZQJoN-Es-G0vV35BkAe/exec"; // <-- MUST be latest deployment
 
-const form = document.getElementById("qualifyForm");
-const submitBtn = document.getElementById("submitBtn");
-const formNote = document.getElementById("formNote");
-const clientTs = document.getElementById("clientTimestamp");
+  const form = document.getElementById("qualifyForm");
+  const submitBtn = document.getElementById("submitBtn");
+  const formNote = document.getElementById("formNote");
+  const clientTs = document.getElementById("clientTimestamp");
 
-clientTs.value = new Date().toISOString();
+  clientTs.value = new Date().toISOString();
 
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
-
-  if (!form.checkValidity()) {
-    form.reportValidity();
-    return;
+  function setLoading(isLoading) {
+    submitBtn.disabled = isLoading;
+    submitBtn.textContent = isLoading ? "Submitting..." : "Submit Qualification";
+    formNote.textContent = isLoading
+      ? "Submitting securely…"
+      : "You’ll receive next steps immediately.";
   }
 
-  const payload = Object.fromEntries(new FormData(form).entries());
-  payload.userAgent = navigator.userAgent;
-  payload.pageUrl = location.href;
-  payload.clientTimestamp = new Date().toISOString();
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-  try {
-    submitBtn.disabled = true;
-    submitBtn.textContent = "Submitting…";
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
 
-    const res = await fetch(ENDPOINT_URL, {
-      method: "POST",
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify(payload),
-    });
+    const payload = Object.fromEntries(new FormData(form).entries());
+    payload.userAgent = navigator.userAgent;
+    payload.pageUrl = location.href;
+    payload.clientTimestamp = new Date().toISOString();
 
-    const out = await res.json();
+    try {
+      setLoading(true);
 
-    if (!out.ok) throw new Error(out.error || "Submission failed");
+      const res = await fetch(ENDPOINT_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload),
+      });
 
-    console.log("Supabase applicant ID:", out.supabase_id);
+      const out = await res.json();
 
-    alert("Submitted. You’ll receive next steps by email if approved.");
-    form.reset();
-    clientTs.value = new Date().toISOString();
+      if (!out.ok) throw new Error(out.error || "Submission failed");
 
-  } catch (err) {
-    console.error(err);
-    alert("Submission failed. Please try again.");
-  } finally {
-    submitBtn.disabled = false;
-    submitBtn.textContent = "Submit Qualification";
-  }
-});
+      // Decision routing
+      if (out.decision === "reject") {
+        window.location.href = `./not-accepted.html?reason=${encodeURIComponent(out.reason || "")}`;
+        return;
+      }
+
+      // Accepted: pass token forward
+      const token = out.token || "";
+      window.location.href = `./accepted.html?token=${encodeURIComponent(token)}`;
+    } catch (err) {
+      console.error(err);
+      alert("Submission failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  });
 </script>
   </body>
 </html>
