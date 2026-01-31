@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Private — MN8</title>
+  <link rel="stylesheet" href="./style.css?v=2" />
+  <style>
+    /* hide content until verified */
+    .locked { display:none; }
+    .deny { display:none; }
+    .deny.is-on { display:block; }
+    .locked.is-on { display:block; }
+  </style>
+</head>
+<body id="top">
+  <main class="section">
+    <div class="wrap">
+
+      <div class="form-card deny" id="deny">
+        <h1 class="form-title">Access denied</h1>
+        <p class="p">This link is invalid, expired, or already used.</p>
+        <div style="margin-top:16px">
+          <a class="btn btn-ghost btn-sm" href="./index.html#top">Back</a>
+        </div>
+      </div>
+
+      <div class="locked" id="content">
+        <div class="section-head">
+          <h2 class="h2">Private Access</h2>
+          <p class="lead">Welcome to MN8.</p>
+        </div>
+
+        <!-- Replace this with your video + private content -->
+        <div class="card">
+          <h3 class="h3">Start here</h3>
+          <p class="p">Embed your private video here and your next steps.</p>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    const SUPABASE_URL = "https://YOUR_PROJECT_REF.supabase.co";
+    const CONSUME_ENDPOINT = `${SUPABASE_URL}/functions/v1/consume-token`;
+
+    const deny = document.getElementById("deny");
+    const content = document.getElementById("content");
+
+    async function run() {
+      const params = new URLSearchParams(location.search);
+      const token = params.get("t");
+      if (!token) { deny.classList.add("is-on"); return; }
+
+      try {
+        const res = await fetch(CONSUME_ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token }),
+        });
+
+        const out = await res.json();
+        if (!res.ok || !out.ok) throw new Error(out.error || "Denied");
+
+        // Access granted
+        content.classList.add("is-on");
+
+        // Optional: remove token from URL so it can't be copy/pasted after access
+        history.replaceState({}, "", "./private.html");
+      } catch (e) {
+        deny.classList.add("is-on");
+      }
+    }
+
+    run();
+  </script>
+</body>
+</html>
