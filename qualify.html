@@ -170,6 +170,7 @@
     </main>
 
 <script>
+  // MUST be your Apps Script Web App URL
   const ENDPOINT_URL =
     "https://script.google.com/macros/s/AKfycbx46HIAfpG09xLlB30CkGQlujLvjt3AxwsSsJlsyPb7M8jFNZQJoN-Es-G0vV35BkAe/exec";
 
@@ -178,7 +179,7 @@
   const formNote = document.getElementById("formNote");
   const clientTs = document.getElementById("clientTimestamp");
 
-  let inFlight = false;
+  clientTs.value = new Date().toISOString();
 
   function setLoading(isLoading) {
     submitBtn.disabled = isLoading;
@@ -188,72 +189,35 @@
       : "You’ll receive next steps immediately.";
   }
 
-  function safeJsonParse(text) {
-    try { return JSON.parse(text); } catch { return null; }
-  }
-
-  clientTs.value = new Date().toISOString();
-
-  form.addEventListener("submit", async (e) => {
+  form.addEventListener("submit", (e) => {
     e.preventDefault();
-
-    if (inFlight) return;
 
     if (!form.checkValidity()) {
       form.reportValidity();
       return;
     }
 
+    setLoading(true);
+
+    // Build payload from your form
     const payload = Object.fromEntries(new FormData(form).entries());
     payload.userAgent = navigator.userAgent;
     payload.pageUrl = location.href;
     payload.clientTimestamp = new Date().toISOString();
 
-    try {
-      inFlight = true;
-      setLoading(true);
+    // POST as a real navigation (NO CORS issues)
+    const postForm = document.createElement("form");
+    postForm.method = "POST";
+    postForm.action = ENDPOINT_URL;
 
-      const res = await fetch(ENDPOINT_URL, {
-        method: "POST",
-        headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: JSON.stringify(payload),
-      });
+    const input = document.createElement("input");
+    input.type = "hidden";
+    input.name = "payload";
+    input.value = JSON.stringify(payload);
 
-      const rawText = await res.text();
-      const out = safeJsonParse(rawText);
-
-      // If Apps Script returned HTML or non-JSON, fail loudly.
-      if (!res.ok || !out) {
-        console.error("Bad response:", res.status, rawText);
-        throw new Error("Bad response from server");
-      }
-
-      if (!out.ok) {
-        throw new Error(out.error || "Submission failed");
-      }
-
-      // Decision routing
-      if (out.decision === "reject") {
-        const reason = encodeURIComponent(out.reason || "");
-        window.location.href = `./not-accepted.html?reason=${reason}`;
-        return;
-      }
-
-      // Accepted: must have token
-      if (!out.token) {
-        console.error("Accepted but no token:", out);
-        throw new Error("Missing access token");
-      }
-
-      window.location.href = `./accepted.html?token=${encodeURIComponent(out.token)}`;
-
-    } catch (err) {
-      console.error(err);
-      alert("Submission failed. Please try again.");
-    } finally {
-      setLoading(false);
-      inFlight = false;
-    }
+    postForm.appendChild(input);
+    document.body.appendChild(postForm);
+    postForm.submit();
   });
 </script>
   </body>
