@@ -216,9 +216,13 @@
         body: JSON.stringify(payload),
       });
 
-      const out = await res.json();
+const out = await res.json().catch(() => ({}));
 
-      if (!res.ok || !out.ok) throw new Error(out.error || "Submission failed");
+if (!res.ok || !out.ok) {
+  console.error("Edge error:", out);
+  throw new Error(out.error || out.supabase_error?.message || JSON.stringify(out));
+}
+
 
       // If your edge function returns decision/token:
       if (out.decision === "reject") {
