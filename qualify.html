@@ -170,16 +170,24 @@
     </main>
 
 <script>
-  const ENDPOINT_URL = "https://script.google.com/macros/s/AKfycbzXPNVDqywjSUsjRHHtjlyoeg8y5RURbj0s7ZNfL92e1tAcUzlvrJiYi1dxwtl-QAiv/exec";
+  const ENDPOINT_URL =
+    "https://qsrfszebsncrvkqiabnu.supabase.co/functions/v1/qualify-submit";
+
+  const ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzcnNmemVic25jcnZrcWlhYm51Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4MjAwMDYsImV4cCI6MjA4NTM5NjAwNn0._PjCnlHKDomrUscaaqJ2esB31tcdR0OnuR6bgC1-5HE";
 
   const form = document.getElementById("qualifyForm");
   const submitBtn = document.getElementById("submitBtn");
   const formNote = document.getElementById("formNote");
+  const clientTs = document.getElementById("clientTimestamp");
+
+  if (clientTs) clientTs.value = new Date().toISOString();
 
   function setLoading(isLoading) {
     submitBtn.disabled = isLoading;
     submitBtn.textContent = isLoading ? "Submitting..." : "Submit Qualification";
-    formNote.textContent = isLoading ? "Submitting securely…" : "You’ll receive next steps immediately.";
+    formNote.textContent = isLoading
+      ? "Submitting securely…"
+      : "You’ll receive next steps immediately.";
   }
 
   form.addEventListener("submit", async (e) => {
@@ -200,40 +208,26 @@
 
       const res = await fetch(ENDPOINT_URL, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          apikey: ANON_KEY,
+          Authorization: `Bearer ${ANON_KEY}`,
+        },
         body: JSON.stringify(payload),
       });
 
       const out = await res.json();
-      if (!out.ok) throw new Error(out.error || "Submission failed");
 
+      if (!res.ok || !out.ok) throw new Error(out.error || "Submission failed");
+
+      // If your edge function returns decision/token:
       if (out.decision === "reject") {
         window.location.href = `./not-accepted.html?reason=${encodeURIComponent(out.reason || "")}`;
         return;
       }
-      const res = await fetch(
-  "https://qsrfszebsncrvkqiabnu.supabase.co/functions/v1/qualify-submit",
-  {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "apikey": SUPABASE_ANON_KEY,
-      "Authorization": `Bearer ${SUPABASE_ANON_KEY}`
-    },
-    body: JSON.stringify(payload)
-  }
-)
-
-const out = await res.json()
-
-if (out.decision === "accept") {
-  window.location.href = `/accepted.html?token=${out.token}`
-} else {
-  window.location.href = `/not-accepted.html?reason=${out.reason}`
-}
-
 
       window.location.href = `./accepted.html?token=${encodeURIComponent(out.token || "")}`;
+
     } catch (err) {
       console.error(err);
       alert("Submission failed. Please try again.");
