@@ -173,7 +173,8 @@
   const ENDPOINT_URL =
     "https://qsrsfzebsncrvkqiabnu.supabase.co/functions/v1/qualify-submit";
 
-  const ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzcnNmemVic25jcnZrcWlhYm51Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4MjAwMDYsImV4cCI6MjA4NTM5NjAwNn0._PjCnlHKDomrUscaaqJ2esB31tcdR0OnuR6bgC1-5HE";
+  const ANON_KEY =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzcnNmemVic25jcnZrcWlhYm51Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4MjAwMDYsImV4cCI6MjA4NTM5NjAwNn0._PjCnlHKDomrUscaaqJ2esB31tcdR0OnuR6bgC1-5HE";
 
   const form = document.getElementById("qualifyForm");
   const submitBtn = document.getElementById("submitBtn");
@@ -216,25 +217,31 @@
         body: JSON.stringify(payload),
       });
 
-const out = await res.json().catch(() => ({}));
+      const raw = await res.text();
+      let out;
+      try { out = JSON.parse(raw); } catch { out = { raw }; }
 
-if (!res.ok || !out.ok) {
-  console.error("Edge error:", out);
-  throw new Error(out.error || out.supabase_error?.message || JSON.stringify(out));
-}
+      if (!res.ok || !out.ok) {
+        console.error("EDGE STATUS:", res.status);
+        console.error("EDGE BODY:", out);
+        throw new Error(out.error || out.raw || `Request failed (${res.status})`);
+      }
 
-
-      // If your edge function returns decision/token:
+      // Expecting your edge function to return: { ok:true, decision, reason, token }
       if (out.decision === "reject") {
         window.location.href = `./not-accepted.html?reason=${encodeURIComponent(out.reason || "")}`;
         return;
       }
 
-      window.location.href = `./accepted.html?token=${encodeURIComponent(out.token || "")}`;
+      if (!out.token) {
+        throw new Error("Edge function returned ok=true but no token. Fix the function response.");
+      }
+
+      window.location.href = `./accepted.html?token=${encodeURIComponent(out.token)}`;
 
     } catch (err) {
-      console.error(err);
-      alert("Submission failed. Please try again.");
+      console.error("SUBMIT FAILED:", err);
+      alert(String(err.message || err));
     } finally {
       setLoading(false);
     }
