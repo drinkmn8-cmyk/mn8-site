@@ -74,27 +74,5 @@
         </div>
       </section>
     </main>
-
-    <script>
-      const params = new URLSearchParams(window.location.search);
-      const reason = params.get("reason") || "";
-      const reasonText = document.getElementById("reasonText");
-
-      // Map system reasons into clean user-facing language
-      const reasonMap = {
-        "Invalid email": "We couldn’t verify a valid email.",
-        "Not ready to start immediately": "MN8 is for people starting immediately.",
-        "Cannot follow daily structure": "MN8 requires a simple daily structure.",
-        "Too inconsistent right now": "MN8 requires baseline consistency.",
-        "Low intent response": "Your response didn’t show enough intent or clarity.",
-        "Not the target profile": "MN8 is designed for a specific profile.",
-        "Goal not specific enough": "Your 90-day goal wasn’t specific enough."
-      };
-
-      if (reason) {
-        const decoded = decodeURIComponent(reason);
-        reasonText.textContent = reasonMap[decoded] || decoded;
-      }
-    </script>
   </body>
 </html>
