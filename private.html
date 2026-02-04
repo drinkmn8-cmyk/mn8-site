@@ -48,75 +48,64 @@
 
     </div>
   </main>
+<script>
+  const VERIFY_URL =
+    "https://qsrfszebsncrvkqiabnu.supabase.co/functions/v1/verify-token";
+  const ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzcnNmemVic25jcnZrcWlhYm51Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4MjAwMDYsImV4cCI6MjA4NTM5NjAwNn0._PjCnlHKDomrUscaaqJ2esB31tcdR0OnuR6bgC1-5HE";
 
-  <script>
-    // Use the SAME Apps Script "exec" URL (the web app URL)
-    const VERIFY_ENDPOINT =
-      "https://script.google.com/macros/s/AKfycbzXPNVDqywjSUsjRHHtjlyoeg8y5RURbj0s7ZNfL92e1tAcUzlvrJiYi1dxwtl-QAiv/exec"; // <-- paste your exec URL here
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get("token") || "";
 
-    const params = new URLSearchParams(window.location.search);
-    const token = params.get("token") || "";
+  const denyEl = document.getElementById("deny");
+  const denyMsg = document.getElementById("denyMsg");
+  const contentEl = document.getElementById("content");
 
-    const denyEl = document.getElementById("deny");
-    const denyMsg = document.getElementById("denyMsg");
-    const contentEl = document.getElementById("content");
+  function deny(reason) {
+    const map = {
+      missing_token: "Missing access token. Please use your original link.",
+      invalid: "This link is invalid.",
+      expired: "This link expired. Please re-apply.",
+      used: "This link was already used.",
+      revoked: "This link is no longer active.",
+      verification_error: "Verification failed. Please try again."
+    };
 
-    function deny(reason) {
-      // Keep it clean for users, but still informative
-      const map = {
-        missing_token: "Missing access token. Please use your original link.",
-        invalid: "This link is invalid.",
-        expired: "This link expired. Please re-apply.",
-        used: "This link was already used.",
-        revoked: "This link is no longer active.",
-        verification_error: "Verification failed. Please try again."
-      };
+    denyMsg.textContent = map[reason] || "This link is invalid, expired, or already used.";
+    denyEl.classList.add("is-on");
+    contentEl.classList.remove("is-on");
+  }
 
-      denyMsg.textContent = map[reason] || "This link is invalid, expired, or already used.";
-      denyEl.classList.add("is-on");
-      contentEl.classList.remove("is-on");
-    }
+  function allow() {
+    contentEl.classList.add("is-on");
+    denyEl.classList.remove("is-on");
+  }
 
-    function allow() {
-      contentEl.classList.add("is-on");
-      denyEl.classList.remove("is-on");
-    }
+  async function verifyToken() {
+    if (!token) return deny("missing_token");
 
-    async function verifyToken() {
-      if (!token) {
-        deny("missing_token");
-        return;
-      }
+    try {
+      const res = await fetch(VERIFY_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          apikey: ANON_KEY,
+          Authorization: `Bearer ${ANON_KEY}`,
+        },
+        body: JSON.stringify({ token }),
+      });
 
-      // Cache-bust so browsers don’t re-use an old response
-      const url = `${VERIFY_ENDPOINT}?token=${encodeURIComponent(token)}&t=${Date.now()}`;
+      const out = await res.json();
 
-      let out;
-      try {
-        const res = await fetch(url, { method: "GET" });
-        out = await res.json();
-      } catch (e) {
-        deny("verification_error");
-        return;
-      }
+      if (!res.ok || !out.ok) return deny(out?.status || "invalid");
+      if (out.status !== "active") return deny(out.status || "invalid");
 
-      // Expected shape:
-      // { ok: true, status: "active" } or { ok:false, status:"expired" }
-      if (!out || out.ok !== true) {
-        deny(out?.status || "invalid");
-        return;
-      }
-
-      if (out.status !== "active") {
-        deny(out.status || "invalid");
-        return;
-      }
-
-      // ✅ verified
       allow();
+    } catch (e) {
+      deny("verification_error");
     }
+  }
 
-    verifyToken();
-  </script>
+  verifyToken();
+</script>
 </body>
 </html>
