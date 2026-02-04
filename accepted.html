@@ -56,31 +56,43 @@
       </section>
     </main>
 
-    <script>
-      // accepted.html?token=XYZ
-      const params = new URLSearchParams(window.location.search);
-      const token = params.get("token") || "";
+<script>
+  (function () {
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get("token");
 
-      const statusText = document.getElementById("statusText");
-      const continueBtn = document.getElementById("continueBtn");
+    const statusText = document.getElementById("statusText");
+    const continueBtn = document.getElementById("continueBtn");
 
-      function goPrivate() {
-        if (!token) {
-          statusText.textContent = "Access token missing. Please return and submit again.";
-          continueBtn.textContent = "Return to Qualification";
-          continueBtn.onclick = () => (window.location.href = "./qualify.html");
-          return;
-        }
+    let redirected = false;
 
-        // Forward token to private page
-        window.location.href = `./private.html?token=${encodeURIComponent(token)}`;
+    function goPrivate() {
+      if (redirected) return;
+
+      if (!token || token.length < 10) {
+        statusText.textContent =
+          "Access token missing or invalid. Please submit the qualification again.";
+
+        continueBtn.textContent = "Return to Qualification";
+        continueBtn.onclick = () => {
+          window.location.href = "./qualify.html";
+        };
+
+        return;
       }
 
-      // Auto-forward quickly
-      setTimeout(goPrivate, 450);
+      redirected = true;
+      window.location.replace(
+        `./private.html?token=${encodeURIComponent(token)}`
+      );
+    }
 
-      // Manual fallback
-      continueBtn.addEventListener("click", goPrivate);
-    </script>
+    // Auto-forward (fast)
+    setTimeout(goPrivate, 400);
+
+    // Manual fallback
+    continueBtn.addEventListener("click", goPrivate);
+  })();
+</script>
   </body>
 </html>
