@@ -49,39 +49,140 @@
     </div>
   </main>
 <script>
-  const VALIDATE_URL = "https://qsrsfzebsncrvkqiabnu.supabase.co/functions/v1/validate-token";
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get("token") || "";
+  const status = params.get("status") || "";
+  const reason = params.get("reason") || "";
+
+  // ---- CONFIG ----
+  const VERIFY_URL = "https://qsrsfzebsncrvkqiabnu.supabase.co/functions/v1/verify-token";
   const ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzcnNmemVic25jcnZrcWlhYm51Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4MjAwMDYsImV4cCI6MjA4NTM5NjAwNn0._PjCnlHKDomrUscaaqJ2esB31tcdR0OnuR6bgC1-5HE";
 
-  const params = new URLSearchParams(location.search);
-  const token = params.get("token") || "";
+  // ---- BASIC MODAL ----
+  function showModal(title, message, buttonText, onClick) {
+    const modal = document.createElement("div");
+    modal.style.cssText = `
+      position:fixed; inset:0; display:flex; align-items:center; justify-content:center;
+      background:rgba(0,0,0,.55); z-index:9999; padding:20px;
+    `;
+    modal.innerHTML = `
+      <div style="
+        width:min(520px,100%);
+        background:#0f0f14;
+        border:1px solid rgba(255,255,255,.12);
+        border-radius:18px;
+        padding:22px;
+        box-shadow:0 20px 60px rgba(0,0,0,.55);
+        font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
+        color:rgba(255,255,255,.92);
+      ">
+        <div style="font-size:18px; font-weight:700; margin-bottom:8px;">${title}</div>
+        <div style="font-size:14px; line-height:1.45; color:rgba(255,255,255,.75); margin-bottom:16px;">
+          ${message}
+        </div>
+        <button id="mn8ModalBtn" style="
+          width:100%;
+          padding:12px 14px;
+          border-radius:14px;
+          border:0;
+          background:rgba(91,53,166,1);
+          color:white;
+          font-weight:700;
+          cursor:pointer;
+        ">${buttonText}</button>
+      </div>
+    `;
+    document.body.appendChild(modal);
+    document.getElementById("mn8ModalBtn").onclick = () => {
+      modal.remove();
+      onClick && onClick();
+    };
+  }
 
-  async function deny(reason) {
-    window.location.href = `./access-denied.html?reason=${encodeURIComponent(reason || "")}`;
+  function lockPage() {
+    // Optional: hide your private content container until verified
+    const gate = document.getElementById("privateGate");
+    if (gate) gate.style.display = "none";
+  }
+
+  function unlockPage() {
+    const gate = document.getElementById("privateGate");
+    if (gate) gate.style.display = "block";
+  }
+
+  async function verifyToken(tok) {
+    const res = await fetch(VERIFY_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: ANON_KEY,
+        Authorization: `Bearer ${ANON_KEY}`,
+      },
+      body: JSON.stringify({ token: tok }),
+    });
+
+    const out = await res.json().catch(() => ({}));
+    if (!res.ok || !out.ok) {
+      throw new Error(out.error || out.message || "Token verification failed");
+    }
+    return out;
   }
 
   (async () => {
-    if (!token) return deny("missing_token");
+    lockPage();
 
-    try {
-      const res = await fetch(VALIDATE_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          apikey: ANON_KEY,
-          Authorization: `Bearer ${ANON_KEY}`,
-        },
-        body: JSON.stringify({ token }),
-      });
-
-      const out = await res.json().catch(() => ({}));
-      if (!res.ok || !out.ok) return deny(out.reason || out.error || "invalid_token");
-
-      // ✅ Token is valid → allow page to load normally
-      // If you hide content behind a gate, unlock it here:
-      document.documentElement.classList.add("token-ok");
-    } catch (e) {
-      return deny("validate_failed");
+    // If they were rejected, show it and send back.
+    if (status === "reject") {
+      showModal(
+        "Not approved",
+        reason ? `Reason: ${reason}` : "You’re not a fit right now.",
+        "Return to Qualification",
+        () => (window.location.href = "./qualify.html")
+      );
+      return;
     }
+
+    // If accepted but missing token
+    if (status === "accept" && !token) {
+      showModal(
+        "Access token missing",
+        "Submit again so we can generate your access token.",
+        "Return to Qualification",
+        () => (window.location.href = "./qualify.html")
+      );
+      return;
+    }
+
+    // If token exists, validate and unlock
+    if (token) {
+      try {
+        await verifyToken(token);
+        unlockPage();
+
+        showModal(
+          "Approved",
+          "Access granted. Welcome inside.",
+          "Continue",
+          () => {} // just close
+        );
+      } catch (e) {
+        showModal(
+          "Access denied",
+          "Your token is invalid or expired. Submit again.",
+          "Return to Qualification",
+          () => (window.location.href = "./qualify.html")
+        );
+      }
+      return;
+    }
+
+    // Default: if they landed here without status or token
+    showModal(
+      "Private access",
+      "Submit the qualification to unlock this page.",
+      "Go to Qualification",
+      () => (window.location.href = "./qualify.html")
+    );
   })();
 </script>
 </body>
