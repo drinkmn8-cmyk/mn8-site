@@ -49,42 +49,21 @@
     </div>
   </main>
 <script>
-  const VERIFY_URL =
-    "https://qsrsfzebsncrvkqiabnu.supabase.co/functions/v1/verify-token";
+  const VALIDATE_URL = "https://qsrsfzebsncrvkqiabnu.supabase.co/functions/v1/validate-token";
   const ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzcnNmemVic25jcnZrcWlhYm51Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4MjAwMDYsImV4cCI6MjA4NTM5NjAwNn0._PjCnlHKDomrUscaaqJ2esB31tcdR0OnuR6bgC1-5HE";
 
-  const params = new URLSearchParams(window.location.search);
+  const params = new URLSearchParams(location.search);
   const token = params.get("token") || "";
 
-  const denyEl = document.getElementById("deny");
-  const denyMsg = document.getElementById("denyMsg");
-  const contentEl = document.getElementById("content");
-
-  function deny(reason) {
-    const map = {
-      missing_token: "Missing access token. Please use your original link.",
-      invalid: "This link is invalid.",
-      expired: "This link expired. Please re-apply.",
-      used: "This link was already used.",
-      revoked: "This link is no longer active.",
-      verification_error: "Verification failed. Please try again."
-    };
-
-    denyMsg.textContent = map[reason] || "This link is invalid, expired, or already used.";
-    denyEl.classList.add("is-on");
-    contentEl.classList.remove("is-on");
+  async function deny(reason) {
+    window.location.href = `./access-denied.html?reason=${encodeURIComponent(reason || "")}`;
   }
 
-  function allow() {
-    contentEl.classList.add("is-on");
-    denyEl.classList.remove("is-on");
-  }
-
-  async function verifyToken() {
+  (async () => {
     if (!token) return deny("missing_token");
 
     try {
-      const res = await fetch(VERIFY_URL, {
+      const res = await fetch(VALIDATE_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -94,18 +73,16 @@
         body: JSON.stringify({ token }),
       });
 
-      const out = await res.json();
+      const out = await res.json().catch(() => ({}));
+      if (!res.ok || !out.ok) return deny(out.reason || out.error || "invalid_token");
 
-      if (!res.ok || !out.ok) return deny(out?.status || "invalid");
-      if (out.status !== "active") return deny(out.status || "invalid");
-
-      allow();
+      // ✅ Token is valid → allow page to load normally
+      // If you hide content behind a gate, unlock it here:
+      document.documentElement.classList.add("token-ok");
     } catch (e) {
-      deny("verification_error");
+      return deny("validate_failed");
     }
-  }
-
-  verifyToken();
+  })();
 </script>
 </body>
 </html>
