@@ -170,11 +170,8 @@
     </main>
 
 <script>
-  const ENDPOINT_URL =
-    "https://qsrsfzebsncrvkqiabnu.supabase.co/functions/v1/qualify-submit";
-
-  const ANON_KEY =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzcnNmemVic25jcnZrcWlhYm51Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4MjAwMDYsImV4cCI6MjA4NTM5NjAwNn0._PjCnlHKDomrUscaaqJ2esB31tcdR0OnuR6bgC1-5HE";
+  const ENDPOINT_URL = "https://qsrsfzebsncrvkqiabnu.supabase.co/functions/v1/qualify-submit";
+  const ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzcnNmemVic25jcnZrcWlhYm51Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4MjAwMDYsImV4cCI6MjA4NTM5NjAwNn0._PjCnlHKDomrUscaaqJ2esB31tcdR0OnuR6bgC1-5HE";
 
   const form = document.getElementById("qualifyForm");
   const submitBtn = document.getElementById("submitBtn");
@@ -186,18 +183,12 @@
   function setLoading(isLoading) {
     submitBtn.disabled = isLoading;
     submitBtn.textContent = isLoading ? "Submitting..." : "Submit Qualification";
-    formNote.textContent = isLoading
-      ? "Submitting securely…"
-      : "You’ll receive next steps immediately.";
+    formNote.textContent = isLoading ? "Submitting…" : "You’ll receive next steps immediately.";
   }
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-
-    if (!form.checkValidity()) {
-      form.reportValidity();
-      return;
-    }
+    if (!form.checkValidity()) return form.reportValidity();
 
     const payload = Object.fromEntries(new FormData(form).entries());
     payload.userAgent = navigator.userAgent;
@@ -211,37 +202,37 @@
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          apikey: ANON_KEY,
-          Authorization: `Bearer ${ANON_KEY}`,
+          "apikey": ANON_KEY,
+          "Authorization": `Bearer ${ANON_KEY}`,
         },
         body: JSON.stringify(payload),
       });
 
-      const raw = await res.text();
-      let out;
-      try { out = JSON.parse(raw); } catch { out = { raw }; }
+      const text = await res.text();
+      let out = {};
+      try { out = JSON.parse(text); } catch { out = { raw: text }; }
 
-      if (!res.ok || !out.ok) {
-        console.error("EDGE STATUS:", res.status);
-        console.error("EDGE BODY:", out);
-        throw new Error(out.error || out.raw || `Request failed (${res.status})`);
-      }
-
-      // Expecting your edge function to return: { ok:true, decision, reason, token }
-      if (out.decision === "reject") {
-        window.location.href = `./not-accepted.html?reason=${encodeURIComponent(out.reason || "")}`;
+      if (!res.ok) {
+        console.error("HTTP", res.status, out);
+        alert(`Submit failed (${res.status}). Check console.`);
         return;
       }
 
-      if (!out.token) {
-        throw new Error("Edge function returned ok=true but no token. Fix the function response.");
+      if (!out.ok) {
+        console.error("Edge error:", out);
+        alert(`Submit failed: ${out.error || out.reason || "Unknown error"}`);
+        return;
       }
 
-      window.location.href = `./accepted.html?token=${encodeURIComponent(out.token)}`;
+      if (out.decision === "reject") {
+        location.href = `./not-accepted.html?reason=${encodeURIComponent(out.reason || "")}`;
+        return;
+      }
 
+      location.href = `./accepted.html?token=${encodeURIComponent(out.token || "")}`;
     } catch (err) {
-      console.error("SUBMIT FAILED:", err);
-      alert(String(err.message || err));
+      console.error(err);
+      alert("Submission failed. Check console.");
     } finally {
       setLoading(false);
     }
