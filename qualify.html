@@ -224,12 +224,15 @@
         return;
       }
 
-      if (out.decision === "reject") {
-        location.href = `./not-accepted.html?reason=${encodeURIComponent(out.reason || "")}`;
-        return;
-      }
+// If your edge function returns decision/token:
+if (out.decision === "reject") {
+  window.location.href = `./not-accepted.html?reason=${encodeURIComponent(out.reason || "")}`;
+  return;
+}
 
-      location.href = `./accepted.html?token=${encodeURIComponent(out.token || "")}`;
+// Accept = go straight to private with token
+window.location.href = `./private.html?token=${encodeURIComponent(out.token || "")}`;
+
     } catch (err) {
       console.error(err);
       alert("Submission failed. Check console.");
