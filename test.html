@@ -3,95 +3,64 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>MN8 Private Access</title>
+  <title>MN8 Private</title>
 
   <style>
     :root{
-      /* Match your public page: dark, soft gradients, subtle borders */
-      --bg0:#07070a;
-      --bg1:#0b0b10;
-
+      --bg:#0a0a0c;
       --text:rgba(255,255,255,.92);
-      --muted:rgba(255,255,255,.70);
-      --muted2:rgba(255,255,255,.55);
+      --muted:rgba(255,255,255,.68);
+      --muted2:rgba(255,255,255,.52);
+      --hair:rgba(255,255,255,.10);
+      --hair2:rgba(255,255,255,.08);
 
-      --hair:rgba(255,255,255,.08);
-      --card:rgba(255,255,255,.04);
-      --card2:rgba(255,255,255,.06);
-
-      --shadow: 0 18px 60px rgba(0,0,0,.55);
-
-      /* MN8 purple */
       --mn8:#6d3bd2;
-      --mn8Soft: rgba(109,59,210,.14);
 
-      --radius:18px;
-      --radius2:26px;
-
-      --max:1080px;
+      --max: 980px;
+      --gutter: 18px;
     }
 
     *{ box-sizing:border-box; }
     html,body{ height:100%; }
     body{
       margin:0;
+      background: var(--bg);
+      color: var(--text);
       font-family: ui-sans-serif, system-ui, -apple-system, "SF Pro Text", "SF Pro Display", Segoe UI, Roboto, Arial;
       -webkit-font-smoothing: antialiased;
       text-rendering: optimizeLegibility;
-      color: var(--text);
-      background:
-        radial-gradient(1200px 900px at 20% 0%, rgba(109,59,210,.18), transparent 60%),
-        radial-gradient(900px 700px at 80% 20%, rgba(255,255,255,.06), transparent 55%),
-        linear-gradient(180deg, var(--bg1), var(--bg0));
     }
 
-    /* PUBLIC PAGE VIBE: serif headlines */
-    .serif{
-      font-family: ui-serif, "Georgia", "Times New Roman", Times, serif;
-      letter-spacing:-.03em;
-    }
+    /* serif for big statements (like your public page) */
+    .serif{ font-family: ui-serif, Georgia, "Times New Roman", Times, serif; letter-spacing:-.03em; }
 
     a{ color:inherit; text-decoration:none; }
-    .wrap{
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 0 18px;
-    }
+    .wrap{ max-width: var(--max); margin:0 auto; padding:0 var(--gutter); }
 
-    /* Topbar (mirrors your public page structure) */
+    /* Topbar */
     .topbar{
       position: sticky;
       top: 0;
       z-index: 50;
-      backdrop-filter: blur(12px);
-      background: rgba(7,7,10,.62);
-      border-bottom: 1px solid var(--hair);
+      background: rgba(10,10,12,.92);
+      border-bottom: 1px solid var(--hair2);
     }
     .topbar-inner{
       height: 64px;
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:14px;
+      gap: 14px;
     }
     .brand{
       display:flex;
       align-items:center;
       gap:10px;
       min-width: 120px;
-    }
-    .brand-mark{
-      width: 34px;
-      height: 34px;
-      border-radius: 10px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
-      box-shadow: 0 12px 30px rgba(0,0,0,.35);
-      display:grid;
-      place-items:center;
-      font-weight: 800;
-      letter-spacing:.04em;
-      color: rgba(255,255,255,.88);
+      font-weight:800;
+      letter-spacing:.06em;
+      font-size:12px;
+      color: rgba(255,255,255,.85);
     }
     .nav{
       display:flex;
@@ -100,94 +69,63 @@
       color: rgba(255,255,255,.72);
       font-size: 14px;
     }
-    .nav a{
-      padding: 8px 10px;
-      border-radius: 999px;
-      transition: background .12s ease, color .12s ease;
-    }
-    .nav a:hover{
-      background: rgba(255,255,255,.06);
-      color: rgba(255,255,255,.90);
-    }
+    .nav a{ padding:8px 10px; border-radius:999px; }
+    .nav a:hover{ background: rgba(255,255,255,.06); color: rgba(255,255,255,.90); }
 
-    /* Page spacing */
-    main{
-      padding: 44px 0 140px;
-    }
-    .section{
-      padding: 40px 0;
-      border-bottom: 1px solid var(--hair);
-    }
+    main{ padding: 44px 0 140px; }
 
-    h1,h2,h3{ margin:0; }
+    /* Sections: no cards, only spacing + thin lines */
+    .section{ padding: 44px 0; border-bottom: 1px solid var(--hair2); }
+
     .kicker{
       color: rgba(255,255,255,.72);
-      font-size: 14px;
-      letter-spacing:.02em;
-      margin-bottom: 12px;
+      font-size: 13px;
+      letter-spacing:.12em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
     }
     .h1{
-      font-size: clamp(42px, 5vw, 72px);
+      font-size: clamp(44px, 5vw, 72px);
       line-height: 1.02;
       font-weight: 760;
-      margin-bottom: 16px;
+      margin:0 0 16px;
     }
     .h2{
-      font-size: clamp(28px, 3.2vw, 44px);
+      font-size: clamp(26px, 3.2vw, 42px);
       line-height: 1.08;
       font-weight: 740;
-      margin-bottom: 12px;
+      margin:0 0 12px;
     }
     .p{
       margin:0;
       font-size: 16px;
-      line-height: 1.7;
+      line-height: 1.75;
       color: var(--muted);
-      max-width: 68ch;
+      max-width: 70ch;
     }
 
-    .card{
-      background: linear-gradient(180deg, var(--card2), var(--card));
-      border: 1px solid var(--hair);
-      border-radius: var(--radius2);
-      box-shadow: var(--shadow);
-    }
-
-    /* Video */
-    .videoShell{
-      margin-top: 20px;
-      overflow:hidden;
-    }
-    .videoHeader{
+    /* Video: flat, clean */
+    .videoShell{ margin-top: 18px; }
+    .videoMeta{
       display:flex;
-      justify-content:space-between;
       align-items:center;
-      gap:12px;
-      padding: 14px 16px;
-      border-bottom: 1px solid var(--hair);
-    }
-    .videoHeader strong{
-      font-size: 12px;
-      letter-spacing:.08em;
-      color: rgba(255,255,255,.78);
-    }
-    .videoHeader span{
-      font-size: 13px;
+      justify-content:space-between;
+      gap:10px;
       color: var(--muted2);
+      font-size: 13px;
+      margin-bottom: 10px;
     }
     .videoFrame{
+      width:100%;
       aspect-ratio: 16/9;
-      width:100%;
       background:#000;
+      border: 1px solid var(--hair2);
+      border-radius: 18px;
+      overflow:hidden;
     }
-    .videoFrame iframe{
-      width:100%;
-      height:100%;
-      border:0;
-      display:block;
-    }
+    .videoFrame iframe{ width:100%; height:100%; border:0; display:block; }
 
-    /* Timeline rail (Apple-like, minimal) */
+    /* Timeline: no cards. Just rail + rows */
     .timeline{
       margin-top: 22px;
       position: relative;
@@ -198,169 +136,125 @@
       content:"";
       position:absolute;
       left: 10px;
-      top: 8px;
-      bottom: 8px;
-      width: 2px;
-      border-radius: 99px;
-      background: linear-gradient(180deg, rgba(109,59,210,.65), rgba(255,255,255,.06));
+      top: 6px;
+      bottom: 6px;
+      width: 1px;
+      background: var(--hair);
     }
-    .step{
+    .row{
       position: relative;
-      padding: 18px 18px 18px 18px;
-      margin-bottom: 14px;
-      border-radius: var(--radius2);
-      background: linear-gradient(180deg, var(--card2), var(--card));
-      border: 1px solid var(--hair);
+      padding: 14px 0 14px 0;
+      border-bottom: 1px solid rgba(255,255,255,.06);
     }
-    .step:before{
+    .row:last-child{ border-bottom:0; }
+    .row:before{
       content:"";
       position:absolute;
       left: -28px;
-      top: 24px;
-      width: 10px;
-      height: 10px;
-      border-radius: 999px;
+      top: 22px;
+      width: 8px;
+      height: 8px;
+      border-radius:999px;
       background: var(--mn8);
-      box-shadow: 0 0 0 7px var(--mn8Soft);
     }
-    .stepTop{
+    .rowTop{
       display:flex;
-      align-items:center;
-      gap:10px;
+      align-items:baseline;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
       margin-bottom: 6px;
-      flex-wrap: wrap;
     }
-    .pill{
-      display:inline-flex;
-      align-items:center;
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.10);
-      color: rgba(255,255,255,.86);
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: .01em;
-      white-space:nowrap;
+    .tag{
+      color: rgba(255,255,255,.90);
+      font-size: 14px;
+      font-weight: 780;
+      letter-spacing:-.01em;
     }
-    .stepTitle{
-      font-size: 15px;
-      font-weight: 750;
-      color: rgba(255,255,255,.92);
+    .hint{
+      color: var(--muted2);
+      font-size: 13px;
     }
 
-    /* Offer */
+    /* Offer: minimal, 2 columns, no “cards every second” */
     #offer{ scroll-margin-top: 90px; }
-    .offerGrid{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap: 14px;
-      margin-top: 16px;
-      max-width: 980px;
-    }
-    @media (min-width: 860px){
-      .offerGrid{ grid-template-columns: 1fr 1fr; }
-    }
-    .offerCard{
-      border: 1px solid var(--hair);
-      border-radius: var(--radius2);
-      padding: 20px;
-      background: linear-gradient(180deg, var(--card2), var(--card));
-      box-shadow: var(--shadow);
-      cursor:pointer;
-      transition: transform .12s ease, border-color .12s ease, box-shadow .12s ease;
-      outline: none;
-    }
-    .offerCard:hover{ transform: translateY(-1px); }
-    .offerCard[aria-selected="true"]{
-      border-color: rgba(109,59,210,.55);
-      box-shadow: 0 16px 44px rgba(109,59,210,.18);
-      outline: 2px solid rgba(109,59,210,.16);
-      outline-offset: 2px;
-    }
-    .offerTitleRow{
+    .offerWrap{ margin-top: 18px; border-top: 1px solid var(--hair2); }
+    .offerItem{
       display:flex;
       align-items:flex-start;
       justify-content:space-between;
-      gap:12px;
-      margin-bottom: 10px;
+      gap: 18px;
+      padding: 18px 0;
+      border-bottom: 1px solid var(--hair2);
+      cursor:pointer;
+      outline:none;
     }
-    .offerTitleRow strong{
+    .offerItem[aria-selected="true"]{
+      border-bottom-color: rgba(109,59,210,.55);
+    }
+    .offerLeft{
+      max-width: 72ch;
+    }
+    .offerName{
       font-size: 18px;
-      font-weight: 800;
+      font-weight: 820;
       letter-spacing:-.01em;
+      margin:0 0 6px;
+      color: rgba(255,255,255,.92);
+    }
+    .offerCopy{
+      margin:0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.7;
+    }
+    .offerRight{
+      text-align:right;
+      min-width: 160px;
     }
     .price{
-      text-align:right;
-      font-weight: 820;
+      font-size: 16px;
+      font-weight: 900;
       color: rgba(255,255,255,.92);
-      white-space:nowrap;
     }
     .price small{
       display:block;
       font-size: 12px;
-      color: var(--muted2);
       font-weight: 650;
+      color: var(--muted2);
       margin-top: 2px;
     }
-    .offerDesc{
-      color: var(--muted);
-      margin:0;
-      font-size: 14.5px;
-      line-height: 1.7;
-    }
-    .offerList{
-      margin: 12px 0 0;
-      padding-left: 18px;
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.65;
-    }
-    .offerList li{ margin: 6px 0; }
 
-    /* Agreement gate */
+    /* Agreement */
     .gate{
-      margin-top: 14px;
-      border: 1px solid var(--hair);
-      border-radius: var(--radius2);
-      padding: 18px;
-      background: linear-gradient(180deg, var(--card2), var(--card));
-      max-width: 980px;
-    }
-    .gate h3{
-      font-size: 16px;
-      font-weight: 800;
-      margin: 0 0 8px;
-      letter-spacing:-.01em;
+      margin-top: 18px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(255,255,255,.06);
     }
     .agreeLinks{
       display:flex;
-      flex-wrap: wrap;
+      flex-wrap:wrap;
       gap:10px;
-      margin-top: 10px;
-      color: rgba(255,255,255,.80);
-      font-size: 13px;
+      margin-top: 12px;
     }
-    .agreeLinks a{
-      padding: 8px 10px;
-      border-radius: 999px;
+    .chip{
+      padding: 8px 12px;
+      border-radius:999px;
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.04);
+      color: rgba(255,255,255,.82);
+      font-size: 13px;
     }
-    .agreeLinks a:hover{ background: rgba(255,255,255,.06); }
+    .chip:hover{ background: rgba(255,255,255,.06); }
 
-    .checkboxRow{
+    .checkRow{
       display:flex;
       gap:10px;
       align-items:flex-start;
-      margin-top: 12px;
+      margin-top: 14px;
     }
-    .checkboxRow input{ margin-top: 3px; }
-    .checkboxRow label{
-      font-size: 14px;
-      color: var(--muted);
-      line-height: 1.55;
-    }
+    .checkRow input{ margin-top: 4px; }
+    .checkRow label{ color: var(--muted); font-size: 14px; line-height: 1.55; }
 
     .actions{
       display:flex;
@@ -371,78 +265,57 @@
     }
     .btn{
       appearance:none;
-      border: 1px solid rgba(109,59,210,.35);
-      background: linear-gradient(180deg, rgba(109,59,210,.95), rgba(90,44,185,.95));
+      border: 1px solid rgba(109,59,210,.45);
+      background: var(--mn8);
       color:#fff;
       padding: 12px 16px;
       border-radius: 999px;
-      font-weight: 820;
+      font-weight: 900;
       font-size: 14px;
       cursor:pointer;
       transition: transform .12s ease, opacity .12s ease, filter .12s ease;
     }
-    .btn:hover{ filter: brightness(1.03); }
+    .btn:hover{ filter: brightness(1.02); }
     .btn:disabled{ opacity:.45; cursor:not-allowed; }
     .btn:active{ transform: translateY(1px); }
-    .hint{
-      font-size: 13px;
-      color: var(--muted2);
-    }
+    .smallHint{ color: var(--muted2); font-size: 13px; }
 
-    /* Sticky jump button (same language as your public CTA style) */
+    /* Sticky jump */
     .stickyJump{
       position: fixed;
       left: 50%;
       transform: translateX(-50%);
       bottom: 16px;
-      z-index: 80;
+      z-index: 60;
       width: min(560px, calc(100% - 24px));
-      display:flex;
-      justify-content:center;
       pointer-events:none;
     }
-    .stickyJump .jumpBtn{
+    .jumpBtn{
       pointer-events:auto;
+      width:100%;
       display:flex;
       align-items:center;
       justify-content:center;
       gap:10px;
-      width:100%;
-      border-radius: 999px;
       padding: 13px 16px;
+      border-radius: 999px;
       border: 1px solid rgba(255,255,255,.10);
-      box-shadow: 0 22px 60px rgba(0,0,0,.55);
-      background: rgba(15,15,20,.92);
-      backdrop-filter: blur(10px);
+      background: rgba(10,10,12,.92);
       color: rgba(255,255,255,.92);
       font-weight: 900;
       font-size: 14px;
       cursor:pointer;
-      transition: opacity .12s ease, transform .12s ease;
     }
-    .stickyJump.hidden .jumpBtn{
-      opacity:0;
-      transform: translateY(10px);
-      pointer-events:none;
-    }
-    .dot{
-      width:10px;
-      height:10px;
-      border-radius:999px;
-      background: var(--mn8);
-      box-shadow: 0 0 0 7px var(--mn8Soft);
-    }
+    .stickyJump.hidden{ display:none; }
+    .dot{ width:10px; height:10px; border-radius:999px; background: var(--mn8); }
   </style>
 </head>
 
 <body>
 
-  <!-- Topbar -->
   <header class="topbar">
     <div class="wrap topbar-inner">
-      <a class="brand" href="./index.html#top" aria-label="MN8 Home">
-        <div class="brand-mark">MN8</div>
-      </a>
+      <a class="brand" href="./index.html#top" aria-label="MN8 Home">MN8</a>
 
       <nav class="nav" aria-label="Primary">
         <a href="./index.html#mn8">What it is</a>
@@ -450,10 +323,8 @@
         <a href="./index.html#faq">FAQ</a>
       </nav>
 
-      <a class="nav" href="./qualify.html" style="justify-content:flex-end; min-width:120px;">
-        <span style="padding:8px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);">
-          Qualification
-        </span>
+      <a class="nav" href="./qualify.html" style="min-width:120px; justify-content:flex-end;">
+        <span class="chip">Qualification</span>
       </a>
     </div>
   </header>
@@ -461,30 +332,28 @@
   <main>
     <div class="wrap">
 
-      <!-- SECTION 1 -->
+      <!-- HERO -->
       <section class="section" id="top">
         <div class="kicker">Private access</div>
         <h1 class="h1 serif">Activate MN8 with clarity.</h1>
         <p class="p">
-          This page shows how MN8 runs, what changes over time, and how risk is handled before you commit.
-          Read it once. Then choose your level of proximity.
+          Read this once. Understand what happens over time. Choose your proximity.
         </p>
       </section>
 
-      <!-- SECTION 2: VIDEO -->
+      <!-- VIDEO -->
       <section class="section" id="video">
         <h2 class="h2 serif">What happens next</h2>
-        <p class="p">No rebuild. No chaos. MN8 integrates into the schedule you already have.</p>
+        <p class="p">MN8 integrates into real life. No rebuild. No chaos.</p>
 
-        <div class="card videoShell">
-          <div class="videoHeader">
-            <strong>AUTHORITY VIDEO</strong>
+        <div class="videoShell">
+          <div class="videoMeta">
+            <span>Authority video</span>
             <span>5–7 minutes</span>
           </div>
           <div class="videoFrame">
-            <!-- Replace VIDEO_URL -->
+            <!-- Replace VIDEO -->
             <iframe
-              id="mn8Video"
               src="https://www.youtube.com/embed/dQw4w9WgXcQ"
               title="MN8 Private"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -494,61 +363,61 @@
         </div>
       </section>
 
-      <!-- SECTION 3: TIMELINE -->
+      <!-- TIMELINE -->
       <section class="section" id="timeline">
         <h2 class="h2 serif">What you’ll notice over time</h2>
 
         <div class="timeline">
-          <div class="step">
-            <div class="stepTop">
-              <span class="pill">30 days</span>
-              <span class="stepTitle">Clarity returns</span>
+          <div class="row">
+            <div class="rowTop">
+              <div class="tag">30 days</div>
+              <div class="hint">Clarity returns</div>
             </div>
-            <p class="p">Decisions get lighter. You stop thinking about food all day. The mental noise drops.</p>
+            <p class="p">Decisions get lighter. The mental noise drops. You stop negotiating all day.</p>
           </div>
 
-          <div class="step">
-            <div class="stepTop">
-              <span class="pill">120 days</span>
-              <span class="stepTitle">Execution stabilizes</span>
+          <div class="row">
+            <div class="rowTop">
+              <div class="tag">120 days</div>
+              <div class="hint">Execution stabilizes</div>
             </div>
             <p class="p">Momentum becomes normal. Missed days don’t derail you. You return to structure without drama.</p>
           </div>
 
-          <div class="step">
-            <div class="stepTop">
-              <span class="pill">6 months</span>
-              <span class="stepTitle">Energy becomes predictable</span>
+          <div class="row">
+            <div class="rowTop">
+              <div class="tag">6 months</div>
+              <div class="hint">Energy becomes predictable</div>
             </div>
-            <p class="p">You stop fighting your body. Your output holds longer. Your presence becomes obvious again.</p>
+            <p class="p">You stop fighting your body. Output holds longer. Presence becomes obvious again.</p>
           </div>
 
-          <div class="step">
-            <div class="stepTop">
-              <span class="pill">12 months</span>
-              <span class="stepTitle">Quiet control</span>
+          <div class="row">
+            <div class="rowTop">
+              <div class="tag">12 months</div>
+              <div class="hint">Quiet control</div>
             </div>
-            <p class="p">Health stops being a project. Weight is managed quietly. Focus stays on work and responsibility.</p>
+            <p class="p">Health stops being a project. Weight is managed quietly. Focus stays on responsibility.</p>
           </div>
         </div>
       </section>
 
-      <!-- SECTION 4 -->
+      <!-- PRESSURE -->
       <section class="section" id="pressure">
         <h2 class="h2 serif">When life gets heavy</h2>
         <p class="p">
           Travel happens. Stress spikes. Schedules break. Days get missed.
-          MN8 is built for that reality. Missed days don’t reset progress, busy weeks don’t cancel momentum, and pressure doesn’t break MN8.
-          It works because it’s designed for continuity, not perfection.
+          MN8 is built for that reality. Missed days don’t reset progress. Busy weeks don’t cancel momentum.
+          Pressure doesn’t break MN8.
         </p>
       </section>
 
-      <!-- SECTION 5 -->
+      <!-- GUARANTEE -->
       <section class="section" id="guarantee">
         <h2 class="h2 serif">MN8 Integrity Guarantee</h2>
         <p class="p">
           MN8 is built for long-term integration, not short-term promises.
-          We don’t guarantee speed, motivation, or specific outcomes. We stand behind MN8 itself.
+          We don’t guarantee speed, motivation, or specific outcomes.
         </p>
         <p class="p" style="margin-top:12px;">
           If you complete 12 months inside MN8, follow it as designed, and there is <strong>no observable physical change</strong>
@@ -556,69 +425,54 @@
         </p>
       </section>
 
-      <!-- SECTION 6: OFFER -->
+      <!-- OFFER -->
       <section class="section" id="offer">
         <h2 class="h2 serif">Choose your MN8 commitment</h2>
-        <p class="p">Pick the proximity you want. Both options are built for full schedules. The difference is precision.</p>
+        <p class="p">The difference is proximity. Both are built for full schedules.</p>
 
-        <div class="offerGrid" role="list">
-          <div class="offerCard" role="listitem" tabindex="0" data-plan="private" aria-selected="false">
-            <div class="offerTitleRow">
-              <strong>MN8 Private</strong>
+        <div class="offerWrap" role="list" aria-label="Offer">
+          <div class="offerItem" role="listitem" tabindex="0" data-plan="private" aria-selected="false">
+            <div class="offerLeft">
+              <div class="offerName">MN8 Private</div>
+              <p class="offerCopy">Closer oversight and reduced friction. MN8 adapts as your constraints change.</p>
+            </div>
+            <div class="offerRight">
               <div class="price">$9,500<small>one-time / year</small></div>
             </div>
-            <p class="offerDesc">
-              Higher proximity for high-pressure operators. MN8 adapts as your constraints change.
-            </p>
-            <ul class="offerList">
-              <li>1-on-1 optimization sessions</li>
-              <li>Nutrition + fasting timing calibrated to results</li>
-              <li>Training adjustments as output changes</li>
-              <li>Progress interpretation + course correction</li>
-            </ul>
-            <p class="offerDesc" style="margin-top:12px;"><strong>Highest proximity.</strong> Lowest friction.</p>
           </div>
 
-          <div class="offerCard" role="listitem" tabindex="0" data-plan="core" aria-selected="false">
-            <div class="offerTitleRow">
-              <strong>MN8 Core</strong>
+          <div class="offerItem" role="listitem" tabindex="0" data-plan="core" aria-selected="false">
+            <div class="offerLeft">
+              <div class="offerName">MN8 Core</div>
+              <p class="offerCopy">Fixed MN8 structure. You adapt to MN8 with autonomy and zero personalization.</p>
+            </div>
+            <div class="offerRight">
               <div class="price">$6,000<small>one-time / year</small></div>
             </div>
-            <p class="offerDesc">
-              Fixed MN8 structure. You adapt to MN8 with autonomy and zero personalization.
-            </p>
-            <ul class="offerList">
-              <li>Fixed eating windows + fasting protocol</li>
-              <li>Standardized meal framework</li>
-              <li>Daily short-form training (15–20 min)</li>
-              <li>Routine locking + stabilization</li>
-            </ul>
-            <p class="offerDesc" style="margin-top:12px;"><strong>Same foundation.</strong> More autonomy.</p>
           </div>
         </div>
 
         <div class="gate" id="gate" hidden>
-          <h3>Agreement required</h3>
+          <h3 style="margin:0 0 8px; font-size:16px; font-weight:900;">Agreement required</h3>
           <p class="p">
-            Before checkout, you’ll review and sign the MN8 written agreement.
-            This protects clarity on expectations, participation, and what “followed as designed” means.
+            Before checkout, you’ll review and sign the written agreement.
+            This protects expectations, participation, and what “followed as designed” means.
           </p>
 
-          <!-- Replace these links if you have PDFs/pages -->
           <div class="agreeLinks">
-            <a href="#" target="_blank" rel="noopener">Written agreement</a>
-            <a href="#" target="_blank" rel="noopener">Terms</a>
-            <a href="#" target="_blank" rel="noopener">Privacy</a>
+            <a class="chip" href="#" target="_blank" rel="noopener">Written agreement</a>
+            <a class="chip" href="#" target="_blank" rel="noopener">Terms</a>
+            <a class="chip" href="#" target="_blank" rel="noopener">Privacy</a>
           </div>
 
-          <div class="checkboxRow">
+          <div class="checkRow">
             <input type="checkbox" id="agree" />
             <label for="agree">I reviewed the agreement and I agree to the terms and policies.</label>
           </div>
 
           <div class="actions">
             <button class="btn" id="checkoutBtn" disabled>Continue to checkout</button>
-            <span class="hint" id="selectedPlanHint"></span>
+            <span class="smallHint" id="selectedPlanHint"></span>
           </div>
         </div>
       </section>
@@ -626,8 +480,7 @@
     </div>
   </main>
 
-  <!-- Sticky jump button -->
-  <div class="stickyJump" id="stickyJump" aria-hidden="false">
+  <div class="stickyJump" id="stickyJump">
     <button class="jumpBtn" type="button" id="jumpToOffer">
       <span class="dot"></span>
       Go to offer
@@ -636,13 +489,13 @@
 
   <script>
     (function(){
-      // Replace with your real checkout links (Stripe Payment Links / Checkout Sessions / etc.)
+      // Replace with your real checkout links (Stripe Payment Links recommended)
       const CHECKOUT_LINKS = {
         private: "https://your-checkout-link.com/mn8-private",
         core: "https://your-checkout-link.com/mn8-core"
       };
 
-      // Sticky hide/show
+      // Sticky hide when offer is visible
       const offerSection = document.getElementById("offer");
       const sticky = document.getElementById("stickyJump");
       const jumpBtn = document.getElementById("jumpToOffer");
@@ -653,17 +506,14 @@
             if (entry.isIntersecting) sticky.classList.add("hidden");
             else sticky.classList.remove("hidden");
           });
-        }, { threshold: 0.15 });
+        }, { threshold: 0.2 });
 
         io.observe(offerSection);
-
-        jumpBtn.addEventListener("click", () => {
-          offerSection.scrollIntoView({ behavior: "smooth", block: "start" });
-        });
+        jumpBtn.addEventListener("click", () => offerSection.scrollIntoView({ behavior:"smooth", block:"start" }));
       }
 
       // Offer selection + agreement gate
-      const cards = Array.from(document.querySelectorAll(".offerCard"));
+      const items = Array.from(document.querySelectorAll(".offerItem"));
       const gate = document.getElementById("gate");
       const agree = document.getElementById("agree");
       const checkoutBtn = document.getElementById("checkoutBtn");
@@ -673,45 +523,35 @@
 
       function setSelected(plan){
         selectedPlan = plan;
+        items.forEach(i => i.setAttribute("aria-selected", i.dataset.plan === plan ? "true" : "false"));
 
-        cards.forEach(c => c.setAttribute("aria-selected", c.dataset.plan === plan ? "true" : "false"));
+        gate.hidden = false;
+        agree.checked = false;
+        checkoutBtn.disabled = true;
 
-        if (gate) gate.hidden = false;
-        if (agree) agree.checked = false;
-        if (checkoutBtn) checkoutBtn.disabled = true;
-
-        if (hint) {
-          hint.textContent =
-            plan === "private"
-              ? "Selected: MN8 Private — $9,500 (one-time)"
-              : "Selected: MN8 Core — $6,000 (one-time)";
-        }
+        hint.textContent =
+          plan === "private"
+            ? "Selected: MN8 Private — $9,500 (one-time)"
+            : "Selected: MN8 Core — $6,000 (one-time)";
       }
 
-      cards.forEach(card => {
-        card.addEventListener("click", () => setSelected(card.dataset.plan));
-        card.addEventListener("keydown", (e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            setSelected(card.dataset.plan);
-          }
+      items.forEach(item => {
+        item.addEventListener("click", () => setSelected(item.dataset.plan));
+        item.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setSelected(item.dataset.plan); }
         });
       });
 
-      if (agree && checkoutBtn) {
-        agree.addEventListener("change", () => {
-          checkoutBtn.disabled = !agree.checked || !selectedPlan;
-        });
-      }
+      agree.addEventListener("change", () => {
+        checkoutBtn.disabled = !agree.checked || !selectedPlan;
+      });
 
-      if (checkoutBtn) {
-        checkoutBtn.addEventListener("click", () => {
-          if (!selectedPlan || !agree || !agree.checked) return;
-          window.location.href = CHECKOUT_LINKS[selectedPlan];
-        });
-      }
+      checkoutBtn.addEventListener("click", () => {
+        if (!selectedPlan || !agree.checked) return;
+        window.location.href = CHECKOUT_LINKS[selectedPlan];
+      });
     })();
   </script>
+
 </body>
 </html>
-
