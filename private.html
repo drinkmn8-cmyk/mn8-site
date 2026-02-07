@@ -1,65 +1,404 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Private — MN8</title>
-
-  <!-- IMPORTANT: bump v= number anytime you change CSS to break cache -->
-  <link rel="stylesheet" href="./style.css?v=6" />
-
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MN8 Private</title>
   <style>
-    /* default locked */
-    #content { display: none; }
-    #deny { display: none; }
+    :root{
+      --bg:#ffffff;
+      --text:#121212;
+      --muted:#5c5c5c;
+      --border:rgba(0,0,0,.10);
+      --shadow:0 10px 30px rgba(0,0,0,.08);
+      --radius:18px;
 
-    /* states */
-    #content.is-on { display: block; }
-    #deny.is-on { display: block; }
+      /* MN8 purple accents (adjust to your exact tokens) */
+      --mn8:#3c1e59;
+      --mn8_2:#632f96;
+    }
+
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Helvetica Neue", Helvetica;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.4;
+    }
+
+    .wrap{
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 28px 18px 120px;
+    }
+
+    h1,h2,h3{ margin:0 0 12px; letter-spacing:-.02em; }
+    p{ margin:0 0 14px; color:var(--muted); }
+
+    .section{
+      padding: 26px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* Video container */
+    .videoShell{
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow:hidden;
+      box-shadow: var(--shadow);
+      background:#fff;
+    }
+    .videoHeader{
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .videoHeader strong{ font-size:14px; }
+    .videoHeader span{ font-size:13px; color:var(--muted); }
+    .videoFrame{
+      aspect-ratio: 16 / 9;
+      width: 100%;
+      background: #000;
+    }
+    .videoFrame iframe{
+      width:100%;
+      height:100%;
+      border:0;
+      display:block;
+    }
+
+    /* Timeline */
+    .timeline{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .phaseCard{
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      background:#fff;
+    }
+    .phaseTop{
+      display:flex;
+      align-items:baseline;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom: 8px;
+    }
+    .phaseTop strong{ font-size:15px; color:var(--text); }
+    .phaseTop em{ font-style:normal; font-size:13px; color:var(--muted); }
+
+    /* Offer */
+    #offer{
+      scroll-margin-top: 90px; /* so scroll-to lands nicely under sticky elements */
+    }
+    .offerGrid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-top: 14px;
+    }
+    @media (min-width: 860px){
+      .offerGrid{ grid-template-columns: 1fr 1fr; }
+    }
+    .offerCard{
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+      background:#fff;
+      box-shadow: var(--shadow);
+      cursor:pointer;
+      transition: transform .12s ease, border-color .12s ease, box-shadow .12s ease;
+    }
+    .offerCard:hover{ transform: translateY(-1px); }
+    .offerCard[aria-selected="true"]{
+      border-color: rgba(60,30,89,.55);
+      box-shadow: 0 16px 40px rgba(60,30,89,.14);
+      outline: 2px solid rgba(60,30,89,.18);
+      outline-offset: 2px;
+    }
+    .offerTitleRow{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom: 8px;
+    }
+    .offerTitleRow strong{ font-size:16px; }
+    .price{
+      text-align:right;
+      font-weight:700;
+      color: var(--mn8);
+      white-space:nowrap;
+    }
+    .price small{
+      display:block;
+      font-size:12px;
+      color:var(--muted);
+      font-weight:600;
+      margin-top:2px;
+    }
+    .offerDesc{ color:var(--muted); margin:0; font-size:14px; }
+
+    /* Agreement + Checkout */
+    .gate{
+      margin-top: 14px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      background:#fff;
+    }
+    .gate h3{ font-size:15px; margin:0 0 8px; }
+    .checkboxRow{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      margin-top: 10px;
+    }
+    .checkboxRow input{ margin-top: 3px; }
+    .checkboxRow label{ font-size:14px; color:var(--muted); }
+
+    .actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+      margin-top: 14px;
+    }
+    .btn{
+      appearance:none;
+      border: 1px solid rgba(60,30,89,.35);
+      background: var(--mn8);
+      color:#fff;
+      padding: 12px 14px;
+      border-radius: 14px;
+      font-weight:700;
+      font-size:14px;
+      cursor:pointer;
+      transition: transform .12s ease, opacity .12s ease;
+    }
+    .btn:disabled{
+      opacity:.45;
+      cursor:not-allowed;
+    }
+    .btn:active{ transform: translateY(1px); }
+
+    .hint{
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    /* Sticky jump button */
+    .stickyJump{
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 16px;
+      z-index: 999;
+      width: min(540px, calc(100% - 24px));
+      display:flex;
+      justify-content:center;
+      pointer-events:none; /* allows only the button to be clickable */
+    }
+    .stickyJump .jumpBtn{
+      pointer-events:auto;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      border-radius: 999px;
+      padding: 12px 16px;
+      border: 1px solid rgba(0,0,0,.10);
+      box-shadow: var(--shadow);
+      background:#fff;
+      color: var(--text);
+      font-weight:800;
+      font-size:14px;
+      cursor:pointer;
+      transition: opacity .12s ease, transform .12s ease;
+    }
+    .stickyJump.hidden .jumpBtn{
+      opacity:0;
+      transform: translateY(10px);
+      pointer-events:none;
+    }
+    .dot{
+      width:10px; height:10px; border-radius:999px; background: var(--mn8_2);
+    }
   </style>
 </head>
 
-<body id="top">
-  <main class="section">
-    <div class="wrap">
+<body>
+  <main class="wrap">
+    <!-- SECTION 1: header -->
+    <section class="section" id="top">
+      <h1>Private access confirmed</h1>
+      <p>This page explains what happens next, what you’ll notice over time, and how MN8 holds when life gets heavy.</p>
+    </section>
 
-      <!-- DENIED -->
-      <div class="form-card" id="deny">
-        <h1 class="form-title">Access denied</h1>
-        <p class="p" id="denyMsg">This link is invalid, expired, or already used.</p>
+    <!-- SECTION 2: video -->
+    <section class="section" id="video">
+      <h2>What happens next</h2>
+      <p>This is not a reset. MN8 is designed to integrate into real life without disruption.</p>
 
-        <div style="margin-top:16px">
-          <a class="btn btn-ghost btn-sm" href="./index.html#top">Back</a>
+      <div class="videoShell">
+        <div class="videoHeader">
+          <strong>Authority video</strong>
+          <span>5–7 minutes</span>
+        </div>
+        <div class="videoFrame">
+          <!-- Replace with your embed -->
+          <iframe
+            src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+            title="MN8 Private"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: timeline (your shortened version) -->
+    <section class="section" id="timeline">
+      <h2>What you’ll notice over time</h2>
+
+      <div class="timeline">
+        <div class="phaseCard">
+          <div class="phaseTop">
+            <strong>After 30 days</strong>
+            <em>clarity + less noise</em>
+          </div>
+          <p>Your mind feels clearer and daily decisions take less effort. You’re no longer constantly thinking about food, workouts, or whether you’re on track.</p>
+        </div>
+
+        <div class="phaseCard">
+          <div class="phaseTop">
+            <strong>After 120 days</strong>
+            <em>steady execution</em>
+          </div>
+          <p>Execution feels steady. Focus holds longer, missed days don’t derail momentum, and progress continues without relying on motivation.</p>
+        </div>
+
+        <div class="phaseCard">
+          <div class="phaseTop">
+            <strong>After 6 months</strong>
+            <em>energy + presence</em>
+          </div>
+          <p>Energy is consistent and presence is noticeable. Your body supports your schedule instead of competing with it, and results no longer require attention.</p>
+        </div>
+
+        <div class="phaseCard">
+          <div class="phaseTop">
+            <strong>After 12 months</strong>
+            <em>quiet control</em>
+          </div>
+          <p>Health is no longer a project. Weight is managed quietly, energy is predictable, and your focus stays where it belongs — on your work and responsibilities.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 5: when life gets heavy -->
+    <section class="section" id="pressure">
+      <h2>When life gets heavy</h2>
+      <p>Life doesn’t slow down after you commit. Travel happens, stress increases, schedules break, and days get missed. MN8 is built for that reality. Missed days don’t reset progress, busy weeks don’t cancel momentum, and pressure doesn’t break the system. It works because it’s designed for continuity, not perfection.</p>
+    </section>
+
+    <!-- SECTION 6: guarantee (word "system" removed, per you) -->
+    <section class="section" id="guarantee">
+      <h2>MN8 Integrity Guarantee</h2>
+      <p>MN8 is built for long-term integration, not short-term promises. We don’t guarantee speed, motivation, or specific outcomes. We stand behind MN8 itself.</p>
+      <p>If you complete 12 months inside MN8, follow it as designed, and there is <strong>no observable physical change</strong> compared to your documented baseline, your program investment will be refunded.</p>
+      <p>This guarantee exists for one reason: MN8 works when it’s respected.</p>
+    </section>
+
+    <!-- SECTION 7: OFFER + GATE -->
+    <section class="section" id="offer">
+      <h2>Choose your MN8 commitment</h2>
+      <p>Select the level of proximity that matches how you want MN8 to operate in your life.</p>
+
+      <div class="offerGrid" role="list">
+        <div class="offerCard" role="listitem" tabindex="0" data-plan="private" aria-selected="false">
+          <div class="offerTitleRow">
+            <strong>MN8 Private</strong>
+            <div class="price">$9,500<small>/ year</small></div>
+          </div>
+          <p class="offerDesc">
+            For higher-pressure operators who want closer oversight and reduced friction. MN8 adapts as your schedule, energy, and constraints evolve.
+          </p>
+          <p class="offerDesc" style="margin-top:10px;"><strong>Highest proximity.</strong> Lowest friction.</p>
+        </div>
+
+        <div class="offerCard" role="listitem" tabindex="0" data-plan="core" aria-selected="false">
+          <div class="offerTitleRow">
+            <strong>MN8 Core</strong>
+            <div class="price">$6,000<small>/ year</small></div>
+          </div>
+          <p class="offerDesc">
+            Same MN8 foundation delivered as a fixed structure. You adapt to MN8 with more autonomy and less direct optimization.
+          </p>
+          <p class="offerDesc" style="margin-top:10px;"><strong>Same foundation.</strong> More autonomy.</p>
         </div>
       </div>
 
-      <!-- PRIVATE CONTENT -->
-      <div id="content">
-        <div class="section-head">
-          <h2 class="h2">Private Access</h2>
-          <p class="lead">Welcome to MN8.</p>
+      <div class="gate" id="gate" hidden>
+        <h3>Commitment & agreement</h3>
+        <p>Before continuing, you’ll be required to review and agree to MN8’s written agreement, terms, and policies. This confirms clarity around expectations, participation, and commitment.</p>
+
+        <div class="checkboxRow">
+          <input type="checkbox" id="agree" />
+          <label for="agree">I have reviewed and agree to the MN8 agreement, terms, and policies.</label>
         </div>
 
-        <div class="card">
-          <h3 class="h3">Start here</h3>
-          <p class="p">Embed your private video here and your next steps.</p>
+        <div class="actions">
+          <button class="btn" id="checkoutBtn" disabled>Continue to secure checkout</button>
+          <span class="hint" id="selectedPlanHint"></span>
         </div>
       </div>
-
-    </div>
+    </section>
   </main>
+
+  <!-- Sticky jump button -->
+  <div class="stickyJump" id="stickyJump" aria-hidden="false">
+    <button class="jumpBtn" type="button" id="jumpToOffer">
+      <span class="dot"></span>
+      Go to offer
+    </button>
+  </div>
+
 <script>
+(function(){
+
+  /* ===============================
+     URL PARAMS + STATE
+  =============================== */
   const params = new URLSearchParams(window.location.search);
-  const token = params.get("token") || "";
+  let token = params.get("token") || "";
   const status = params.get("status") || "";
   const reason = params.get("reason") || "";
 
-  // ---- CONFIG ----
+  const LS_KEY = "mn8_token";
+
+  /* ===============================
+     CONFIG
+  =============================== */
   const VERIFY_URL = "https://qsrsfzebsncrvkqiabnu.supabase.co/functions/v1/verify-token";
   const ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzcnNmemVic25jcnZrcWlhYm51Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4MjAwMDYsImV4cCI6MjA4NTM5NjAwNn0._PjCnlHKDomrUscaaqJ2esB31tcdR0OnuR6bgC1-5HE";
 
-  // ---- BASIC MODAL ----
-  function showModal(title, message, buttonText, onClick) {
+  const CHECKOUT_LINKS = {
+    private: "https://your-checkout-link.com/mn8-private",
+    core: "https://your-checkout-link.com/mn8-core"
+  };
+
+  /* ===============================
+     MODAL
+  =============================== */
+  function showModal(title, message, buttonText, onClick){
     const modal = document.createElement("div");
     modal.style.cssText = `
       position:fixed; inset:0; display:flex; align-items:center; justify-content:center;
@@ -85,7 +424,7 @@
           padding:12px 14px;
           border-radius:14px;
           border:0;
-          background:rgba(91,53,166,1);
+          background:#5b35a6;
           color:white;
           font-weight:700;
           cursor:pointer;
@@ -99,91 +438,176 @@
     };
   }
 
-  function lockPage() {
-    // Optional: hide your private content container until verified
+  /* ===============================
+     PAGE GATE
+  =============================== */
+  function lockPage(){
     const gate = document.getElementById("privateGate");
     if (gate) gate.style.display = "none";
   }
 
-  function unlockPage() {
+  function unlockPage(){
     const gate = document.getElementById("privateGate");
     if (gate) gate.style.display = "block";
   }
 
-  async function verifyToken(tok) {
+  async function verifyToken(tok){
     const res = await fetch(VERIFY_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         apikey: ANON_KEY,
-        Authorization: `Bearer ${ANON_KEY}`,
+        Authorization: `Bearer ${ANON_KEY}`
       },
-      body: JSON.stringify({ token: tok }),
+      body: JSON.stringify({ token: tok })
     });
-
     const out = await res.json().catch(() => ({}));
-    if (!res.ok || !out.ok) {
-      throw new Error(out.error || out.message || "Token verification failed");
-    }
-    return out;
+    if (!res.ok || !out.ok) throw new Error("Invalid token");
   }
 
-  (async () => {
+  /* ===============================
+     AUTH FLOW
+  =============================== */
+  async function authFlow(){
     lockPage();
 
-    // If they were rejected, show it and send back.
-    if (status === "reject") {
+    if (!token) token = localStorage.getItem(LS_KEY) || "";
+
+    if (status === "reject"){
       showModal(
         "Not approved",
         reason ? `Reason: ${reason}` : "You’re not a fit right now.",
         "Return to Qualification",
-        () => (window.location.href = "./qualify.html")
+        () => window.location.href = "./qualify.html"
       );
       return;
     }
 
-    // If accepted but missing token
-    if (status === "accept" && !token) {
+    if (status === "accept" && !token){
       showModal(
         "Access token missing",
         "Submit again so we can generate your access token.",
         "Return to Qualification",
-        () => (window.location.href = "./qualify.html")
+        () => window.location.href = "./qualify.html"
       );
       return;
     }
 
-    // If token exists, validate and unlock
-    if (token) {
-      try {
+    if (token){
+      try{
         await verifyToken(token);
+        localStorage.setItem(LS_KEY, token);
         unlockPage();
 
-        showModal(
-          "Approved",
-          "Access granted. Welcome inside.",
-          "Continue",
-          () => {} // just close
-        );
-      } catch (e) {
+        if (status === "accept"){
+          showModal(
+            "Private access confirmed",
+            "You’ve been approved. Review the page, then choose your MN8 commitment.",
+            "Continue"
+          );
+        }
+      } catch {
+        localStorage.removeItem(LS_KEY);
         showModal(
           "Access denied",
-          "Your token is invalid or expired. Submit again.",
+          "Your access link is invalid or expired.",
           "Return to Qualification",
-          () => (window.location.href = "./qualify.html")
+          () => window.location.href = "./qualify.html"
         );
       }
       return;
     }
 
-    // Default: if they landed here without status or token
     showModal(
       "Private access",
       "Submit the qualification to unlock this page.",
       "Go to Qualification",
-      () => (window.location.href = "./qualify.html")
+      () => window.location.href = "./qualify.html"
     );
-  })();
+  }
+
+  /* ===============================
+     STICKY OFFER BUTTON
+  =============================== */
+  function initSticky(){
+    const offerSection = document.getElementById("offer");
+    const sticky = document.getElementById("stickyJump");
+    const jumpBtn = document.getElementById("jumpToOffer");
+
+    if (!offerSection || !sticky || !jumpBtn) return;
+
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) sticky.classList.add("hidden");
+        else sticky.classList.remove("hidden");
+      });
+    }, { threshold: 0.15 });
+
+    io.observe(offerSection);
+
+    jumpBtn.onclick = () => {
+      offerSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    };
+  }
+
+  /* ===============================
+     OFFER SELECTION
+  =============================== */
+  function initOffer(){
+    const cards = document.querySelectorAll(".offerCard");
+    const gate = document.getElementById("gate");
+    const agree = document.getElementById("agree");
+    const checkoutBtn = document.getElementById("checkoutBtn");
+    const hint = document.getElementById("selectedPlanHint");
+
+    if (!cards.length) return;
+
+    let selectedPlan = null;
+
+    function selectPlan(plan){
+      selectedPlan = plan;
+      cards.forEach(c =>
+        c.setAttribute("aria-selected", c.dataset.plan === plan)
+      );
+      gate.hidden = false;
+      agree.checked = false;
+      checkoutBtn.disabled = true;
+      hint.textContent =
+        plan === "private"
+          ? "Selected: MN8 Private — $9,500 (one-time)"
+          : "Selected: MN8 Core — $6,000 (one-time)";
+    }
+
+    cards.forEach(card => {
+      card.onclick = () => selectPlan(card.dataset.plan);
+      card.onkeydown = e => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          selectPlan(card.dataset.plan);
+        }
+      };
+    });
+
+    agree.onchange = () => {
+      checkoutBtn.disabled = !agree.checked || !selectedPlan;
+    };
+
+    checkoutBtn.onclick = () => {
+      if (!selectedPlan || !agree.checked) return;
+      window.location.href = CHECKOUT_LINKS[selectedPlan];
+    };
+  }
+
+  /* ===============================
+     INIT
+  =============================== */
+  document.addEventListener("DOMContentLoaded", () => {
+    authFlow();
+    initSticky();
+    initOffer();
+  });
+
+})();
 </script>
 </body>
 </html>
