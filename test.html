@@ -5,289 +5,339 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>MN8 Private</title>
 
+  <!-- Lato -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
   <style>
     :root{
-      --bg:#0a0a0c;
+      --bg:#0B0D12; /* locked */
       --text:rgba(255,255,255,.92);
-      --muted:rgba(255,255,255,.68);
-      --muted2:rgba(255,255,255,.52);
-      --hair:rgba(255,255,255,.10);
-      --hair2:rgba(255,255,255,.08);
+      --muted:rgba(255,255,255,.64);
+      --muted2:rgba(255,255,255,.46);
+      --hair:rgba(255,255,255,.08);
+      --hair2:rgba(255,255,255,.06);
 
       --mn8:#6d3bd2;
 
-      --max: 980px;
-      --gutter: 18px;
+      --max:980px;
+      --g:18px;
+
+      --hero:clamp(44px, 5vw, 72px);
+      --h2:clamp(26px, 3.1vw, 42px);
+      --body:16.5px;
+      --lh:1.72;
     }
 
     *{ box-sizing:border-box; }
     html,body{ height:100%; }
     body{
       margin:0;
-      background: var(--bg);
-      color: var(--text);
-      font-family: ui-sans-serif, system-ui, -apple-system, "SF Pro Text", "SF Pro Display", Segoe UI, Roboto, Arial;
-      -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
+      background:var(--bg);
+      color:var(--text);
+      font-family:"Lato", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
     }
-
-    /* serif for big statements (like your public page) */
-    .serif{ font-family: ui-serif, Georgia, "Times New Roman", Times, serif; letter-spacing:-.03em; }
 
     a{ color:inherit; text-decoration:none; }
-    .wrap{ max-width: var(--max); margin:0 auto; padding:0 var(--gutter); }
+    .wrap{ max-width:var(--max); margin:0 auto; padding:0 var(--g); }
 
-    /* Topbar */
+    /* Topbar (quiet, internal) */
     .topbar{
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      background: rgba(10,10,12,.92);
-      border-bottom: 1px solid var(--hair2);
+      position:sticky;
+      top:0;
+      z-index:50;
+      background:rgba(11,13,18,.92);
+      border-bottom:1px solid var(--hair2);
+      backdrop-filter: blur(10px);
     }
     .topbar-inner{
-      height: 64px;
+      height:64px;
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap: 14px;
+      gap:14px;
     }
     .brand{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      min-width: 120px;
-      font-weight:800;
-      letter-spacing:.06em;
+      min-width:120px;
+      font-weight:900;
       font-size:12px;
-      color: rgba(255,255,255,.85);
+      letter-spacing:.14em;
+      color:rgba(255,255,255,.82);
+      text-transform:uppercase;
     }
     .nav{
       display:flex;
-      gap:22px;
       align-items:center;
-      color: rgba(255,255,255,.72);
-      font-size: 14px;
+      gap:22px;
+      color:rgba(255,255,255,.68);
+      font-size:14px;
+      font-weight:600;
     }
-    .nav a{ padding:8px 10px; border-radius:999px; }
-    .nav a:hover{ background: rgba(255,255,255,.06); color: rgba(255,255,255,.90); }
+    .nav a{
+      padding:8px 10px;
+      border-radius:999px;
+      transition: background .12s ease, color .12s ease;
+    }
+    .nav a:hover{
+      background:rgba(255,255,255,.06);
+      color:rgba(255,255,255,.88);
+    }
+    .chip{
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.04);
+      color:rgba(255,255,255,.82);
+      font-size:13px;
+      font-weight:700;
+      white-space:nowrap;
+    }
+    .chip:hover{ background:rgba(255,255,255,.06); }
 
-    main{ padding: 44px 0 140px; }
+    main{ padding:44px 0 140px; }
 
-    /* Sections: no cards, only spacing + thin lines */
-    .section{ padding: 44px 0; border-bottom: 1px solid var(--hair2); }
+    /* Sections = spacing + hairlines only */
+    .section{ padding:96px 0; border-bottom:1px solid var(--hair2); }
+    @media (max-width: 680px){
+      .section{ padding:64px 0; }
+    }
 
     .kicker{
-      color: rgba(255,255,255,.72);
-      font-size: 13px;
-      letter-spacing:.12em;
-      text-transform: uppercase;
-      margin-bottom: 14px;
+      margin:0 0 14px;
+      font-size:12px;
+      font-weight:700;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      color:rgba(255,255,255,.70);
     }
     .h1{
-      font-size: clamp(44px, 5vw, 72px);
-      line-height: 1.02;
-      font-weight: 760;
       margin:0 0 16px;
+      font-size:var(--hero);
+      line-height:1.05;
+      font-weight:900;
+      letter-spacing:-.02em;
     }
     .h2{
-      font-size: clamp(26px, 3.2vw, 42px);
-      line-height: 1.08;
-      font-weight: 740;
       margin:0 0 12px;
+      font-size:var(--h2);
+      line-height:1.12;
+      font-weight:700;
+      letter-spacing:-.01em;
     }
     .p{
       margin:0;
-      font-size: 16px;
-      line-height: 1.75;
-      color: var(--muted);
-      max-width: 70ch;
+      font-size:var(--body);
+      line-height:var(--lh);
+      color:var(--muted);
+      max-width:62ch;
     }
 
-    /* Video: flat, clean */
-    .videoShell{ margin-top: 18px; }
+    /* Video (framed element #1) */
     .videoMeta{
+      margin-top:14px;
       display:flex;
-      align-items:center;
       justify-content:space-between;
-      gap:10px;
-      color: var(--muted2);
-      font-size: 13px;
-      margin-bottom: 10px;
+      gap:12px;
+      color:var(--muted2);
+      font-size:13px;
+      font-weight:600;
+      max-width:62ch;
     }
     .videoFrame{
+      margin-top:12px;
       width:100%;
-      aspect-ratio: 16/9;
+      aspect-ratio:16/9;
       background:#000;
-      border: 1px solid var(--hair2);
-      border-radius: 18px;
+      border:1px solid var(--hair);
+      border-radius:14px;
       overflow:hidden;
     }
-    .videoFrame iframe{ width:100%; height:100%; border:0; display:block; }
+    .videoFrame iframe{
+      width:100%;
+      height:100%;
+      border:0;
+      display:block;
+    }
 
-    /* Timeline: no cards. Just rail + rows */
+    /* Timeline (system log) */
     .timeline{
-      margin-top: 22px;
-      position: relative;
-      padding-left: 28px;
-      max-width: 860px;
+      margin-top:22px;
+      position:relative;
+      padding-left:28px;
+      max-width:860px;
     }
     .timeline:before{
       content:"";
       position:absolute;
-      left: 10px;
-      top: 6px;
-      bottom: 6px;
-      width: 1px;
-      background: var(--hair);
+      left:10px;
+      top:6px;
+      bottom:6px;
+      width:1px;
+      background:var(--hair);
     }
     .row{
-      position: relative;
-      padding: 14px 0 14px 0;
-      border-bottom: 1px solid rgba(255,255,255,.06);
+      position:relative;
+      padding:16px 0;
+      border-bottom:1px solid rgba(255,255,255,.05);
     }
     .row:last-child{ border-bottom:0; }
     .row:before{
       content:"";
       position:absolute;
-      left: -28px;
-      top: 22px;
-      width: 8px;
-      height: 8px;
+      left:-28px;
+      top:24px;
+      width:8px;
+      height:8px;
       border-radius:999px;
-      background: var(--mn8);
+      background:var(--mn8);
     }
     .rowTop{
       display:flex;
       align-items:baseline;
       justify-content:space-between;
-      gap:12px;
+      gap:14px;
       flex-wrap:wrap;
-      margin-bottom: 6px;
+      margin-bottom:6px;
+      max-width:62ch;
     }
     .tag{
-      color: rgba(255,255,255,.90);
-      font-size: 14px;
-      font-weight: 780;
+      font-size:14px;
+      font-weight:900;
       letter-spacing:-.01em;
+      color:rgba(255,255,255,.92);
     }
-    .hint{
-      color: var(--muted2);
-      font-size: 13px;
+    .rowHint{
+      font-size:13px;
+      font-weight:600;
+      color:var(--muted2);
     }
 
-    /* Offer: minimal, 2 columns, no “cards every second” */
-    #offer{ scroll-margin-top: 90px; }
-    .offerWrap{ margin-top: 18px; border-top: 1px solid var(--hair2); }
+    /* Offer (framed element #2 = the list itself) */
+    #offer{ scroll-margin-top: 92px; }
+    .offerWrap{
+      margin-top:18px;
+      border-top:1px solid var(--hair2);
+      border-bottom:1px solid var(--hair2);
+      max-width:980px;
+    }
     .offerItem{
       display:flex;
       align-items:flex-start;
       justify-content:space-between;
-      gap: 18px;
-      padding: 18px 0;
-      border-bottom: 1px solid var(--hair2);
+      gap:18px;
+      padding:18px 0;
+      border-bottom:1px solid var(--hair2);
       cursor:pointer;
       outline:none;
     }
+    .offerItem:last-child{ border-bottom:0; }
     .offerItem[aria-selected="true"]{
-      border-bottom-color: rgba(109,59,210,.55);
+      border-bottom-color: rgba(109,59,210,.45);
     }
-    .offerLeft{
-      max-width: 72ch;
-    }
+
+    .offerLeft{ max-width:62ch; }
     .offerName{
-      font-size: 18px;
-      font-weight: 820;
-      letter-spacing:-.01em;
       margin:0 0 6px;
-      color: rgba(255,255,255,.92);
+      font-size:18px;
+      font-weight:900;
+      letter-spacing:-.01em;
+      color:rgba(255,255,255,.92);
     }
     .offerCopy{
       margin:0;
-      color: var(--muted);
-      font-size: 15px;
-      line-height: 1.7;
+      font-size:15px;
+      line-height:1.7;
+      color:var(--muted);
     }
     .offerRight{
       text-align:right;
-      min-width: 160px;
+      min-width: 170px;
     }
     .price{
-      font-size: 16px;
-      font-weight: 900;
-      color: rgba(255,255,255,.92);
+      font-size:16px;
+      font-weight:900;
+      color:rgba(255,255,255,.92);
     }
     .price small{
       display:block;
-      font-size: 12px;
-      font-weight: 650;
-      color: var(--muted2);
-      margin-top: 2px;
+      margin-top:2px;
+      font-size:12px;
+      font-weight:700;
+      color:var(--muted2);
     }
 
-    /* Agreement */
+    /* Gate appears after selection */
     .gate{
-      margin-top: 18px;
-      padding-top: 18px;
-      border-top: 1px solid rgba(255,255,255,.06);
+      margin-top:18px;
+      padding-top:18px;
+      border-top:1px solid rgba(255,255,255,.06);
+      max-width:62ch;
     }
-    .agreeLinks{
+    .gateTitle{
+      margin:0 0 8px;
+      font-size:16px;
+      font-weight:900;
+      letter-spacing:-.01em;
+      color:rgba(255,255,255,.92);
+    }
+    .links{
       display:flex;
       flex-wrap:wrap;
       gap:10px;
-      margin-top: 12px;
+      margin-top:12px;
     }
-    .chip{
-      padding: 8px 12px;
-      border-radius:999px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      color: rgba(255,255,255,.82);
-      font-size: 13px;
-    }
-    .chip:hover{ background: rgba(255,255,255,.06); }
 
     .checkRow{
       display:flex;
       gap:10px;
       align-items:flex-start;
-      margin-top: 14px;
+      margin-top:14px;
     }
-    .checkRow input{ margin-top: 4px; }
-    .checkRow label{ color: var(--muted); font-size: 14px; line-height: 1.55; }
+    .checkRow input{ margin-top:4px; }
+    .checkRow label{
+      font-size:14px;
+      line-height:1.55;
+      color:var(--muted);
+    }
 
     .actions{
       display:flex;
       flex-wrap:wrap;
       gap:10px;
       align-items:center;
-      margin-top: 14px;
+      margin-top:14px;
     }
     .btn{
       appearance:none;
-      border: 1px solid rgba(109,59,210,.45);
-      background: var(--mn8);
+      border:1px solid rgba(109,59,210,.55);
+      background:var(--mn8);
       color:#fff;
-      padding: 12px 16px;
-      border-radius: 999px;
-      font-weight: 900;
-      font-size: 14px;
+      padding:12px 16px;
+      border-radius:999px;
+      font-weight:900;
+      font-size:14px;
       cursor:pointer;
-      transition: transform .12s ease, opacity .12s ease, filter .12s ease;
+      transition: opacity .12s ease, transform .12s ease;
     }
-    .btn:hover{ filter: brightness(1.02); }
     .btn:disabled{ opacity:.45; cursor:not-allowed; }
     .btn:active{ transform: translateY(1px); }
-    .smallHint{ color: var(--muted2); font-size: 13px; }
+    .miniHint{
+      font-size:13px;
+      color:var(--muted2);
+      font-weight:600;
+    }
 
-    /* Sticky jump */
+    /* Sticky jump (navigation, not persuasion) */
     .stickyJump{
-      position: fixed;
-      left: 50%;
-      transform: translateX(-50%);
-      bottom: 16px;
-      z-index: 60;
-      width: min(560px, calc(100% - 24px));
+      position:fixed;
+      left:50%;
+      transform:translateX(-50%);
+      bottom:16px;
+      z-index:60;
+      width:min(560px, calc(100% - 24px));
       pointer-events:none;
     }
     .jumpBtn{
@@ -297,17 +347,17 @@
       align-items:center;
       justify-content:center;
       gap:10px;
-      padding: 13px 16px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(10,10,12,.92);
-      color: rgba(255,255,255,.92);
-      font-weight: 900;
-      font-size: 14px;
+      padding:13px 16px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(11,13,18,.92);
+      color:rgba(255,255,255,.92);
+      font-weight:900;
+      font-size:14px;
       cursor:pointer;
     }
+    .dot{ width:10px; height:10px; border-radius:999px; background:var(--mn8); }
     .stickyJump.hidden{ display:none; }
-    .dot{ width:10px; height:10px; border-radius:999px; background: var(--mn8); }
   </style>
 </head>
 
@@ -323,101 +373,99 @@
         <a href="./index.html#faq">FAQ</a>
       </nav>
 
-      <a class="nav" href="./qualify.html" style="min-width:120px; justify-content:flex-end;">
-        <span class="chip">Qualification</span>
-      </a>
+      <a href="./qualify.html" class="chip">Qualification</a>
     </div>
   </header>
 
   <main>
     <div class="wrap">
 
-      <!-- HERO -->
+      <!-- 1) ENTRY -->
       <section class="section" id="top">
-        <div class="kicker">Private access</div>
-        <h1 class="h1 serif">Activate MN8 with clarity.</h1>
+        <p class="kicker">Private access</p>
+        <h1 class="h1">Operate with MN8.</h1>
         <p class="p">
-          Read this once. Understand what happens over time. Choose your proximity.
+          This page defines how MN8 runs, what changes over time, and what commitment means before activation.
         </p>
       </section>
 
-      <!-- VIDEO -->
+      <!-- 2) AUTHORITY VIDEO -->
       <section class="section" id="video">
-        <h2 class="h2 serif">What happens next</h2>
-        <p class="p">MN8 integrates into real life. No rebuild. No chaos.</p>
+        <h2 class="h2">Authority brief</h2>
+        <p class="p">Watch before selecting access level.</p>
 
-        <div class="videoShell">
-          <div class="videoMeta">
-            <span>Authority video</span>
-            <span>5–7 minutes</span>
-          </div>
-          <div class="videoFrame">
-            <!-- Replace VIDEO -->
-            <iframe
-              src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-              title="MN8 Private"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen
-            ></iframe>
-          </div>
+        <div class="videoMeta">
+          <span>Briefing</span>
+          <span>5–7 minutes</span>
+        </div>
+
+        <div class="videoFrame">
+          <!-- Replace VIDEO_URL -->
+          <iframe
+            src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+            title="MN8 Authority Brief"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          ></iframe>
         </div>
       </section>
 
-      <!-- TIMELINE -->
+      <!-- 3) INTEGRATION OVER TIME -->
       <section class="section" id="timeline">
-        <h2 class="h2 serif">What you’ll notice over time</h2>
+        <h2 class="h2">Integration over time</h2>
+        <p class="p">Expected operating states, in sequence.</p>
 
         <div class="timeline">
           <div class="row">
             <div class="rowTop">
               <div class="tag">30 days</div>
-              <div class="hint">Clarity returns</div>
+              <div class="rowHint">Cognitive load drops</div>
             </div>
-            <p class="p">Decisions get lighter. The mental noise drops. You stop negotiating all day.</p>
+            <p class="p">Decisions get lighter. Food and training stop taking mental space.</p>
           </div>
 
           <div class="row">
             <div class="rowTop">
               <div class="tag">120 days</div>
-              <div class="hint">Execution stabilizes</div>
+              <div class="rowHint">Execution stabilizes</div>
             </div>
-            <p class="p">Momentum becomes normal. Missed days don’t derail you. You return to structure without drama.</p>
+            <p class="p">Missed days stop creating resets. You return to structure without friction.</p>
           </div>
 
           <div class="row">
             <div class="rowTop">
               <div class="tag">6 months</div>
-              <div class="hint">Energy becomes predictable</div>
+              <div class="rowHint">Output becomes predictable</div>
             </div>
-            <p class="p">You stop fighting your body. Output holds longer. Presence becomes obvious again.</p>
+            <p class="p">Energy holds longer. The body supports the schedule instead of competing with it.</p>
           </div>
 
           <div class="row">
             <div class="rowTop">
               <div class="tag">12 months</div>
-              <div class="hint">Quiet control</div>
+              <div class="rowHint">Quiet control</div>
             </div>
-            <p class="p">Health stops being a project. Weight is managed quietly. Focus stays on responsibility.</p>
+            <p class="p">Health is no longer a project. Weight is managed without daily attention.</p>
           </div>
         </div>
       </section>
 
-      <!-- PRESSURE -->
-      <section class="section" id="pressure">
-        <h2 class="h2 serif">When life gets heavy</h2>
+      <!-- 4) REALITY -->
+      <section class="section" id="reality">
+        <h2 class="h2">When life gets heavy</h2>
         <p class="p">
           Travel happens. Stress spikes. Schedules break. Days get missed.
-          MN8 is built for that reality. Missed days don’t reset progress. Busy weeks don’t cancel momentum.
-          Pressure doesn’t break MN8.
+          MN8 is built for continuity under pressure. Missed days don’t reset progress, busy weeks don’t cancel momentum,
+          and disruption doesn’t collapse the structure.
         </p>
       </section>
 
-      <!-- GUARANTEE -->
+      <!-- 5) GUARANTEE -->
       <section class="section" id="guarantee">
-        <h2 class="h2 serif">MN8 Integrity Guarantee</h2>
+        <h2 class="h2">Integrity guarantee</h2>
         <p class="p">
-          MN8 is built for long-term integration, not short-term promises.
-          We don’t guarantee speed, motivation, or specific outcomes.
+          MN8 does not guarantee speed, motivation, or a specific outcome timeline.
+          MN8 guarantees the integrity of the structure when followed as designed.
         </p>
         <p class="p" style="margin-top:12px;">
           If you complete 12 months inside MN8, follow it as designed, and there is <strong>no observable physical change</strong>
@@ -425,16 +473,16 @@
         </p>
       </section>
 
-      <!-- OFFER -->
+      <!-- 6) OFFER -->
       <section class="section" id="offer">
-        <h2 class="h2 serif">Choose your MN8 commitment</h2>
-        <p class="p">The difference is proximity. Both are built for full schedules.</p>
+        <h2 class="h2">Select access level</h2>
+        <p class="p">Choose proximity. Both options run inside the same MN8 operating standard.</p>
 
-        <div class="offerWrap" role="list" aria-label="Offer">
+        <div class="offerWrap" role="list" aria-label="MN8 Access Levels">
           <div class="offerItem" role="listitem" tabindex="0" data-plan="private" aria-selected="false">
             <div class="offerLeft">
               <div class="offerName">MN8 Private</div>
-              <p class="offerCopy">Closer oversight and reduced friction. MN8 adapts as your constraints change.</p>
+              <p class="offerCopy">Adaptive oversight. MN8 calibrates as constraints, output, and schedule shift.</p>
             </div>
             <div class="offerRight">
               <div class="price">$9,500<small>one-time / year</small></div>
@@ -444,7 +492,7 @@
           <div class="offerItem" role="listitem" tabindex="0" data-plan="core" aria-selected="false">
             <div class="offerLeft">
               <div class="offerName">MN8 Core</div>
-              <p class="offerCopy">Fixed MN8 structure. You adapt to MN8 with autonomy and zero personalization.</p>
+              <p class="offerCopy">Fixed structure. You adapt to MN8 with autonomy and zero personalization.</p>
             </div>
             <div class="offerRight">
               <div class="price">$6,000<small>one-time / year</small></div>
@@ -452,14 +500,15 @@
           </div>
         </div>
 
+        <!-- 7) AGREEMENT GATE -->
         <div class="gate" id="gate" hidden>
-          <h3 style="margin:0 0 8px; font-size:16px; font-weight:900;">Agreement required</h3>
+          <div class="gateTitle">Agreement required</div>
           <p class="p">
-            Before checkout, you’ll review and sign the written agreement.
-            This protects expectations, participation, and what “followed as designed” means.
+            Before checkout, you will review and sign the written agreement.
+            This defines expectations, participation, and what “followed as designed” means.
           </p>
 
-          <div class="agreeLinks">
+          <div class="links">
             <a class="chip" href="#" target="_blank" rel="noopener">Written agreement</a>
             <a class="chip" href="#" target="_blank" rel="noopener">Terms</a>
             <a class="chip" href="#" target="_blank" rel="noopener">Privacy</a>
@@ -471,8 +520,8 @@
           </div>
 
           <div class="actions">
-            <button class="btn" id="checkoutBtn" disabled>Continue to checkout</button>
-            <span class="smallHint" id="selectedPlanHint"></span>
+            <button class="btn" id="checkoutBtn" disabled>Proceed to checkout</button>
+            <span class="miniHint" id="selectedPlanHint"></span>
           </div>
         </div>
       </section>
@@ -480,6 +529,7 @@
     </div>
   </main>
 
+  <!-- Sticky jump -->
   <div class="stickyJump" id="stickyJump">
     <button class="jumpBtn" type="button" id="jumpToOffer">
       <span class="dot"></span>
@@ -489,13 +539,13 @@
 
   <script>
     (function(){
-      // Replace with your real checkout links (Stripe Payment Links recommended)
+      // Replace with real checkout links (Stripe Payment Links recommended)
       const CHECKOUT_LINKS = {
         private: "https://your-checkout-link.com/mn8-private",
         core: "https://your-checkout-link.com/mn8-core"
       };
 
-      // Sticky hide when offer is visible
+      // Sticky jump hides when offer is visible
       const offerSection = document.getElementById("offer");
       const sticky = document.getElementById("stickyJump");
       const jumpBtn = document.getElementById("jumpToOffer");
@@ -523,6 +573,7 @@
 
       function setSelected(plan){
         selectedPlan = plan;
+
         items.forEach(i => i.setAttribute("aria-selected", i.dataset.plan === plan ? "true" : "false"));
 
         gate.hidden = false;
