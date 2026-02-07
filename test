@@ -1,0 +1,549 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MN8 Private</title>
+
+  <style>
+    :root{
+      --bg0:#07070a;
+      --bg1:#0b0b10;
+
+      --text:#f5f5f7;
+      --muted:rgba(245,245,247,.72);
+      --hair:rgba(255,255,255,.08);
+
+      --card:rgba(255,255,255,.04);
+      --card2:rgba(255,255,255,.06);
+      --shadow: 0 20px 60px rgba(0,0,0,.55);
+
+      --radius:18px;
+      --radius2:26px;
+
+      /* MN8 accent (keep subtle) */
+      --mn8:#6d3bd2;
+      --mn8Soft: rgba(109,59,210,.14);
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "SF Pro Display", "SF Pro Text", Segoe UI, Roboto, Arial;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      color: var(--text);
+      background:
+        radial-gradient(1200px 800px at 20% 0%, rgba(109,59,210,.14), transparent 60%),
+        radial-gradient(900px 700px at 80% 20%, rgba(255,255,255,.06), transparent 55%),
+        linear-gradient(180deg, var(--bg1), var(--bg0));
+    }
+
+    .wrap{
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 46px 18px 140px;
+    }
+
+    h1,h2,h3{ margin:0; letter-spacing:-.03em; }
+    .h1{
+      font-size: 44px;
+      line-height: 1.05;
+      font-weight: 750;
+      margin-bottom: 12px;
+    }
+    .h2{
+      font-size: 28px;
+      line-height: 1.12;
+      font-weight: 740;
+      margin-bottom: 10px;
+    }
+    .p{
+      margin:0;
+      font-size:15px;
+      line-height:1.65;
+      color: var(--muted);
+    }
+
+    .section{
+      padding: 34px 0;
+      border-bottom: 1px solid var(--hair);
+    }
+
+    .card{
+      background: linear-gradient(180deg, var(--card2), var(--card));
+      border: 1px solid var(--hair);
+      border-radius: var(--radius2);
+      box-shadow: var(--shadow);
+    }
+
+    /* Video */
+    .videoShell{
+      margin-top: 18px;
+      overflow:hidden;
+    }
+    .videoHeader{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--hair);
+    }
+    .videoHeader strong{ font-size:13px; letter-spacing:.02em; color:rgba(245,245,247,.88); }
+    .videoHeader span{ font-size:13px; color: var(--muted); }
+    .videoFrame{
+      aspect-ratio: 16/9;
+      width:100%;
+      background:#000;
+    }
+    .videoFrame iframe{
+      width:100%;
+      height:100%;
+      border:0;
+      display:block;
+    }
+
+    /* Timeline rail */
+    .timeline{
+      margin-top: 20px;
+      position: relative;
+      padding-left: 26px;
+    }
+    .timeline:before{
+      content:"";
+      position:absolute;
+      left: 9px;
+      top: 8px;
+      bottom: 8px;
+      width: 2px;
+      border-radius: 99px;
+      background: linear-gradient(180deg, rgba(109,59,210,.65), rgba(255,255,255,.06));
+    }
+    .step{
+      position: relative;
+      padding: 16px 16px 16px 18px;
+      margin-bottom: 14px;
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, var(--card2), var(--card));
+      border: 1px solid var(--hair);
+    }
+    .step:before{
+      content:"";
+      position:absolute;
+      left: -26px;
+      top: 22px;
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: var(--mn8);
+      box-shadow: 0 0 0 7px var(--mn8Soft);
+    }
+    .stepTop{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-bottom: 6px;
+    }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.10);
+      color: rgba(245,245,247,.88);
+      font-size: 12px;
+      font-weight: 650;
+      letter-spacing: .01em;
+      white-space:nowrap;
+    }
+    .stepTitle{
+      font-size: 14px;
+      font-weight: 680;
+      color: rgba(245,245,247,.92);
+    }
+
+    /* Offer section */
+    #offer{ scroll-margin-top: 90px; }
+    .offerGrid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-top: 14px;
+    }
+    @media (min-width: 860px){
+      .offerGrid{ grid-template-columns: 1fr 1fr; }
+    }
+    .offerCard{
+      border: 1px solid var(--hair);
+      border-radius: var(--radius2);
+      padding: 18px;
+      background: linear-gradient(180deg, var(--card2), var(--card));
+      box-shadow: var(--shadow);
+      cursor:pointer;
+      transition: transform .12s ease, border-color .12s ease, box-shadow .12s ease;
+      outline: none;
+    }
+    .offerCard:hover{ transform: translateY(-1px); }
+    .offerCard[aria-selected="true"]{
+      border-color: rgba(109,59,210,.55);
+      box-shadow: 0 16px 44px rgba(109,59,210,.18);
+      outline: 2px solid rgba(109,59,210,.16);
+      outline-offset: 2px;
+    }
+    .offerTitleRow{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom: 8px;
+    }
+    .offerTitleRow strong{
+      font-size:16px;
+      font-weight: 780;
+      letter-spacing:-.01em;
+    }
+    .price{
+      text-align:right;
+      font-weight: 820;
+      color: rgba(245,245,247,.92);
+      white-space:nowrap;
+    }
+    .price small{
+      display:block;
+      font-size:12px;
+      color: var(--muted);
+      font-weight: 650;
+      margin-top:2px;
+    }
+    .offerDesc{
+      color: var(--muted);
+      margin:0;
+      font-size:14px;
+      line-height: 1.6;
+    }
+
+    /* Agreement gate */
+    .gate{
+      margin-top: 14px;
+      border: 1px solid var(--hair);
+      border-radius: var(--radius2);
+      padding: 16px;
+      background: linear-gradient(180deg, var(--card2), var(--card));
+    }
+    .gate h3{
+      font-size:15px;
+      font-weight: 760;
+      margin:0 0 8px;
+      letter-spacing:-.01em;
+    }
+    .checkboxRow{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      margin-top: 10px;
+    }
+    .checkboxRow input{ margin-top: 3px; }
+    .checkboxRow label{ font-size:14px; color: var(--muted); line-height:1.5; }
+
+    .actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+      margin-top: 14px;
+    }
+    .btn{
+      appearance:none;
+      border: 1px solid rgba(109,59,210,.35);
+      background: linear-gradient(180deg, rgba(109,59,210,.95), rgba(90,44,185,.95));
+      color:#fff;
+      padding: 12px 14px;
+      border-radius: 14px;
+      font-weight: 780;
+      font-size:14px;
+      cursor:pointer;
+      transition: transform .12s ease, opacity .12s ease, filter .12s ease;
+    }
+    .btn:hover{ filter: brightness(1.03); }
+    .btn:disabled{ opacity:.45; cursor:not-allowed; }
+    .btn:active{ transform: translateY(1px); }
+    .hint{ font-size:13px; color: var(--muted); }
+
+    /* Sticky jump button */
+    .stickyJump{
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 16px;
+      z-index: 999;
+      width: min(560px, calc(100% - 24px));
+      display:flex;
+      justify-content:center;
+      pointer-events:none;
+    }
+    .stickyJump .jumpBtn{
+      pointer-events:auto;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      width:100%;
+      border-radius: 999px;
+      padding: 12px 16px;
+      border: 1px solid rgba(255,255,255,.10);
+      box-shadow: 0 22px 60px rgba(0,0,0,.55);
+      background: rgba(15,15,20,.92);
+      backdrop-filter: blur(10px);
+      color: rgba(245,245,247,.92);
+      font-weight: 820;
+      font-size:14px;
+      cursor:pointer;
+      transition: opacity .12s ease, transform .12s ease;
+    }
+    .stickyJump.hidden .jumpBtn{
+      opacity:0;
+      transform: translateY(10px);
+      pointer-events:none;
+    }
+    .dot{
+      width:10px;
+      height:10px;
+      border-radius:999px;
+      background: var(--mn8);
+      box-shadow: 0 0 0 7px var(--mn8Soft);
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="wrap">
+    <!-- SECTION 1 -->
+    <section class="section" id="top">
+      <h1 class="h1">Private access confirmed</h1>
+      <p class="p">This page explains how MN8 operates, how it integrates over time, and how risk is handled before you activate access.</p>
+    </section>
+
+    <!-- SECTION 2: VIDEO -->
+    <section class="section" id="video">
+      <h2 class="h2">What happens next</h2>
+      <p class="p">This is not a reset. MN8 is designed to integrate into real life without disruption.</p>
+
+      <div class="card videoShell">
+        <div class="videoHeader">
+          <strong>AUTHORITY VIDEO</strong>
+          <span>5–7 minutes</span>
+        </div>
+        <div class="videoFrame">
+          <!-- CHANGE THIS -->
+          <iframe
+            id="mn8Video"
+            src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+            title="MN8 Private"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: TIMELINE -->
+    <section class="section" id="timeline">
+      <h2 class="h2">What you’ll notice over time</h2>
+
+      <div class="timeline">
+        <div class="step">
+          <div class="stepTop">
+            <span class="pill">30 days</span>
+            <span class="stepTitle">Clarity returns</span>
+          </div>
+          <p class="p">Your mind feels clearer and daily decisions take less effort. You’re no longer constantly thinking about food, workouts, or whether you’re on track.</p>
+        </div>
+
+        <div class="step">
+          <div class="stepTop">
+            <span class="pill">120 days</span>
+            <span class="stepTitle">Execution stabilizes</span>
+          </div>
+          <p class="p">Execution feels steady. Focus holds longer, missed days don’t derail momentum, and progress continues without relying on motivation.</p>
+        </div>
+
+        <div class="step">
+          <div class="stepTop">
+            <span class="pill">6 months</span>
+            <span class="stepTitle">Energy becomes predictable</span>
+          </div>
+          <p class="p">Energy is consistent and presence is noticeable. Your body supports your schedule instead of competing with it, and results no longer require attention.</p>
+        </div>
+
+        <div class="step">
+          <div class="stepTop">
+            <span class="pill">12 months</span>
+            <span class="stepTitle">Quiet control</span>
+          </div>
+          <p class="p">Health is no longer a project. Weight is managed quietly, energy is predictable, and your focus stays where it belongs — on your work and responsibilities.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4 -->
+    <section class="section" id="pressure">
+      <h2 class="h2">When life gets heavy</h2>
+      <p class="p">
+        Life doesn’t slow down after you commit. Travel happens, stress increases, schedules break, and days get missed.
+        MN8 is built for that reality. Missed days don’t reset progress, busy weeks don’t cancel momentum, and pressure doesn’t break MN8.
+        It works because it’s designed for continuity, not perfection.
+      </p>
+    </section>
+
+    <!-- SECTION 5 -->
+    <section class="section" id="guarantee">
+      <h2 class="h2">MN8 Integrity Guarantee</h2>
+      <p class="p">MN8 is built for long-term integration, not short-term promises. We don’t guarantee speed, motivation, or specific outcomes. We stand behind MN8 itself.</p>
+      <p class="p" style="margin-top:10px;">
+        If you complete 12 months inside MN8, follow it as designed, and there is <strong>no observable physical change</strong> compared to your documented baseline, your program investment will be refunded.
+      </p>
+    </section>
+
+    <!-- SECTION 6: OFFER -->
+    <section class="section" id="offer">
+      <h2 class="h2">Choose your MN8 commitment</h2>
+      <p class="p">Select the level of proximity that matches how you want MN8 to operate in your life.</p>
+
+      <div class="offerGrid" role="list">
+        <div class="offerCard" role="listitem" tabindex="0" data-plan="private" aria-selected="false">
+          <div class="offerTitleRow">
+            <strong>MN8 Private</strong>
+            <div class="price">$9,500<small>/ year</small></div>
+          </div>
+          <p class="offerDesc">
+            For higher-pressure operators who want closer oversight and reduced friction. MN8 adapts as your schedule, energy, and constraints evolve.
+          </p>
+          <p class="offerDesc" style="margin-top:10px;"><strong>Highest proximity.</strong> Lowest friction.</p>
+        </div>
+
+        <div class="offerCard" role="listitem" tabindex="0" data-plan="core" aria-selected="false">
+          <div class="offerTitleRow">
+            <strong>MN8 Core</strong>
+            <div class="price">$6,000<small>/ year</small></div>
+          </div>
+          <p class="offerDesc">
+            Same MN8 foundation delivered as a fixed structure. You adapt to MN8 with more autonomy and less direct optimization.
+          </p>
+          <p class="offerDesc" style="margin-top:10px;"><strong>Same foundation.</strong> More autonomy.</p>
+        </div>
+      </div>
+
+      <div class="gate" id="gate" hidden>
+        <h3>Commitment & agreement</h3>
+        <p class="p">
+          Before continuing, you’ll be required to review and agree to MN8’s written agreement, terms, and policies.
+          This confirms clarity around expectations, participation, and commitment.
+        </p>
+
+        <div class="checkboxRow">
+          <input type="checkbox" id="agree" />
+          <label for="agree">I have reviewed and agree to the MN8 agreement, terms, and policies.</label>
+        </div>
+
+        <div class="actions">
+          <button class="btn" id="checkoutBtn" disabled>Continue to secure checkout</button>
+          <span class="hint" id="selectedPlanHint"></span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Sticky jump button -->
+  <div class="stickyJump" id="stickyJump" aria-hidden="false">
+    <button class="jumpBtn" type="button" id="jumpToOffer">
+      <span class="dot"></span>
+      Go to offer
+    </button>
+  </div>
+
+  <script>
+  (function(){
+    // CHANGE THESE LINKS (ok to keep placeholders for UI work)
+    const CHECKOUT_LINKS = {
+      private: "https://your-checkout-link.com/mn8-private",
+      core: "https://your-checkout-link.com/mn8-core"
+    };
+
+    function initSticky() {
+      const offerSection = document.getElementById("offer");
+      const sticky = document.getElementById("stickyJump");
+      const jumpBtn = document.getElementById("jumpToOffer");
+
+      if (!offerSection || !sticky || !jumpBtn) return;
+
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) sticky.classList.add("hidden");
+          else sticky.classList.remove("hidden");
+        });
+      }, { threshold: 0.15 });
+
+      io.observe(offerSection);
+
+      jumpBtn.addEventListener("click", () => {
+        offerSection.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    }
+
+    function initOffer() {
+      const cards = Array.from(document.querySelectorAll(".offerCard"));
+      const gate = document.getElementById("gate");
+      const agree = document.getElementById("agree");
+      const checkoutBtn = document.getElementById("checkoutBtn");
+      const hint = document.getElementById("selectedPlanHint");
+
+      if (!cards.length || !gate || !agree || !checkoutBtn || !hint) return;
+
+      let selectedPlan = null;
+
+      function setSelected(plan) {
+        selectedPlan = plan;
+        cards.forEach((c) => c.setAttribute("aria-selected", c.dataset.plan === plan));
+        gate.hidden = false;
+        agree.checked = false;
+        checkoutBtn.disabled = true;
+
+        hint.textContent =
+          plan === "private"
+            ? "Selected: MN8 Private — $9,500 (one-time)"
+            : "Selected: MN8 Core — $6,000 (one-time)";
+      }
+
+      cards.forEach((card) => {
+        card.addEventListener("click", () => setSelected(card.dataset.plan));
+        card.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            setSelected(card.dataset.plan);
+          }
+        });
+      });
+
+      agree.addEventListener("change", () => {
+        checkoutBtn.disabled = !agree.checked || !selectedPlan;
+      });
+
+      checkoutBtn.addEventListener("click", () => {
+        if (!selectedPlan || !agree.checked) return;
+        window.location.href = CHECKOUT_LINKS[selectedPlan];
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      initSticky();
+      initOffer();
+    });
+  })();
+  </script>
+
+</body>
+</html>
