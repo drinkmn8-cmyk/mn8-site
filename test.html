@@ -8,152 +8,86 @@
   <!-- Lato -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
 
   <style>
     :root{
-      --bg:#0B0D12; /* locked */
-      --text:rgba(255,255,255,.92);
-      --muted:rgba(255,255,255,.64);
-      --muted2:rgba(255,255,255,.46);
+      --bg:#0B0D12;
+      --text:#F2F2F3;
+      --muted:rgba(242,242,243,.70);
       --hair:rgba(255,255,255,.08);
-      --hair2:rgba(255,255,255,.06);
 
-      --mn8:#6d3bd2;
+      --panel:rgba(255,255,255,.04);
+      --panel2:rgba(255,255,255,.06);
 
-      --max:980px;
-      --g:18px;
+      --mn8:#6D3BD2;             /* purple */
+      --mn8Soft:rgba(109,59,210,.25);
 
-      --hero:clamp(44px, 5vw, 72px);
-      --h2:clamp(26px, 3.1vw, 42px);
-      --body:16.5px;
-      --lh:1.72;
+      --radiusXL:28px;
+      --radiusLG:22px;
+      --radiusMD:16px;
     }
 
-    *{ box-sizing:border-box; }
-    html,body{ height:100%; }
+    *{box-sizing:border-box}
+    html,body{height:100%}
     body{
       margin:0;
       background:var(--bg);
       color:var(--text);
-      font-family:"Lato", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      font-family:"Lato", system-ui, -apple-system, Segoe UI, Roboto, Arial;
       -webkit-font-smoothing:antialiased;
       text-rendering:optimizeLegibility;
     }
 
-    a{ color:inherit; text-decoration:none; }
-    .wrap{ max-width:var(--max); margin:0 auto; padding:0 var(--g); }
-
-    /* Topbar (quiet, internal) */
-    .topbar{
-      position:sticky;
-      top:0;
-      z-index:50;
-      background:rgba(11,13,18,.92);
-      border-bottom:1px solid var(--hair2);
-      backdrop-filter: blur(10px);
-    }
-    .topbar-inner{
-      height:64px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:14px;
-    }
-    .brand{
-      min-width:120px;
-      font-weight:900;
-      font-size:12px;
-      letter-spacing:.14em;
-      color:rgba(255,255,255,.82);
-      text-transform:uppercase;
-    }
-    .nav{
-      display:flex;
-      align-items:center;
-      gap:22px;
-      color:rgba(255,255,255,.68);
-      font-size:14px;
-      font-weight:600;
-    }
-    .nav a{
-      padding:8px 10px;
-      border-radius:999px;
-      transition: background .12s ease, color .12s ease;
-    }
-    .nav a:hover{
-      background:rgba(255,255,255,.06);
-      color:rgba(255,255,255,.88);
-    }
-    .chip{
-      padding:8px 12px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(255,255,255,.04);
-      color:rgba(255,255,255,.82);
-      font-size:13px;
-      font-weight:700;
-      white-space:nowrap;
-    }
-    .chip:hover{ background:rgba(255,255,255,.06); }
-
-    main{ padding:44px 0 140px; }
-
-    /* Sections = spacing + hairlines only */
-    .section{ padding:96px 0; border-bottom:1px solid var(--hair2); }
-    @media (max-width: 680px){
-      .section{ padding:64px 0; }
+    .wrap{
+      width:min(980px, calc(100% - 48px));
+      margin: 0 auto;
+      padding: 36px 0 80px;
     }
 
+    /* Type */
     .kicker{
-      margin:0 0 14px;
-      font-size:12px;
-      font-weight:700;
-      letter-spacing:.18em;
-      text-transform:uppercase;
-      color:rgba(255,255,255,.70);
+      font-size:13px;
+      color:var(--muted);
+      margin:0 0 6px;
     }
-    .h1{
-      margin:0 0 16px;
-      font-size:var(--hero);
-      line-height:1.05;
+    h1{
+      margin:0 0 18px;
+      font-size:44px;
+      line-height:1.08;
       font-weight:900;
       letter-spacing:-.02em;
     }
-    .h2{
-      margin:0 0 12px;
-      font-size:var(--h2);
-      line-height:1.12;
-      font-weight:700;
+    h2{
+      margin:46px 0 14px;
+      font-size:28px;
+      line-height:1.15;
+      font-weight:900;
       letter-spacing:-.01em;
     }
-    .p{
+    p{
       margin:0;
-      font-size:var(--body);
-      line-height:var(--lh);
       color:var(--muted);
-      max-width:62ch;
+      font-size:16px;
+      line-height:1.7;
     }
 
-    /* Video (framed element #1) */
-    .videoMeta{
-      margin-top:14px;
-      display:flex;
-      justify-content:space-between;
-      gap:12px;
-      color:var(--muted2);
-      font-size:13px;
-      font-weight:600;
-      max-width:62ch;
+    /* Video */
+    .videoShell{
+      margin-top: 14px;
+      width:100%;
+      border-radius: var(--radiusXL);
+      overflow:hidden;
+      background: rgba(255,255,255,.20);
+      border: 1px solid rgba(255,255,255,.10);
     }
     .videoFrame{
-      margin-top:12px;
       width:100%;
-      aspect-ratio:16/9;
-      background:#000;
-      border:1px solid var(--hair);
-      border-radius:14px;
-      overflow:hidden;
+      aspect-ratio: 16 / 9;
+      background: rgba(255,255,255,.20);
+      display:flex;
+      align-items:center;
+      justify-content:center;
     }
     .videoFrame iframe{
       width:100%;
@@ -161,448 +95,436 @@
       border:0;
       display:block;
     }
+    .videoPlaceholder{
+      font-size:28px;
+      font-weight:700;
+      color:rgba(255,255,255,.85);
+    }
 
-    /* Timeline (system log) */
+    /* Timeline */
     .timeline{
-      margin-top:22px;
-      position:relative;
-      padding-left:28px;
-      max-width:860px;
+      margin-top: 14px;
+      position: relative;
+      padding-left: 22px;
     }
     .timeline:before{
       content:"";
       position:absolute;
-      left:10px;
-      top:6px;
-      bottom:6px;
-      width:1px;
-      background:var(--hair);
+      left: 7px;
+      top: 6px;
+      bottom: 6px;
+      width: 1px;
+      background: rgba(255,255,255,.16);
     }
-    .row{
+    .tItem{
       position:relative;
-      padding:16px 0;
-      border-bottom:1px solid rgba(255,255,255,.05);
+      padding: 12px 0 12px 0;
     }
-    .row:last-child{ border-bottom:0; }
-    .row:before{
-      content:"";
+    .tDot{
       position:absolute;
-      left:-28px;
-      top:24px;
-      width:8px;
-      height:8px;
-      border-radius:999px;
-      background:var(--mn8);
+      left:-22px;
+      top: 18px;
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--mn8);
+      box-shadow: 0 0 0 6px rgba(109,59,210,.10);
     }
-    .rowTop{
+    .tRow{
       display:flex;
-      align-items:baseline;
-      justify-content:space-between;
       gap:14px;
-      flex-wrap:wrap;
-      margin-bottom:6px;
-      max-width:62ch;
+      align-items:flex-start;
     }
-    .tag{
-      font-size:14px;
-      font-weight:900;
-      letter-spacing:-.01em;
-      color:rgba(255,255,255,.92);
-    }
-    .rowHint{
+    .tTime{
+      width:86px;
       font-size:13px;
-      font-weight:600;
-      color:var(--muted2);
+      font-weight:900;
+      color:rgba(255,255,255,.90);
+      line-height:1.2;
+      padding-top: 2px;
+    }
+    .tCopy{
+      flex:1;
+      font-size:15px;
+      line-height:1.55;
+      color:rgba(255,255,255,.78);
     }
 
-    /* Offer (framed element #2 = the list itself) */
-    #offer{ scroll-margin-top: 92px; }
+    /* Offer cards */
     .offerWrap{
-      margin-top:18px;
-      border-top:1px solid var(--hair2);
-      border-bottom:1px solid var(--hair2);
-      max-width:980px;
+      margin-top: 16px;
+      display:grid;
+      gap: 16px;
     }
-    .offerItem{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:18px;
-      padding:18px 0;
-      border-bottom:1px solid var(--hair2);
+    .offerCard{
+      display:grid;
+      grid-template-columns: 1fr 170px;
+      gap: 18px;
+      padding: 18px 18px 16px;
+      border-radius: var(--radiusLG);
+      background: transparent;
+      border: 1px solid rgba(255,255,255,.10);
       cursor:pointer;
+      transition: border-color .12s ease, box-shadow .12s ease, transform .12s ease;
       outline:none;
     }
-    .offerItem:last-child{ border-bottom:0; }
-    .offerItem[aria-selected="true"]{
-      border-bottom-color: rgba(109,59,210,.45);
+    .offerCard:hover{ transform: translateY(-1px); }
+    .offerCard[aria-selected="true"]{
+      border-color: rgba(109,59,210,.95);
+      box-shadow: 0 0 0 2px rgba(109,59,210,.25);
     }
 
-    .offerLeft{ max-width:62ch; }
-    .offerName{
-      margin:0 0 6px;
+    .offerTitle{
       font-size:18px;
       font-weight:900;
+      margin:0 0 8px;
       letter-spacing:-.01em;
-      color:rgba(255,255,255,.92);
-    }
-    .offerCopy{
-      margin:0;
-      font-size:15px;
-      line-height:1.7;
-      color:var(--muted);
-    }
-    .offerRight{
-      text-align:right;
-      min-width: 170px;
-    }
-    .price{
-      font-size:16px;
-      font-weight:900;
-      color:rgba(255,255,255,.92);
-    }
-    .price small{
-      display:block;
-      margin-top:2px;
-      font-size:12px;
-      font-weight:700;
-      color:var(--muted2);
+      color:rgba(255,255,255,.96);
     }
 
-    /* Gate appears after selection */
-    .gate{
-      margin-top:18px;
-      padding-top:18px;
-      border-top:1px solid rgba(255,255,255,.06);
-      max-width:62ch;
+    ul{
+      margin:0;
+      padding-left: 18px;
+      color:rgba(255,255,255,.78);
+      font-size:14px;
+      line-height:1.7;
     }
-    .gateTitle{
-      margin:0 0 8px;
+    li{ margin: 4px 0; }
+
+    .offerFootnote{
+      margin-top: 10px;
+      font-size:12px;
+      color: rgba(255,255,255,.55);
+    }
+
+    .priceBox{
+      text-align:right;
+      padding-top: 2px;
+    }
+    .price{
+      font-size:20px;
+      font-weight:900;
+      color: rgba(255,255,255,.95);
+    }
+    .priceMeta{
+      margin-top: 2px;
+      font-size:12px;
+      color: rgba(255,255,255,.55);
+      font-weight:700;
+    }
+
+    /* Agreement */
+    .agreeBlock{
+      margin-top: 18px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(255,255,255,.10);
+    }
+    .agreeTitle{
       font-size:16px;
       font-weight:900;
-      letter-spacing:-.01em;
+      margin:0 0 6px;
       color:rgba(255,255,255,.92);
     }
-    .links{
+    .pillRow{
       display:flex;
-      flex-wrap:wrap;
       gap:10px;
-      margin-top:12px;
+      flex-wrap:wrap;
+      margin-top: 12px;
     }
+    .pillBtn{
+      appearance:none;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      color: rgba(255,255,255,.78);
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-weight:900;
+      font-size:11px;
+      letter-spacing:.02em;
+      cursor:pointer;
+    }
+    .pillBtn:hover{ border-color: rgba(255,255,255,.18); }
 
     .checkRow{
       display:flex;
       gap:10px;
       align-items:flex-start;
-      margin-top:14px;
+      margin-top: 14px;
     }
-    .checkRow input{ margin-top:4px; }
+    .checkRow input{ margin-top: 4px; }
     .checkRow label{
-      font-size:14px;
-      line-height:1.55;
-      color:var(--muted);
-    }
-
-    .actions{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      align-items:center;
-      margin-top:14px;
-    }
-    .btn{
-      appearance:none;
-      border:1px solid rgba(109,59,210,.55);
-      background:var(--mn8);
-      color:#fff;
-      padding:12px 16px;
-      border-radius:999px;
-      font-weight:900;
-      font-size:14px;
-      cursor:pointer;
-      transition: opacity .12s ease, transform .12s ease;
-    }
-    .btn:disabled{ opacity:.45; cursor:not-allowed; }
-    .btn:active{ transform: translateY(1px); }
-    .miniHint{
+      color: rgba(255,255,255,.72);
       font-size:13px;
-      color:var(--muted2);
-      font-weight:600;
+      line-height:1.5;
     }
 
-    /* Sticky jump (navigation, not persuasion) */
-    .stickyJump{
-      position:fixed;
-      left:50%;
-      transform:translateX(-50%);
-      bottom:16px;
-      z-index:60;
-      width:min(560px, calc(100% - 24px));
-      pointer-events:none;
-    }
-    .jumpBtn{
-      pointer-events:auto;
-      width:100%;
+    .ctaRow{
       display:flex;
+      gap: 14px;
       align-items:center;
-      justify-content:center;
-      gap:10px;
-      padding:13px 16px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(11,13,18,.92);
-      color:rgba(255,255,255,.92);
-      font-weight:900;
-      font-size:14px;
-      cursor:pointer;
+      flex-wrap:wrap;
+      margin-top: 14px;
     }
-    .dot{ width:10px; height:10px; border-radius:999px; background:var(--mn8); }
-    .stickyJump.hidden{ display:none; }
+    .cta{
+      appearance:none;
+      border: 0;
+      background: var(--mn8);
+      color: white;
+      padding: 12px 16px;
+      border-radius: 999px;
+      font-weight:900;
+      font-size:13px;
+      cursor:pointer;
+      transition: transform .12s ease, opacity .12s ease, filter .12s ease;
+    }
+    .cta:hover{ filter: brightness(1.05); }
+    .cta:active{ transform: translateY(1px); }
+    .cta:disabled{
+      opacity:.45;
+      cursor:not-allowed;
+      filter:none;
+    }
+    .selectedHint{
+      font-size:12px;
+      color: rgba(255,255,255,.55);
+      font-weight:700;
+    }
+
+    /* Mobile */
+    @media (max-width: 740px){
+      .wrap{ width:min(980px, calc(100% - 32px)); }
+      h1{ font-size:38px; }
+      .offerCard{ grid-template-columns: 1fr; }
+      .priceBox{ text-align:left; }
+    }
   </style>
 </head>
 
 <body>
+  <main class="wrap">
+    <!-- Hero -->
+    <p class="kicker">Private access</p>
+    <h1>Operate with MN8.</h1>
 
-  <header class="topbar">
-    <div class="wrap topbar-inner">
-      <a class="brand" href="./index.html#top" aria-label="MN8 Home">MN8</a>
+    <!-- Video -->
+    <div class="videoShell" aria-label="Authority video">
+      <div class="videoFrame">
+        <!-- OPTION A: leave placeholder (matches your mock) -->
+        <div class="videoPlaceholder">video</div>
 
-      <nav class="nav" aria-label="Primary">
-        <a href="./index.html#mn8">What it is</a>
-        <a href="./index.html#process">Process</a>
-        <a href="./index.html#faq">FAQ</a>
-      </nav>
-
-      <a href="./qualify.html" class="chip">Qualification</a>
+        <!-- OPTION B: use YouTube/Vimeo embed (uncomment) -->
+        <!--
+        <iframe
+          src="VIDEO_EMBED_URL"
+          title="MN8 Authority Video"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+        -->
+      </div>
     </div>
-  </header>
 
-  <main>
-    <div class="wrap">
+    <!-- Integration over time -->
+    <h2>Integration over time</h2>
+    <div class="timeline">
+      <div class="tItem">
+        <span class="tDot"></span>
+        <div class="tRow">
+          <div class="tTime">30 days</div>
+          <div class="tCopy">Decisions get lighter. Food and training stop taking mental space.</div>
+        </div>
+      </div>
 
-      <!-- 1) ENTRY -->
-      <section class="section" id="top">
-        <p class="kicker">Private access</p>
-        <h1 class="h1">Operate with MN8.</h1>
-        <p class="p">
-          This page defines how MN8 runs, what changes over time, and what commitment means before activation.
-        </p>
-      </section>
+      <div class="tItem">
+        <span class="tDot"></span>
+        <div class="tRow">
+          <div class="tTime">120 days</div>
+          <div class="tCopy">Missed days stop creating resets. You return to structure without friction.</div>
+        </div>
+      </div>
 
-      <!-- 2) AUTHORITY VIDEO -->
-      <section class="section" id="video">
-        <h2 class="h2">Authority brief</h2>
-        <p class="p">Watch before selecting access level.</p>
+      <div class="tItem">
+        <span class="tDot"></span>
+        <div class="tRow">
+          <div class="tTime">6 months</div>
+          <div class="tCopy">Energy holds longer. The body supports the schedule instead of competing with it.</div>
+        </div>
+      </div>
 
-        <div class="videoMeta">
-          <span>Briefing</span>
-          <span>5–7 minutes</span>
+      <div class="tItem">
+        <span class="tDot"></span>
+        <div class="tRow">
+          <div class="tTime">12 months</div>
+          <div class="tCopy">Health is no longer a project. Weight is managed without daily attention.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Integrity guarantee -->
+    <h2>Integrity guarantee</h2>
+    <p>MN8 does not guarantee speed, motivation, or a specific outcome timeline. MN8 guarantees the integrity of the structure when followed as designed.</p>
+    <p style="margin-top:10px;">If you complete 12 months inside MN8, follow it as designed, and there is no observable physical change compared to your documented baseline, your program investment will be refunded.</p>
+
+    <!-- Select access level -->
+    <h2>Select access level</h2>
+
+    <div class="offerWrap" role="list" aria-label="Access levels">
+      <!-- PRIVATE -->
+      <div class="offerCard" role="listitem" tabindex="0" data-plan="private" aria-selected="false">
+        <div>
+          <div class="offerTitle">MN8 Private</div>
+          <ul>
+            <li>Eating windows adjusted as workload and travel shift</li>
+            <li>Training volume recalibrated when energy drops or spikes</li>
+            <li>Nutrition structure tightened or loosened based on results</li>
+            <li>Weekly execution reviewed and corrected before drift compounds</li>
+            <li>Constraints updated so progress continues under pressure</li>
+          </ul>
+          <div class="offerFootnote">MN8 manages adaptation so execution doesn’t collapse.</div>
         </div>
 
-        <div class="videoFrame">
-          <!-- Replace VIDEO_URL -->
-          <iframe
-            src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-            title="MN8 Authority Brief"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen
-          ></iframe>
+        <div class="priceBox">
+          <div class="price">$9,500</div>
+          <div class="priceMeta">one-time / year</div>
         </div>
-      </section>
+      </div>
 
-      <!-- 3) INTEGRATION OVER TIME -->
-      <section class="section" id="timeline">
-        <h2 class="h2">Integration over time</h2>
-        <p class="p">Expected operating states, in sequence.</p>
-
-        <div class="timeline">
-          <div class="row">
-            <div class="rowTop">
-              <div class="tag">30 days</div>
-              <div class="rowHint">Cognitive load drops</div>
-            </div>
-            <p class="p">Decisions get lighter. Food and training stop taking mental space.</p>
-          </div>
-
-          <div class="row">
-            <div class="rowTop">
-              <div class="tag">120 days</div>
-              <div class="rowHint">Execution stabilizes</div>
-            </div>
-            <p class="p">Missed days stop creating resets. You return to structure without friction.</p>
-          </div>
-
-          <div class="row">
-            <div class="rowTop">
-              <div class="tag">6 months</div>
-              <div class="rowHint">Output becomes predictable</div>
-            </div>
-            <p class="p">Energy holds longer. The body supports the schedule instead of competing with it.</p>
-          </div>
-
-          <div class="row">
-            <div class="rowTop">
-              <div class="tag">12 months</div>
-              <div class="rowHint">Quiet control</div>
-            </div>
-            <p class="p">Health is no longer a project. Weight is managed without daily attention.</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- 4) REALITY -->
-      <section class="section" id="reality">
-        <h2 class="h2">When life gets heavy</h2>
-        <p class="p">
-          Travel happens. Stress spikes. Schedules break. Days get missed.
-          MN8 is built for continuity under pressure. Missed days don’t reset progress, busy weeks don’t cancel momentum,
-          and disruption doesn’t collapse the structure.
-        </p>
-      </section>
-
-      <!-- 5) GUARANTEE -->
-      <section class="section" id="guarantee">
-        <h2 class="h2">Integrity guarantee</h2>
-        <p class="p">
-          MN8 does not guarantee speed, motivation, or a specific outcome timeline.
-          MN8 guarantees the integrity of the structure when followed as designed.
-        </p>
-        <p class="p" style="margin-top:12px;">
-          If you complete 12 months inside MN8, follow it as designed, and there is <strong>no observable physical change</strong>
-          compared to your documented baseline, your program investment will be refunded.
-        </p>
-      </section>
-
-      <!-- 6) OFFER -->
-      <section class="section" id="offer">
-        <h2 class="h2">Select access level</h2>
-        <p class="p">Choose proximity. Both options run inside the same MN8 operating standard.</p>
-
-        <div class="offerWrap" role="list" aria-label="MN8 Access Levels">
-          <div class="offerItem" role="listitem" tabindex="0" data-plan="private" aria-selected="false">
-            <div class="offerLeft">
-              <div class="offerName">MN8 Private</div>
-              <p class="offerCopy">Adaptive oversight. MN8 calibrates as constraints, output, and schedule shift.</p>
-            </div>
-            <div class="offerRight">
-              <div class="price">$9,500<small>one-time / year</small></div>
-            </div>
-          </div>
-
-          <div class="offerItem" role="listitem" tabindex="0" data-plan="core" aria-selected="false">
-            <div class="offerLeft">
-              <div class="offerName">MN8 Core</div>
-              <p class="offerCopy">Fixed structure. You adapt to MN8 with autonomy and zero personalization.</p>
-            </div>
-            <div class="offerRight">
-              <div class="price">$6,000<small>one-time / year</small></div>
-            </div>
-          </div>
+      <!-- STRUCTURED -->
+      <div class="offerCard" role="listitem" tabindex="0" data-plan="structured" aria-selected="false">
+        <div>
+          <div class="offerTitle">MN8 Structured</div>
+          <ul>
+            <li>Predefined eating windows</li>
+            <li>Standard nutrition structure</li>
+            <li>Short daily training sessions</li>
+            <li>Repeatable weekly rhythm</li>
+            <li>No personalization or adjustment</li>
+          </ul>
+          <div class="offerFootnote">MN8 does not adapt to you.</div>
         </div>
 
-        <!-- 7) AGREEMENT GATE -->
-        <div class="gate" id="gate" hidden>
-          <div class="gateTitle">Agreement required</div>
-          <p class="p">
-            Before checkout, you will review and sign the written agreement.
-            This defines expectations, participation, and what “followed as designed” means.
-          </p>
-
-          <div class="links">
-            <a class="chip" href="#" target="_blank" rel="noopener">Written agreement</a>
-            <a class="chip" href="#" target="_blank" rel="noopener">Terms</a>
-            <a class="chip" href="#" target="_blank" rel="noopener">Privacy</a>
-          </div>
-
-          <div class="checkRow">
-            <input type="checkbox" id="agree" />
-            <label for="agree">I reviewed the agreement and I agree to the terms and policies.</label>
-          </div>
-
-          <div class="actions">
-            <button class="btn" id="checkoutBtn" disabled>Proceed to checkout</button>
-            <span class="miniHint" id="selectedPlanHint"></span>
-          </div>
+        <div class="priceBox">
+          <div class="price">$6,000</div>
+          <div class="priceMeta">one-time / year</div>
         </div>
-      </section>
+      </div>
+    </div>
 
+    <!-- Agreement -->
+    <div class="agreeBlock" id="agreement">
+      <div class="agreeTitle">Agreement required</div>
+      <p>Before checkout, you will review and sign the written agreement. This defines expectations, participation, and what “followed as designed” means.</p>
+
+      <div class="pillRow">
+        <button class="pillBtn" type="button" id="openAgreement">WRITTEN AGREEMENT</button>
+        <button class="pillBtn" type="button" id="openTerms">TERMS</button>
+        <button class="pillBtn" type="button" id="openPrivacy">PRIVACY</button>
+      </div>
+
+      <div class="checkRow">
+        <input type="checkbox" id="agreeCheck" />
+        <label for="agreeCheck">I reviewed the agreement and I agree to the terms and policies.</label>
+      </div>
+
+      <div class="ctaRow">
+        <button class="cta" id="checkoutBtn" disabled>Proceed to checkout</button>
+        <div class="selectedHint" id="selectedHint">Selected: none</div>
+      </div>
     </div>
   </main>
 
-  <!-- Sticky jump -->
-  <div class="stickyJump" id="stickyJump">
-    <button class="jumpBtn" type="button" id="jumpToOffer">
-      <span class="dot"></span>
-      Go to offer
-    </button>
-  </div>
-
   <script>
     (function(){
-      // Replace with real checkout links (Stripe Payment Links recommended)
+      // === Replace with real links ===
       const CHECKOUT_LINKS = {
         private: "https://your-checkout-link.com/mn8-private",
-        core: "https://your-checkout-link.com/mn8-core"
+        structured: "https://your-checkout-link.com/mn8-structured"
       };
 
-      // Sticky jump hides when offer is visible
-      const offerSection = document.getElementById("offer");
-      const sticky = document.getElementById("stickyJump");
-      const jumpBtn = document.getElementById("jumpToOffer");
+      // === Replace with real docs ===
+      const DOC_LINKS = {
+        agreement: "#",
+        terms: "#",
+        privacy: "#"
+      };
 
-      if (offerSection && sticky && jumpBtn) {
-        const io = new IntersectionObserver((entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) sticky.classList.add("hidden");
-            else sticky.classList.remove("hidden");
-          });
-        }, { threshold: 0.2 });
-
-        io.observe(offerSection);
-        jumpBtn.addEventListener("click", () => offerSection.scrollIntoView({ behavior:"smooth", block:"start" }));
-      }
-
-      // Offer selection + agreement gate
-      const items = Array.from(document.querySelectorAll(".offerItem"));
-      const gate = document.getElementById("gate");
-      const agree = document.getElementById("agree");
+      const cards = Array.from(document.querySelectorAll(".offerCard"));
+      const agree = document.getElementById("agreeCheck");
       const checkoutBtn = document.getElementById("checkoutBtn");
-      const hint = document.getElementById("selectedPlanHint");
+      const selectedHint = document.getElementById("selectedHint");
+
+      const openAgreement = document.getElementById("openAgreement");
+      const openTerms = document.getElementById("openTerms");
+      const openPrivacy = document.getElementById("openPrivacy");
 
       let selectedPlan = null;
 
-      function setSelected(plan){
-        selectedPlan = plan;
+      function render(){
+        // selection visuals
+        cards.forEach(c => c.setAttribute("aria-selected", c.dataset.plan === selectedPlan ? "true" : "false"));
 
-        items.forEach(i => i.setAttribute("aria-selected", i.dataset.plan === plan ? "true" : "false"));
+        // button state
+        checkoutBtn.disabled = !(selectedPlan && agree.checked);
 
-        gate.hidden = false;
-        agree.checked = false;
-        checkoutBtn.disabled = true;
+        // hint text
+        if(!selectedPlan){
+          selectedHint.textContent = "Selected: none";
+          return;
+        }
 
-        hint.textContent =
-          plan === "private"
-            ? "Selected: MN8 Private — $9,500 (one-time)"
-            : "Selected: MN8 Core — $6,000 (one-time)";
+        if(selectedPlan === "private"){
+          selectedHint.textContent = "Selected: MN8 Private — $9,500 (one-time)";
+        } else {
+          selectedHint.textContent = "Selected: MN8 Structured — $6,000 (one-time)";
+        }
       }
 
-      items.forEach(item => {
-        item.addEventListener("click", () => setSelected(item.dataset.plan));
-        item.addEventListener("keydown", (e) => {
-          if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setSelected(item.dataset.plan); }
+      function select(plan){
+        selectedPlan = plan;
+        // force re-agreement when switching plans (clean, operator-grade)
+        agree.checked = false;
+        render();
+      }
+
+      cards.forEach(card => {
+        card.addEventListener("click", () => select(card.dataset.plan));
+        card.addEventListener("keydown", (e) => {
+          if(e.key === "Enter" || e.key === " "){
+            e.preventDefault();
+            select(card.dataset.plan);
+          }
         });
       });
 
-      agree.addEventListener("change", () => {
-        checkoutBtn.disabled = !agree.checked || !selectedPlan;
-      });
+      agree.addEventListener("change", render);
 
       checkoutBtn.addEventListener("click", () => {
-        if (!selectedPlan || !agree.checked) return;
-        window.location.href = CHECKOUT_LINKS[selectedPlan];
+        if(!selectedPlan || !agree.checked) return;
+        const link = CHECKOUT_LINKS[selectedPlan];
+        if(!link || link === "#") return alert("Add your real checkout link first.");
+        window.location.href = link;
       });
+
+      // Docs
+      openAgreement.addEventListener("click", () => {
+        const link = DOC_LINKS.agreement;
+        if(!link || link === "#") return alert("Add your written agreement link.");
+        window.open(link, "_blank", "noopener,noreferrer");
+      });
+      openTerms.addEventListener("click", () => {
+        const link = DOC_LINKS.terms;
+        if(!link || link === "#") return alert("Add your terms link.");
+        window.open(link, "_blank", "noopener,noreferrer");
+      });
+      openPrivacy.addEventListener("click", () => {
+        const link = DOC_LINKS.privacy;
+        if(!link || link === "#") return alert("Add your privacy link.");
+        window.open(link, "_blank", "noopener,noreferrer");
+      });
+
+      render();
     })();
   </script>
-
 </body>
 </html>
+
