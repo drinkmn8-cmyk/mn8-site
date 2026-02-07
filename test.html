@@ -111,23 +111,29 @@
     color:rgba(255,255,255,.85);
   }
 
+/* TIME-SCALED TIMELINE (aligned rail + dots) */
 .timeline.timeScaled{
+  --railX: 7px;     /* one value controls BOTH line + dots */
+  --dot: 8px;
+
   position:relative;
   margin-top: 32px;
   padding-left: 22px;
-  height: 420px; /* controls vertical breathing room */
+  height: 420px; /* adjust if you want more vertical room */
 }
 
+/* the vertical rail */
 .timeline.timeScaled:before{
   content:"";
   position:absolute;
-  left: 7px;
+  left: var(--railX);
   top: 0;
   bottom: 0;
   width:1px;
   background: rgba(255,255,255,.18);
 }
 
+/* each point is placed by percentage */
 .timeline.timeScaled .tItem{
   position:absolute;
   top: var(--pos);
@@ -136,18 +142,20 @@
   width: 100%;
 }
 
+/* dot sits EXACTLY on the rail */
 .timeline.timeScaled .tDot{
   position:absolute;
-  left: -22px;
+  left: calc(var(--railX) - (var(--dot) / 2));
   top: 50%;
   transform: translateY(-50%);
-  width: 8px;
-  height: 8px;
+  width: var(--dot);
+  height: var(--dot);
   border-radius: 999px;
   background: var(--mn8);
   box-shadow: 0 0 0 6px rgba(109,59,210,.12);
 }
 
+/* content layout */
 .timeline.timeScaled .tRow{
   display:flex;
   gap:16px;
