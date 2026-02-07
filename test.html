@@ -111,18 +111,18 @@
     color:rgba(255,255,255,.85);
   }
 
-/* TIME-SCALED TIMELINE (aligned rail + dots) */
+/* TIME-SCALED TIMELINE (perfect rail/dot/text alignment) */
 .timeline.timeScaled{
-  --railX: 7px;     /* one value controls BOTH line + dots */
-  --dot: 8px;
+  --railX: 7px;      /* rail x-position */
+  --dot: 8px;        /* dot size */
+  --gutter: 44px;    /* space from rail to text column */
 
   position:relative;
-  margin-top: 32px;
-  padding-left: 22px;
-  height: 420px; /* adjust if you want more vertical room */
+  margin-top: 18px;
+  height: 420px;     /* increase if you want more separation */
 }
 
-/* the vertical rail */
+/* vertical rail */
 .timeline.timeScaled:before{
   content:"";
   position:absolute;
@@ -133,7 +133,7 @@
   background: rgba(255,255,255,.18);
 }
 
-/* each point is placed by percentage */
+/* each point placed by percentage */
 .timeline.timeScaled .tItem{
   position:absolute;
   top: var(--pos);
@@ -142,7 +142,7 @@
   width: 100%;
 }
 
-/* dot sits EXACTLY on the rail */
+/* dot sits dead-center on the rail */
 .timeline.timeScaled .tDot{
   position:absolute;
   left: calc(var(--railX) - (var(--dot) / 2));
@@ -155,23 +155,26 @@
   box-shadow: 0 0 0 6px rgba(109,59,210,.12);
 }
 
-/* content layout */
+/* text block starts AFTER rail + gutter */
 .timeline.timeScaled .tRow{
-  display:flex;
-  gap:16px;
-  align-items:flex-start;
+  margin-left: var(--gutter);
+  display:grid;
+  grid-template-columns: 92px 1fr;
+  column-gap: 18px;
+  align-items: start;
 }
 
+/* left label */
 .timeline.timeScaled .tTime{
-  width:86px;
   font-size:13px;
   font-weight:900;
   color:rgba(255,255,255,.92);
   line-height:1.2;
+  white-space: nowrap; /* prevents “6 months” from wrapping weird */
 }
 
+/* copy */
 .timeline.timeScaled .tCopy{
-  flex:1;
   font-size:15px;
   line-height:1.55;
   color:rgba(255,255,255,.78);
