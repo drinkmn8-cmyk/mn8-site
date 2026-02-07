@@ -111,55 +111,64 @@
     color:rgba(255,255,255,.85);
   }
 
-  /* Timeline */
-  .timeline{
-    margin-top: var(--spaceMD);
-    position: relative;
-    padding-left: 22px;
-  }
-  .timeline:before{
-    content:"";
-    position:absolute;
-    left: 7px;
-    top: 6px;
-    bottom: 6px;
-    width: 1px;
-    background: rgba(255,255,255,.16);
-  }
-  .tItem{
-    position:relative;
-    /* MORE space between timeline items */
-    padding: var(--spaceSM) 0 var(--spaceMD) 0;
-  }
-  .tDot{
-    position:absolute;
-    left:-22px;
-    top: 22px;
-    width: 8px;
-    height: 8px;
-    border-radius: 999px;
-    background: var(--mn8);
-    box-shadow: 0 0 0 6px rgba(109,59,210,.10);
-  }
-  .tRow{
-    display:flex;
-    gap:14px;
-    align-items:flex-start;
-  }
-  .tTime{
-    width:86px;
-    font-size:13px;
-    font-weight:900;
-    color:rgba(255,255,255,.90);
-    line-height:1.2;
-    padding-top: 2px;
-  }
-  .tCopy{
-    flex:1;
-    font-size:15px;
-    line-height:1.55;
-    color:rgba(255,255,255,.78);
-  }
+.timeline.timeScaled{
+  position:relative;
+  margin-top: 32px;
+  padding-left: 22px;
+  height: 420px; /* controls vertical breathing room */
+}
+
+.timeline.timeScaled:before{
+  content:"";
+  position:absolute;
+  left: 7px;
+  top: 0;
+  bottom: 0;
+  width:1px;
+  background: rgba(255,255,255,.18);
+}
+
+.timeline.timeScaled .tItem{
+  position:absolute;
+  top: var(--pos);
+  left: 0;
+  transform: translateY(-50%);
+  width: 100%;
+}
+
+.timeline.timeScaled .tDot{
+  position:absolute;
+  left: -22px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--mn8);
+  box-shadow: 0 0 0 6px rgba(109,59,210,.12);
+}
+
+.timeline.timeScaled .tRow{
+  display:flex;
+  gap:16px;
+  align-items:flex-start;
+}
+
+.timeline.timeScaled .tTime{
+  width:86px;
+  font-size:13px;
+  font-weight:900;
+  color:rgba(255,255,255,.92);
+  line-height:1.2;
+}
+
+.timeline.timeScaled .tCopy{
+  flex:1;
+  font-size:15px;
+  line-height:1.55;
+  color:rgba(255,255,255,.78);
+}
+
 
   /* Offer cards */
   .offerWrap{
@@ -339,40 +348,39 @@
     </div>
 
     <!-- Integration over time -->
-    <h2>Integration over time</h2>
-    <div class="timeline">
-      <div class="tItem">
-        <span class="tDot"></span>
-        <div class="tRow">
-          <div class="tTime">30 days</div>
-          <div class="tCopy">Decisions get lighter. Food and training stop taking mental space.</div>
-        </div>
-      </div>
-
-      <div class="tItem">
-        <span class="tDot"></span>
-        <div class="tRow">
-          <div class="tTime">120 days</div>
-          <div class="tCopy">Missed days stop creating resets. You return to structure without friction.</div>
-        </div>
-      </div>
-
-      <div class="tItem">
-        <span class="tDot"></span>
-        <div class="tRow">
-          <div class="tTime">6 months</div>
-          <div class="tCopy">Energy holds longer. The body supports the schedule instead of competing with it.</div>
-        </div>
-      </div>
-
-      <div class="tItem">
-        <span class="tDot"></span>
-        <div class="tRow">
-          <div class="tTime">12 months</div>
-          <div class="tCopy">Health is no longer a project. Weight is managed without daily attention.</div>
-        </div>
-      </div>
+<div class="timeline timeScaled">
+  <div class="tItem" style="--pos:8%">
+    <span class="tDot"></span>
+    <div class="tRow">
+      <div class="tTime">30 days</div>
+      <div class="tCopy">Decisions get lighter. Food and training stop taking mental space.</div>
     </div>
+  </div>
+
+  <div class="tItem" style="--pos:33%">
+    <span class="tDot"></span>
+    <div class="tRow">
+      <div class="tTime">120 days</div>
+      <div class="tCopy">Missed days stop creating resets. You return to structure without friction.</div>
+    </div>
+  </div>
+
+  <div class="tItem" style="--pos:50%">
+    <span class="tDot"></span>
+    <div class="tRow">
+      <div class="tTime">6 months</div>
+      <div class="tCopy">Energy holds longer. The body supports the schedule instead of competing with it.</div>
+    </div>
+  </div>
+
+  <div class="tItem" style="--pos:100%">
+    <span class="tDot"></span>
+    <div class="tRow">
+      <div class="tTime">12 months</div>
+      <div class="tCopy">Health is no longer a project. Weight is managed without daily attention.</div>
+    </div>
+  </div>
+</div>
 
 
     <!-- Integrity guarantee -->
