@@ -202,8 +202,8 @@
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "apikey": ANON_KEY,
-          "Authorization": `Bearer ${ANON_KEY}`,
+          apikey: ANON_KEY,
+          Authorization: `Bearer ${ANON_KEY}`,
         },
         body: JSON.stringify(payload),
       });
@@ -224,13 +224,26 @@
         return;
       }
 
-// If your edge function returns decision/token:
-if (out.decision === "reject") {
-  window.location.href = `./not-accepted.html?reason=${encodeURIComponent(out.reason || "")}`;
-  return;
-}
+      // REJECT: go to not accepted page (unchanged)
+      if (out.decision === "reject") {
+        window.location.href = `./not-accepted.html?reason=${encodeURIComponent(out.reason || "")}`;
+        return;
+      }
 
-// Accept = go straight to private with token
+      // ACCEPT: token MUST come from the response
+      const token =
+        (out.token || "").trim() ||
+        (out.access_token || "").trim() ||
+        (out.t || "").trim();
+
+      if (!token) {
+        console.error("No token returned from edge function:", out);
+        alert("Accepted, but no token was returned. Check your Edge Function response.");
+        return;
+      }
+
+      // Store token for stability + redirect
+      localStorage.setItem("mn8_token", token);
       window.location.href = `./private.html?status=accept&token=${encodeURIComponent(token)}`;
 
     } catch (err) {
