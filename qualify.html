@@ -218,6 +218,9 @@
         return;
       }
 
+    console.log("QUALIFY RESPONSE OUT:", out);
+console.log("QUALIFY RESPONSE TEXT:", text);
+
       if (!out.ok) {
         console.error("Edge error:", out);
         alert(`Submit failed: ${out.error || out.reason || "Unknown error"}`);
