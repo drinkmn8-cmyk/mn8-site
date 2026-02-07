@@ -231,9 +231,8 @@ if (out.decision === "reject") {
 }
 
 // Accept = go straight to private with token
-localStorage.setItem("mn8_token", token);
-window.location.href = "./private.html?status=accept";
-      
+      window.location.href = `./private.html?status=accept&token=${encodeURIComponent(token)}`;
+
     } catch (err) {
       console.error(err);
       alert("Submission failed. Check console.");
