@@ -19,7 +19,6 @@
       --muted:rgba(11,13,18,.72);
       --hair:rgba(15,18,24,.10);
       --bg:#ffffff;
-      --card:#ffffff;
 
       --radiusXL:28px;
       --radiusLG:22px;
@@ -336,14 +335,21 @@
       line-height:1.65;
     }
 
+    /* IMPORTANT FIX:
+       Explicit heights so mobile never "loses" the graphic area. */
     .vizPanel{
       border-top:1px solid rgba(15,18,24,.06);
       background: linear-gradient(180deg, rgba(109,59,210,.10), rgba(109,59,210,.04));
-      aspect-ratio: 16 / 7;
-      min-height: 140px;
+      height: 160px;
       position:relative;
+      overflow:hidden;
     }
-    .vizPanel svg{
+    @media (min-width:900px){
+      .vizPanel{ height: 170px; }
+    }
+
+    .vizPanel svg,
+    .vizPanel canvas{
       position:absolute;
       inset:0;
       width:100%;
@@ -391,8 +397,10 @@
       background: linear-gradient(180deg, rgba(109,59,210,.12), rgba(109,59,210,.05));
       overflow:hidden;
       position:relative;
-      aspect-ratio: 16 / 7;
-      min-height: 140px;
+      height: 160px;           /* FIX for mobile visibility */
+    }
+    @media (min-width:900px){
+      .processViz{ height: 175px; }
     }
     .processViz svg{
       position:absolute; inset:0; width:100%; height:100%; display:block;
@@ -421,9 +429,9 @@
     }
     .bullets li{ margin:6px 0; }
 
-    /* ========= Outcome over time (scroll driven, mobile fixed) ========= */
+    /* ========= Outcome over time (scroll driven) ========= */
     .outcomeTrack{
-      --p: 0; /* 0..1 set by JS */
+      --p: 0;
       position:relative;
       margin-top: 22px;
       padding-left: 22px;
@@ -514,7 +522,7 @@
     /* reduced motion */
     @media (prefers-reduced-motion: reduce){
       .particles{ animation:none; }
-      .heroViz svg, .vizPanel svg, .processViz svg, .finalGlow{ transition:none; }
+      .heroViz svg, .vizPanel svg, .vizPanel canvas, .processViz svg, .finalGlow{ transition:none; }
       .card, .processCard{ transition:none; }
     }
   </style>
@@ -561,7 +569,6 @@
       <div class="heroGrid">
         <div class="heroCard" data-parallax>
           <div class="heroViz">
-            <!-- Stripe-ish dynamic graphic: “density → clarity” -->
             <svg viewBox="0 0 1200 700" preserveAspectRatio="none" aria-hidden="true">
               <defs>
                 <linearGradient id="lgA" x1="0" y1="0" x2="1" y2="1">
@@ -570,13 +577,11 @@
                 </linearGradient>
               </defs>
 
-              <!-- faint grid -->
               <g opacity=".28" stroke="rgba(15,18,24,.10)" stroke-width="1">
                 <path d="M0 120 H1200"/><path d="M0 240 H1200"/><path d="M0 360 H1200"/><path d="M0 480 H1200"/><path d="M0 600 H1200"/>
                 <path d="M150 0 V700"/><path d="M300 0 V700"/><path d="M450 0 V700"/><path d="M600 0 V700"/><path d="M750 0 V700"/><path d="M900 0 V700"/><path d="M1050 0 V700"/>
               </g>
 
-              <!-- “noise bars” left -->
               <g opacity=".80" fill="url(#lgA)">
                 <rect x="90" y="160" width="10" height="240" rx="6"/>
                 <rect x="120" y="120" width="10" height="320" rx="6"/>
@@ -586,11 +591,9 @@
                 <rect x="240" y="110" width="10" height="330" rx="6"/>
               </g>
 
-              <!-- “stabilizing” line -->
               <path d="M120,470 C260,260 380,520 520,320 C640,150 760,360 920,230 C1020,170 1100,190 1140,210"
                     fill="none" stroke="rgba(109,59,210,.65)" stroke-width="8" stroke-linecap="round"/>
 
-              <!-- dots -->
               <g>
                 <circle cx="520" cy="320" r="10" fill="rgba(109,59,210,.90)"/>
                 <circle cx="920" cy="230" r="10" fill="rgba(109,59,210,.65)"/>
@@ -638,15 +641,10 @@
               <li>Consistency built on “ideal weeks”</li>
             </ul>
           </div>
+
+          <!-- SYNCED CANVAS (UP→DOWN) -->
           <div class="vizPanel" data-parallax2 aria-hidden="true">
-            <!-- smooth rising line -->
-            <svg viewBox="0 0 1200 520" preserveAspectRatio="none">
-              <path d="M40,360 C220,220 340,430 520,280 C720,110 860,360 1160,160"
-                    fill="none" stroke="rgba(109,59,210,.55)" stroke-width="7" stroke-linecap="round"/>
-              <path d="M40,400 H1160" stroke="rgba(15,18,24,.10)" stroke-width="2"/>
-              <circle cx="520" cy="280" r="10" fill="rgba(109,59,210,.85)"/>
-              <circle cx="1160" cy="160" r="10" fill="rgba(109,59,210,.55)"/>
-            </svg>
+            <canvas id="sparkUp" aria-hidden="true"></canvas>
           </div>
         </article>
 
@@ -660,15 +658,10 @@
               <li>Missed days trigger resets</li>
             </ul>
           </div>
+
+          <!-- SYNCED CANVAS (DOWN EMPHASIS) -->
           <div class="vizPanel" data-parallax2 aria-hidden="true">
-            <!-- jagged “reset” line -->
-            <svg viewBox="0 0 1200 520" preserveAspectRatio="none">
-              <path d="M60,160 L260,260 L420,210 L560,340 L720,240 L860,380 L1020,300 L1140,420"
-                    fill="none" stroke="rgba(109,59,210,.55)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M60,430 H1140" stroke="rgba(15,18,24,.10)" stroke-width="2"/>
-              <circle cx="560" cy="340" r="10" fill="rgba(109,59,210,.85)"/>
-              <circle cx="1140" cy="420" r="10" fill="rgba(109,59,210,.55)"/>
-            </svg>
+            <canvas id="sparkDown" aria-hidden="true"></canvas>
           </div>
         </article>
       </div>
@@ -684,12 +677,20 @@
       <div class="grid2">
         <article class="card" data-tilt>
           <div class="vizPanel" data-parallax2 aria-hidden="true">
-            <!-- calm upward curve -->
+            <!-- DIFFERENT graphic: “structure blocks” -->
             <svg viewBox="0 0 1200 520" preserveAspectRatio="none">
-              <path d="M80,380 C280,240 420,420 600,300 C760,200 860,260 1040,180 C1120,145 1160,140 1180,132"
-                    fill="none" stroke="rgba(109,59,210,.55)" stroke-width="7" stroke-linecap="round"/>
-              <path d="M80,410 C280,320 460,360 640,310 C820,260 980,260 1180,220"
-                    fill="none" stroke="rgba(109,59,210,.22)" stroke-width="7" stroke-linecap="round"/>
+              <g opacity=".20" stroke="rgba(15,18,24,.14)" stroke-width="2">
+                <path d="M80 120 H1120"/><path d="M80 220 H1120"/><path d="M80 320 H1120"/><path d="M80 420 H1120"/>
+              </g>
+              <g fill="rgba(109,59,210,.22)">
+                <rect x="120" y="320" width="140" height="70" rx="16"/>
+                <rect x="290" y="270" width="180" height="120" rx="16"/>
+                <rect x="500" y="230" width="210" height="160" rx="16"/>
+                <rect x="740" y="190" width="260" height="200" rx="16"/>
+              </g>
+              <path d="M120,390 C320,320 520,280 740,240 C900,210 1010,200 1120,190"
+                    fill="none" stroke="rgba(109,59,210,.62)" stroke-width="8" stroke-linecap="round"/>
+              <circle cx="740" cy="240" r="10" fill="rgba(109,59,210,.85)"/>
             </svg>
           </div>
           <div class="cardPad">
@@ -700,13 +701,14 @@
 
         <article class="card" data-tilt>
           <div class="vizPanel" data-parallax2 aria-hidden="true">
-            <!-- “crossed” lines / complexity -->
+            <!-- DIFFERENT graphic: “messy loops” -->
             <svg viewBox="0 0 1200 520" preserveAspectRatio="none">
-              <path d="M80,220 C260,120 420,360 600,240 C780,120 920,380 1140,240"
-                    fill="none" stroke="rgba(109,59,210,.22)" stroke-width="7" stroke-linecap="round"/>
-              <path d="M80,320 C260,420 420,180 600,300 C780,420 920,160 1140,300"
-                    fill="none" stroke="rgba(109,59,210,.55)" stroke-width="7" stroke-linecap="round"/>
-              <circle cx="600" cy="300" r="10" fill="rgba(109,59,210,.85)"/>
+              <path d="M120,260 C240,120 360,420 500,260 C620,120 760,420 900,260 C1020,120 1100,280 1140,300"
+                    fill="none" stroke="rgba(109,59,210,.30)" stroke-width="9" stroke-linecap="round"/>
+              <path d="M120,320 C260,460 420,140 560,320 C700,500 860,160 1000,320"
+                    fill="none" stroke="rgba(109,59,210,.62)" stroke-width="9" stroke-linecap="round"/>
+              <circle cx="560" cy="320" r="10" fill="rgba(109,59,210,.85)"/>
+              <path d="M120,420 H1140" stroke="rgba(15,18,24,.10)" stroke-width="2"/>
             </svg>
           </div>
           <div class="cardPad">
@@ -736,12 +738,16 @@
           </div>
 
           <div class="processViz" data-parallax3 aria-hidden="true">
+            <!-- DIFFERENT graphic: “constraint bands” -->
             <svg viewBox="0 0 1200 520" preserveAspectRatio="none">
-              <path d="M60,360 C220,220 320,420 520,260 C690,120 820,360 1140,160"
-                    fill="none" stroke="rgba(109,59,210,.55)" stroke-width="7" stroke-linecap="round"/>
-              <circle cx="520" cy="260" r="10" fill="rgba(109,59,210,.85)"/>
-              <circle cx="820" cy="360" r="10" fill="rgba(109,59,210,.55)"/>
-              <circle cx="1140" cy="160" r="10" fill="rgba(109,59,210,.55)"/>
+              <g fill="rgba(109,59,210,.18)">
+                <rect x="80" y="130" width="1040" height="60" rx="18"/>
+                <rect x="80" y="230" width="920" height="60" rx="18"/>
+                <rect x="80" y="330" width="780" height="60" rx="18"/>
+              </g>
+              <path d="M120,395 C320,340 520,290 740,240 C920,205 1030,190 1120,170"
+                    fill="none" stroke="rgba(109,59,210,.62)" stroke-width="8" stroke-linecap="round"/>
+              <circle cx="740" cy="240" r="10" fill="rgba(109,59,210,.85)"/>
             </svg>
           </div>
 
@@ -765,13 +771,17 @@
           </div>
 
           <div class="processViz" data-parallax3 aria-hidden="true">
+            <!-- DIFFERENT graphic: “interval peaks” -->
             <svg viewBox="0 0 1200 520" preserveAspectRatio="none">
-              <path d="M80,410 L260,260 L420,330 L610,180 L760,240 L980,120 L1120,150"
-                    fill="none" stroke="rgba(109,59,210,.55)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M80,430 H1120" stroke="rgba(15,18,24,.10)" stroke-width="2"/>
-              <circle cx="260" cy="260" r="10" fill="rgba(109,59,210,.85)"/>
-              <circle cx="610" cy="180" r="10" fill="rgba(109,59,210,.55)"/>
-              <circle cx="980" cy="120" r="10" fill="rgba(109,59,210,.55)"/>
+              <path d="M80,420 L210,260 L320,360 L460,190 L600,310 L760,140 L920,240 L1120,120"
+                    fill="none" stroke="rgba(109,59,210,.62)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M80,440 H1120" stroke="rgba(15,18,24,.10)" stroke-width="2"/>
+              <g fill="rgba(109,59,210,.22)">
+                <circle cx="210" cy="260" r="10"/>
+                <circle cx="460" cy="190" r="10"/>
+                <circle cx="760" cy="140" r="10"/>
+                <circle cx="1120" cy="120" r="10"/>
+              </g>
             </svg>
           </div>
 
@@ -795,14 +805,13 @@
           </div>
 
           <div class="processViz" data-parallax3 aria-hidden="true">
+            <!-- DIFFERENT graphic: “closed loop / lock” -->
             <svg viewBox="0 0 1200 520" preserveAspectRatio="none">
-              <path d="M120,200 C220,110 420,110 520,200 C620,290 820,290 920,200 C1020,110 1100,140 1140,170"
-                    fill="none" stroke="rgba(109,59,210,.55)" stroke-width="7" stroke-linecap="round"/>
-              <path d="M120,320 C260,420 420,420 560,320 C700,220 840,220 980,320"
-                    fill="none" stroke="rgba(109,59,210,.28)" stroke-width="7" stroke-linecap="round"/>
-              <circle cx="520" cy="200" r="10" fill="rgba(109,59,210,.85)"/>
-              <circle cx="920" cy="200" r="10" fill="rgba(109,59,210,.55)"/>
-              <circle cx="560" cy="320" r="10" fill="rgba(109,59,210,.55)"/>
+              <path d="M220,300 C220,180 360,120 520,120 C680,120 820,180 820,300 C820,420 680,470 520,470 C360,470 220,420 220,300 Z"
+                    fill="rgba(109,59,210,.14)" stroke="rgba(109,59,210,.62)" stroke-width="8" />
+              <path d="M520,190 C610,190 680,245 680,310 C680,375 610,420 520,420 C430,420 360,375 360,310 C360,245 430,190 520,190 Z"
+                    fill="rgba(255,255,255,.70)" stroke="rgba(15,18,24,.12)" stroke-width="3"/>
+              <circle cx="520" cy="310" r="12" fill="rgba(109,59,210,.85)"/>
             </svg>
           </div>
 
@@ -854,7 +863,7 @@
     </div>
   </section>
 
-  <!-- INTEGRITY GUARANTEE (no fluff) -->
+  <!-- INTEGRITY GUARANTEE -->
   <section class="section">
     <div class="wrap">
       <h2 class="h2">Integrity guarantee</h2>
@@ -883,8 +892,8 @@
     (function(){
       const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-      // ====== Config (change URLs here) ======
-      const QUALIFY_URL = "qualify.html"; // change if needed
+      // ====== Config ======
+      const QUALIFY_URL = "qualify.html";
 
       // ====== CTA routing ======
       document.querySelectorAll("[data-qualify]").forEach(btn=>{
@@ -914,13 +923,13 @@
         });
       });
 
-      // ====== Process expand (tap + hover) ======
-      const cards = Array.from(document.querySelectorAll("[data-process]"));
-      if(cards.length){
+      // ====== Process expand ======
+      const processCards = Array.from(document.querySelectorAll("[data-process]"));
+      if(processCards.length){
         function activate(card){
-          cards.forEach(c => c.classList.toggle("is-active", c === card));
+          processCards.forEach(c => c.classList.toggle("is-active", c === card));
         }
-        cards.forEach(card=>{
+        processCards.forEach(card=>{
           card.addEventListener("click", ()=>activate(card));
           card.addEventListener("keydown", (e)=>{
             if(e.key === "Enter" || e.key === " "){
@@ -931,11 +940,11 @@
         });
         const isFinePointer = matchMedia("(hover:hover) and (pointer:fine)").matches;
         if(isFinePointer && !prefersReduced){
-          cards.forEach(card => card.addEventListener("mouseenter", ()=>activate(card)));
+          processCards.forEach(card => card.addEventListener("mouseenter", ()=>activate(card)));
         }
       }
 
-      // ====== Outcome timeline scroll mapping (fixes mobile misalignment + progress timing) ======
+      // ====== Outcome timeline scroll mapping (fixed progression timing) ======
       const section = document.getElementById("outcome");
       const track = document.getElementById("outcomeTrack");
       if(section && track){
@@ -946,9 +955,9 @@
           const r = section.getBoundingClientRect();
           const vh = window.innerHeight || document.documentElement.clientHeight;
 
-          // Start when section top passes ~25% down viewport (right after header area is visible)
+          // Starts after header is mostly visible
           const start = r.top - vh * 0.25;
-          // End when section bottom reaches ~75% down viewport (so 12 months hits by end)
+          // Ends before we fully leave the section, so 12 months hits on time
           const end = r.bottom - vh * 0.75;
 
           const p = clamp((0 - start) / (end - start), 0, 1);
@@ -970,7 +979,7 @@
         update();
       }
 
-      // ====== Parallax + pointer-follow glow (Stripe-ish motion) ======
+      // ====== Parallax + pointer-follow glow ======
       const bg = document.getElementById("bgStage");
       const heroPar = document.querySelector("[data-parallax]");
       const par2 = Array.from(document.querySelectorAll("[data-parallax2]"));
@@ -984,7 +993,6 @@
         }
         if(prefersReduced) return;
 
-        // Small offsets
         const ox = (mx - .5) * 16;
         const oy = (my - .5) * 12;
 
@@ -1018,10 +1026,9 @@
         setVars(.6,.3);
       }
 
-      // ====== Card tilt (premium “alive” feel) ======
+      // ====== Card tilt ======
       const tiltCards = Array.from(document.querySelectorAll("[data-tilt]"));
       const isFine = matchMedia("(hover:hover) and (pointer:fine)").matches;
-
       if(isFine && !prefersReduced){
         tiltCards.forEach(card=>{
           card.addEventListener("mousemove", (e)=>{
@@ -1036,6 +1043,128 @@
             card.style.transform = "perspective(900px) rotateX(0deg) rotateY(0deg)";
           });
         });
+      }
+
+      // ====== SYNCED UP/DOWN CANVAS for the 2 problem cards ======
+      const PURPLE = "#6D3BD2";
+      const upCanvas = document.getElementById("sparkUp");
+      const downCanvas = document.getElementById("sparkDown");
+
+      function clamp01(x){ return Math.max(0, Math.min(1, x)); }
+      function lerp(a,b,t){ return a + (b-a)*t; }
+      function smoothstep(t){
+        t = clamp01(t);
+        return t*t*(3 - 2*t);
+      }
+      function upThenDown(t){
+        const peakAt = 0.58;
+        if(t <= peakAt){
+          const u = smoothstep(t / peakAt);
+          return lerp(0.18, 0.82, u);
+        } else {
+          const u = smoothstep((t - peakAt) / (1 - peakAt));
+          return lerp(0.82, 0.30, u);
+        }
+      }
+
+      function resizeCanvas(c){
+        const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+        const rect = c.getBoundingClientRect();
+        c.width = Math.floor(rect.width * dpr);
+        c.height = Math.floor(rect.height * dpr);
+        const ctx = c.getContext("2d");
+        ctx.setTransform(dpr,0,0,dpr,0,0);
+        return ctx;
+      }
+
+      function drawChart(ctx, w, h, t, mode){
+        ctx.clearRect(0,0,w,h);
+
+        // baseline
+        ctx.globalAlpha = 1;
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = "rgba(15,18,24,.10)";
+        ctx.beginPath();
+        ctx.moveTo(14, h-20);
+        ctx.lineTo(w-14, h-20);
+        ctx.stroke();
+
+        const padX = 16, padY = 14;
+        const innerW = w - padX*2;
+        const innerH = h - padY*2;
+
+        const N = 44;
+        const pts = [];
+        for(let i=0;i<N;i++){
+          const xN = i/(N-1);
+          const tt = (t + xN*0.62) % 1;
+          let y = upThenDown(tt);
+
+          if(mode === "down"){
+            const bias = 0.10 + 0.12 * smoothstep(xN);
+            y = clamp01(y - bias);
+          }
+
+          const x = padX + xN * innerW;
+          const yPix = padY + (1 - y) * innerH;
+          pts.push([x, yPix]);
+        }
+
+        // glow
+        ctx.save();
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
+
+        ctx.strokeStyle = "rgba(109,59,210,.22)";
+        ctx.lineWidth = 7;
+        ctx.beginPath();
+        ctx.moveTo(pts[0][0], pts[0][1]);
+        for(let i=1;i<pts.length;i++) ctx.lineTo(pts[i][0], pts[i][1]);
+        ctx.stroke();
+
+        ctx.strokeStyle = PURPLE;
+        ctx.lineWidth = 2.6;
+        ctx.beginPath();
+        ctx.moveTo(pts[0][0], pts[0][1]);
+        for(let i=1;i<pts.length;i++) ctx.lineTo(pts[i][0], pts[i][1]);
+        ctx.stroke();
+
+        // moving dot
+        const dotIndex = Math.floor((pts.length-1) * 0.72);
+        const dx = pts[dotIndex][0];
+        const dy = pts[dotIndex][1];
+
+        ctx.fillStyle = PURPLE;
+        ctx.beginPath();
+        ctx.arc(dx, dy, 3.4, 0, Math.PI*2);
+        ctx.fill();
+
+        ctx.restore();
+      }
+
+      if(upCanvas && downCanvas && !prefersReduced){
+        let ctxUp = resizeCanvas(upCanvas);
+        let ctxDown = resizeCanvas(downCanvas);
+
+        const loopMs = 2600;
+        let raf = null;
+
+        function tick(now){
+          const t = (now % loopMs) / loopMs;
+          const rUp = upCanvas.getBoundingClientRect();
+          const rDown = downCanvas.getBoundingClientRect();
+          drawChart(ctxUp, rUp.width, rUp.height, t, "up");
+          drawChart(ctxDown, rDown.width, rDown.height, t, "down");
+          raf = requestAnimationFrame(tick);
+        }
+
+        function onResize(){
+          ctxUp = resizeCanvas(upCanvas);
+          ctxDown = resizeCanvas(downCanvas);
+        }
+        window.addEventListener("resize", onResize, { passive:true });
+
+        raf = requestAnimationFrame(tick);
       }
     })();
   </script>
