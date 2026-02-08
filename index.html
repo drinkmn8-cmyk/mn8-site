@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>MN8 — Qualification</title>
+  <title>MN8 — Public</title>
 
   <!-- Lato -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,24 +14,18 @@
     :root{
       --bg:#0B0D12;
       --text:#F2F2F3;
-      --muted:rgba(242,242,243,.70);
+      --muted:rgba(242,242,243,.72);
       --hair:rgba(255,255,255,.10);
 
       --mn8:#6D3BD2;
-      --mn8Soft:rgba(109,59,210,.20);
+      --mn8Soft:rgba(109,59,210,.22);
+      --mn8Glow:rgba(109,59,210,.35);
 
+      --radiusXL:28px;
       --radiusLG:22px;
       --radiusMD:16px;
 
-      --wrap: 980px;
-      --padX: 48px;
-
-      /* spacing rhythm (big, calm, Stripe-like) */
-      --s1: 18px;
-      --s2: 28px;
-      --s3: 44px;
-      --s4: 72px;
-      --s5: 96px;
+      --wrap: min(1100px, calc(100% - 48px));
     }
 
     *{ box-sizing:border-box; }
@@ -41,544 +35,644 @@
       background:var(--bg);
       color:var(--text);
       font-family:"Lato", system-ui, -apple-system, Segoe UI, Roboto, Arial;
-      -webkit-font-smoothing:antialiased;
-      text-rendering:optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      overflow-x:hidden;
     }
 
-    .wrap{
-      width:min(var(--wrap), calc(100% - var(--padX)));
-      margin:0 auto;
-      padding: var(--s4) 0 var(--s5);
+    /* ====== Global layout ====== */
+    .wrap{ width:var(--wrap); margin:0 auto; }
+    section{ padding: 86px 0; position:relative; }
+    .sectionHair{
+      position:absolute; left:0; right:0; top:0;
+      height:1px; background: rgba(255,255,255,.06);
     }
 
-    /* Type */
+    /* ====== Type ====== */
     .kicker{
-      margin:0 0 8px;
       font-size:13px;
-      color:var(--muted);
       letter-spacing:.02em;
+      color:rgba(242,242,243,.70);
+      margin:0 0 10px;
     }
-    h1{
+    .h1{
       margin:0 0 16px;
-      font-size:46px;
-      line-height:1.08;
+      font-weight:900;
+      letter-spacing:-.03em;
+      line-height:1.02;
+      font-size: clamp(42px, 6.2vw, 74px);
+      max-width: 20ch;
+    }
+    .sub{
+      margin:0 0 26px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.7;
+      max-width: 68ch;
+    }
+    .h2{
+      margin:0 0 12px;
+      font-size: clamp(26px, 3.2vw, 44px);
       font-weight:900;
       letter-spacing:-.02em;
+      line-height:1.08;
     }
-    h2{
-      margin:0 0 14px;
-      font-size:28px;
-      line-height:1.15;
-      font-weight:900;
-      letter-spacing:-.01em;
-    }
-    p{
-      margin:0;
+    .lead{
+      margin:0 0 26px;
+      color:var(--muted);
       font-size:16px;
       line-height:1.75;
-      color:var(--muted);
+      max-width: 70ch;
+    }
+    .miniTitle{
+      margin:0 0 10px;
+      font-weight:900;
+      letter-spacing:-.01em;
+      font-size:18px;
+      color:rgba(255,255,255,.94);
+    }
+    .small{
+      margin:0;
+      color:rgba(255,255,255,.70);
+      font-size:14px;
+      line-height:1.7;
     }
 
-    /* Section spacing */
-    .section{
-      padding: var(--s4) 0;
-      border-top: 1px solid var(--hair);
-    }
-    .section.first{
-      border-top: 0;
-      padding-top: 0;
+    /* ====== Hero ====== */
+    .hero{
+      padding: 84px 0 54px;
+      position:relative;
+      isolation:isolate;
     }
 
-    /* CTA */
+    /* Kinetic field */
+    .field{
+      position:absolute;
+      inset: -140px -80px -180px -80px;
+      pointer-events:none;
+      z-index:0;
+    }
+    canvas#mn8Field{
+      width:100%;
+      height:100%;
+      display:block;
+      filter: drop-shadow(0 0 22px rgba(109,59,210,.20));
+      opacity:.95;
+    }
+
+    /* Subtle vignette + glow (NOT a gradient background — just a spotlight mask) */
+    .heroMask{
+      position:absolute;
+      inset:0;
+      z-index:1;
+      pointer-events:none;
+      background:
+        radial-gradient(900px 420px at 30% 28%, rgba(109,59,210,.10), transparent 60%),
+        radial-gradient(700px 360px at 70% 40%, rgba(255,255,255,.04), transparent 60%);
+      mix-blend-mode: screen;
+      opacity:.8;
+    }
+
+    .heroInner{ position:relative; z-index:2; }
+
     .ctaRow{
       display:flex;
-      gap:12px;
+      gap: 12px;
       align-items:center;
       flex-wrap:wrap;
-      margin-top: var(--s2);
+      margin-top: 10px;
     }
     .btn{
       appearance:none;
-      border:0;
-      background: var(--mn8);
-      color: #fff;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      color: rgba(255,255,255,.92);
       padding: 12px 18px;
       border-radius: 999px;
       font-weight:900;
       font-size:13px;
-      letter-spacing:.01em;
       cursor:pointer;
-      transition: transform .12s ease, filter .12s ease, opacity .12s ease;
-      text-decoration:none;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
+      transition: transform .14s ease, border-color .14s ease, background .14s ease, box-shadow .14s ease;
     }
-    .btn:hover{ filter: brightness(1.05); }
-    .btn:active{ transform: translateY(1px); }
-
-    .btnGhost{
-      background: transparent;
-      border: 1px solid rgba(255,255,255,.14);
-      color: rgba(242,242,243,.86);
+    .btn:hover{
+      transform: translateY(-1px);
+      border-color: rgba(255,255,255,.18);
+      background: rgba(255,255,255,.06);
     }
-    .btnGhost:hover{ border-color: rgba(255,255,255,.22); }
-
-    /* Small helper text */
-    .meta{
-      margin-top: 10px;
-      font-size:12px;
-      color: rgba(242,242,243,.55);
-      font-weight:700;
+    .btnPrimary{
+      border: 0;
+      background: var(--mn8);
+      color: white;
+      box-shadow: 0 14px 40px rgba(109,59,210,.22);
+    }
+    .btnPrimary:hover{
+      background: rgba(109,59,210,.95);
+      box-shadow: 0 16px 46px rgba(109,59,210,.28);
     }
 
-    /* ---------- Section 2: Contrast (Approved graphic zone #1) ---------- */
-    .contrastGrid{
-      margin-top: var(--s2);
+    /* ====== Card system ====== */
+    .grid2{
       display:grid;
       grid-template-columns: 1fr 1fr;
-      gap: 16px;
+      gap: 18px;
     }
     .card{
+      border-radius: var(--radiusXL);
       border: 1px solid rgba(255,255,255,.10);
-      border-radius: var(--radiusLG);
-      padding: 18px;
-      background: transparent;
-    }
-    .cardTitle{
-      margin:0 0 10px;
-      font-size:14px;
-      font-weight:900;
-      letter-spacing:-.01em;
-      color: rgba(242,242,243,.92);
-    }
-    .bullets{
-      margin:0;
-      padding-left: 18px;
-      color: rgba(242,242,243,.78);
-      font-size:14px;
-      line-height:1.75;
-    }
-    .bullets li{ margin: 4px 0; }
-    .cardNote{
-      margin-top: 10px;
-      font-size:12px;
-      color: rgba(242,242,243,.55);
-      font-weight:700;
-    }
-
-    /* contrast graphic (code-first, no decoration) */
-    .contrastGraphic{
-      margin-top: 14px;
-      border-top: 1px solid rgba(255,255,255,.10);
-      padding-top: 14px;
-      display:flex;
-      gap:10px;
-      flex-direction:column;
-    }
-    .rail{
-      height: 26px;
-      display:flex;
-      align-items:center;
-      gap:10px;
-    }
-    .railLabel{
-      width: 84px;
-      font-size:12px;
-      font-weight:900;
-      color: rgba(242,242,243,.72);
-      letter-spacing:.01em;
-    }
-    .railTrack{
+      background: rgba(255,255,255,.03);
+      padding: 22px;
       position:relative;
-      flex:1;
-      height: 2px;
-      background: rgba(255,255,255,.14);
-      border-radius: 999px;
       overflow:hidden;
+      transition: transform .14s ease, border-color .14s ease, box-shadow .14s ease;
     }
-    /* broken line segments */
-    .railTrack.broken::before{
+    .card:hover{
+      transform: translateY(-2px);
+      border-color: rgba(255,255,255,.16);
+      box-shadow: 0 18px 60px rgba(0,0,0,.35);
+    }
+    .card::after{
       content:"";
       position:absolute;
-      inset:0;
-      background:
-        linear-gradient(90deg,
-          rgba(255,255,255,.14) 0%,
-          rgba(255,255,255,.14) 18%,
-          transparent 18%,
-          transparent 28%,
-          rgba(255,255,255,.14) 28%,
-          rgba(255,255,255,.14) 46%,
-          transparent 46%,
-          transparent 56%,
-          rgba(255,255,255,.14) 56%,
-          rgba(255,255,255,.14) 74%,
-          transparent 74%,
-          transparent 84%,
-          rgba(255,255,255,.14) 84%,
-          rgba(255,255,255,.14) 100%
-        );
-    }
-    /* continuous line + subtle purple continuity */
-    .railTrack.continuous::after{
-      content:"";
-      position:absolute;
-      left:0;
-      top:0;
-      height: 2px;
-      width: 100%;
-      background: linear-gradient(90deg, rgba(109,59,210,.0), rgba(109,59,210,.75), rgba(109,59,210,.0));
-      opacity: .65;
+      inset:-2px;
+      pointer-events:none;
+      border-radius: inherit;
+      background: radial-gradient(500px 220px at 20% 20%, rgba(109,59,210,.16), transparent 55%);
+      opacity:.55;
       mix-blend-mode: screen;
     }
 
-    /* ---------- Section 4: What it is / isn't (containers only) ---------- */
-    .twoCol{
-      margin-top: var(--s2);
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
+    .bullets{
+      margin: 10px 0 0;
+      padding-left: 18px;
+      color: rgba(255,255,255,.78);
+      font-size: 14px;
+      line-height: 1.8;
     }
-    .defBlock p{
-      font-size:15px;
-      line-height:1.7;
-      color: rgba(242,242,243,.74);
-    }
+    .bullets li{ margin: 4px 0; }
 
-    /* ---------- Section 5: Process (Approved graphic zone #2) ---------- */
+    /* ====== Process steps ====== */
     .steps{
-      margin-top: var(--s2);
-      position:relative;
       display:grid;
-      gap: 18px;
-    }
-    .steps::before{
-      content:"";
-      position:absolute;
-      left: 14px;
-      top: 8px;
-      bottom: 8px;
-      width: 1px;
-      background: rgba(255,255,255,.16);
+      gap: 14px;
+      margin-top: 10px;
     }
     .step{
       display:grid;
-      grid-template-columns: 30px 1fr;
-      column-gap: 16px;
-      align-items:start;
-    }
-    .num{
-      width: 28px;
-      height: 28px;
-      border-radius: 999px;
-      display:flex;
+      grid-template-columns: 60px 1fr;
+      gap: 16px;
       align-items:center;
-      justify-content:center;
+      border-radius: var(--radiusXL);
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.02);
+      padding: 18px 18px;
+      transition: transform .14s ease, border-color .14s ease, box-shadow .14s ease;
+    }
+    .step:hover{
+      transform: translateY(-2px);
+      border-color: rgba(109,59,210,.35);
+      box-shadow: 0 18px 60px rgba(0,0,0,.35);
+    }
+    .chip{
+      width: 52px; height: 52px;
+      border-radius: 16px;
+      display:flex; align-items:center; justify-content:center;
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.10);
+      color: rgba(255,255,255,.90);
       font-weight:900;
-      font-size:12px;
-      color: rgba(242,242,243,.90);
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.04);
-      position:relative;
-      z-index:1;
-      margin-left: 0;
     }
-    .stepTitle{
-      margin: 0 0 6px;
-      font-size:15px;
-      font-weight:900;
-      color: rgba(242,242,243,.92);
-      letter-spacing:-.01em;
-    }
-    .stepCopy{
-      font-size:15px;
-      color: rgba(242,242,243,.72);
-      line-height:1.7;
-    }
+    .stepTitle{ margin:0 0 4px; font-weight:900; font-size:18px; letter-spacing:-.01em; }
+    .stepCopy{ margin:0; color: rgba(255,255,255,.70); font-size:14px; line-height:1.65; }
 
-    /* ---------- Section 6: For / Not for (text only) ---------- */
-    .forGrid{
-      margin-top: var(--s2);
+    /* ====== FAQ ====== */
+    .faq{
       display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 22px;
+      gap: 12px;
+      margin-top: 18px;
     }
-    .miniTitle{
-      margin:0 0 10px;
-      font-size:14px;
-      font-weight:900;
-      color: rgba(242,242,243,.92);
-      letter-spacing:-.01em;
-    }
-    .plainList{
-      margin:0;
-      padding-left: 18px;
-      color: rgba(242,242,243,.74);
-      font-size:14px;
-      line-height:1.75;
-    }
-    .plainList li{ margin: 4px 0; }
-
-    /* ---------- FAQ (accordion, text only) ---------- */
     details{
-      border-top: 1px solid rgba(255,255,255,.10);
-      padding: 14px 0;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.02);
+      padding: 14px 16px;
+      transition: border-color .14s ease, transform .14s ease;
     }
-    details:last-child{
-      border-bottom: 1px solid rgba(255,255,255,.10);
+    details:hover{
+      border-color: rgba(255,255,255,.16);
+      transform: translateY(-1px);
     }
     summary{
-      cursor:pointer;
       list-style:none;
-      font-weight:900;
-      font-size:14px;
-      color: rgba(242,242,243,.90);
+      cursor:pointer;
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:12px;
+      gap: 16px;
+      font-weight:900;
+      color: rgba(255,255,255,.92);
     }
     summary::-webkit-details-marker{ display:none; }
     .chev{
-      width: 10px; height: 10px;
-      border-right: 2px solid rgba(242,242,243,.55);
-      border-bottom: 2px solid rgba(242,242,243,.55);
+      width: 10px; height:10px;
+      border-right: 2px solid rgba(255,255,255,.65);
+      border-bottom: 2px solid rgba(255,255,255,.65);
       transform: rotate(45deg);
       transition: transform .14s ease;
       flex: 0 0 auto;
-      margin-top: 2px;
+      margin-right: 2px;
     }
-    details[open] .chev{
-      transform: rotate(225deg);
-    }
-    .faqBody{
-      padding: 10px 0 0;
-      color: rgba(242,242,243,.70);
-      font-size:15px;
-      line-height:1.7;
-      max-width: 74ch;
+    details[open] .chev{ transform: rotate(225deg); }
+    .answer{
+      margin-top: 10px;
+      color: rgba(255,255,255,.70);
+      font-size: 14px;
+      line-height: 1.75;
+      max-width: 90ch;
     }
 
-    /* Mobile */
-    @media (max-width: 780px){
-      :root{ --padX: 32px; }
-      h1{ font-size:40px; }
-      .contrastGrid, .twoCol, .forGrid{ grid-template-columns: 1fr; }
-      .railLabel{ width: 72px; }
+    /* ====== Footer CTA ====== */
+    .finalCta{
+      border-radius: var(--radiusXL);
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.02);
+      padding: 26px;
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap: 18px;
+      overflow:hidden;
+      position:relative;
+    }
+    .finalCta::after{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      border-radius: inherit;
+      background: radial-gradient(650px 240px at 20% 30%, rgba(109,59,210,.22), transparent 55%);
+      mix-blend-mode: screen;
+      opacity:.7;
+      pointer-events:none;
+    }
+    .finalInner{ position:relative; z-index:1; max-width: 70ch; }
+    .finalTitle{
+      margin:0 0 8px;
+      font-size: 22px;
+      font-weight:900;
+      letter-spacing:-.01em;
+    }
+    .finalCopy{ margin:0; color: rgba(255,255,255,.70); line-height:1.7; font-size:14px; }
+
+    /* ====== Responsive ====== */
+    @media (max-width: 900px){
+      .grid2{ grid-template-columns: 1fr; }
+      section{ padding: 72px 0; }
+      .finalCta{ flex-direction:column; align-items:stretch; }
+    }
+    @media (max-width: 560px){
+      .wrap{ width: min(1100px, calc(100% - 32px)); }
+      .hero{ padding: 70px 0 44px; }
+      section{ padding: 62px 0; }
+      .step{ grid-template-columns: 54px 1fr; }
+      .chip{ width:48px; height:48px; border-radius: 14px; }
     }
   </style>
 </head>
 
 <body>
-  <main class="wrap" id="top">
 
-    <!-- HERO (no graphics) -->
-    <section class="section first" id="hero" aria-label="Hero">
-      <p class="kicker">Private access begins with qualification</p>
-      <h1>Weight control built for full schedules —<br>not time-rich lifestyles.</h1>
-      <p style="max-width:72ch;">
-        MN8 is a private weight control system for people who need structure that runs without constant attention.
+  <!-- HERO -->
+  <header class="hero">
+    <div class="field" aria-hidden="true">
+      <canvas id="mn8Field"></canvas>
+    </div>
+    <div class="heroMask" aria-hidden="true"></div>
+
+    <div class="wrap heroInner">
+      <p class="kicker">Private system built for real responsibility</p>
+      <h1 class="h1">Weight control built for full schedules — not time-rich lifestyles.</h1>
+      <p class="sub">
+        MN8 is a private weight control system designed to fit inside dense days.
+        Minimal disruption. Repeatable structure. Control that holds.
       </p>
 
       <div class="ctaRow">
-        <a class="btn" href="./qualify.html">Begin Qualification</a>
-        <a class="btn btnGhost" href="#how">See how it works</a>
+        <button class="btn btnPrimary" type="button" onclick="location.href='qualify.html'">Begin Qualification</button>
+        <button class="btn" type="button" onclick="document.getElementById('process').scrollIntoView({behavior:'smooth'})">See how it works</button>
       </div>
+    </div>
+  </header>
 
-      <div class="meta">Qualification exists to protect fit, expectations, and outcome quality.</div>
-    </section>
+  <!-- WHY IT FAILS -->
+  <section>
+    <div class="sectionHair"></div>
+    <div class="wrap">
+      <h2 class="h2">The real reason the old way keeps failing</h2>
+      <p class="lead">Responsibility increased, and the “old system” stopped fitting.</p>
 
-    <!-- SECTION 2: WHY THE OLD WAY FAILS (graphics allowed here) -->
-    <section class="section" id="why" aria-label="Why the old way fails">
-      <h2>The old way fails when life densifies.</h2>
-      <p style="max-width:76ch;">
-        Not because you “lost discipline.” Because the approach assumes time, margin, and mental space you no longer have.
-      </p>
-
-      <div class="contrastGrid" role="list" aria-label="Contrast">
-        <div class="card" role="listitem">
-          <div class="cardTitle">What used to work</div>
+      <div class="grid2">
+        <div class="card">
+          <div class="miniTitle">What used to work</div>
           <ul class="bullets">
             <li>Time to plan and prepare</li>
-            <li>Space for longer workouts</li>
-            <li>Bandwidth to “stay on it” daily</li>
-            <li>Routines that survived stable weeks</li>
+            <li>Space for long workouts</li>
+            <li>Mental bandwidth to “stay on it”</li>
+            <li>Rules you could follow consistently</li>
           </ul>
-
-          <div class="contrastGraphic" aria-label="Broken structure graphic">
-            <div class="rail">
-              <div class="railLabel">Breaks</div>
-              <div class="railTrack broken"></div>
-            </div>
-          </div>
-
-          <div class="cardNote">It worked when your days had space.</div>
+          <p class="small" style="margin-top:10px;">It worked when your days had space.</p>
         </div>
 
-        <div class="card" role="listitem">
-          <div class="cardTitle">Why it doesn’t now</div>
+        <div class="card">
+          <div class="miniTitle">Why it doesn’t now</div>
           <ul class="bullets">
-            <li>Schedules compress</li>
+            <li>Your schedule is dense</li>
             <li>Decisions stack all day</li>
             <li>Energy is spent on responsibility</li>
-            <li>Missed days create resets</li>
+            <li>The system demands attention you don’t have</li>
           </ul>
-
-          <div class="contrastGraphic" aria-label="Continuous structure graphic">
-            <div class="rail">
-              <div class="railLabel">Holds</div>
-              <div class="railTrack continuous"></div>
-            </div>
-          </div>
-
-          <div class="cardNote">Your life changed. The approach didn’t.</div>
+          <p class="small" style="margin-top:10px;">The old approach doesn’t fit your life anymore.</p>
         </div>
       </div>
-    </section>
 
-    <!-- SECTION 3: REFRAME (no graphics) -->
-    <section class="section" id="reframe" aria-label="Reframe">
-      <h2>It’s not effort. It’s fit.</h2>
-      <p style="max-width:76ch;">
-        If a plan requires constant attention, it collapses under pressure. MN8 is designed to keep running when attention moves elsewhere.
+      <p class="lead" style="margin-top:18px; max-width:70ch;">
+        Your system didn’t fail. It stopped fitting your life.
       </p>
-    </section>
+    </div>
+  </section>
 
-    <!-- SECTION 4: WHAT MN8 IS / IS NOT (containers only, no internal graphics) -->
-    <section class="section" id="what" aria-label="What MN8 is and is not">
-      <h2>Definition.</h2>
-      <p style="max-width:76ch;">
-        This is a private structure with clear rules and clear expectations. Nothing extra.
-      </p>
+  <!-- WHAT IT IS / IS NOT -->
+  <section>
+    <div class="sectionHair"></div>
+    <div class="wrap">
+      <h2 class="h2">What MN8 is</h2>
+      <p class="lead">A private weight control system for people operating under pressure — not ideal conditions.</p>
 
-      <div class="twoCol">
-        <div class="card defBlock">
-          <div class="cardTitle">What MN8 is</div>
-          <p>
-            A private weight control structure that reduces decision load and keeps execution consistent with minimal disruption.
+      <div class="grid2">
+        <div class="card">
+          <div class="miniTitle">What this is</div>
+          <p class="small">
+            A minimal, repeatable structure that fits inside dense schedules and keeps weight control from turning into a second job.
           </p>
         </div>
 
-        <div class="card defBlock">
-          <div class="cardTitle">What MN8 is not</div>
-          <p>
-            Not a challenge, not a lifestyle takeover, not constant tracking, and not a system that depends on motivation to function.
+        <div class="card">
+          <div class="miniTitle">What this is not</div>
+          <p class="small">
+            Not a challenge. Not a lifestyle takeover. Not constant tracking, long workouts, or daily mental effort.
+            MN8 is designed to fit into your life — not compete with it.
           </p>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- SECTION 5: PROCESS (minimal structural graphic only) -->
-    <section class="section" id="how" aria-label="How it works">
-      <h2>How it works.</h2>
-      <p style="max-width:76ch;">
-        Three steps. No complexity. The goal is stability, not intensity.
-      </p>
+  <!-- PROCESS -->
+  <section id="process">
+    <div class="sectionHair"></div>
+    <div class="wrap">
+      <h2 class="h2">Process</h2>
+      <p class="lead">Built for people who can’t “start over” every month.</p>
 
-      <div class="steps" role="list" aria-label="Process steps">
-        <div class="step" role="listitem">
-          <div class="num">01</div>
+      <div class="steps">
+        <div class="step">
+          <div class="chip">01</div>
           <div>
-            <div class="stepTitle">Nutrition tightens first</div>
-            <div class="stepCopy">Structure reduces decisions so consistency stops relying on willpower.</div>
+            <p class="stepTitle">Tighten nutrition</p>
+            <p class="stepCopy">Reduce friction and decision load first.</p>
           </div>
         </div>
 
-        <div class="step" role="listitem">
-          <div class="num">02</div>
+        <div class="step">
+          <div class="chip">02</div>
           <div>
-            <div class="stepTitle">Training stays short</div>
-            <div class="stepCopy">Repeatable sessions that fit real weeks without negotiation.</div>
+            <p class="stepTitle">Short daily training</p>
+            <p class="stepCopy">Repeatable sessions that fit real schedules.</p>
           </div>
         </div>
 
-        <div class="step" role="listitem">
-          <div class="num">03</div>
+        <div class="step">
+          <div class="chip">03</div>
           <div>
-            <div class="stepTitle">Execution becomes automatic</div>
-            <div class="stepCopy">So missed days don’t become resets and progress doesn’t require attention.</div>
+            <p class="stepTitle">Automatic structure</p>
+            <p class="stepCopy">So it holds under stress.</p>
           </div>
         </div>
       </div>
 
-      <div class="ctaRow" style="margin-top: var(--s3);">
-        <a class="btn" href="./qualify.html">Begin Qualification</a>
+      <div class="ctaRow" style="margin-top:22px;">
+        <button class="btn btnPrimary" type="button" onclick="location.href='qualify.html'">Begin Qualification</button>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- SECTION 6: WHO IT’S FOR (no graphics) -->
-    <section class="section" id="fit" aria-label="Who it is for">
-      <h2>Fit.</h2>
-      <p style="max-width:76ch;">
-        MN8 is intentionally simple. The right people prefer that.
-      </p>
+  <!-- WHO IT'S FOR -->
+  <section>
+    <div class="sectionHair"></div>
+    <div class="wrap">
+      <h2 class="h2">Who MN8 is for</h2>
+      <p class="lead">Designed for a specific type of life. Not everyone.</p>
 
-      <div class="forGrid">
-        <div>
+      <div class="grid2">
+        <div class="card">
           <div class="miniTitle">Who this is for</div>
-          <ul class="plainList">
-            <li>People who want structure that runs without constant thinking</li>
-            <li>People who value simplicity over customization</li>
-            <li>People who want progress to hold through imperfect weeks</li>
-            <li>People willing to follow what’s written as designed</li>
-          </ul>
+          <p class="small">
+            People who already carry responsibility and don’t have space for complicated health systems.
+            Schedules are full. Days are dense. Progress must happen inside real constraints.
+          </p>
         </div>
 
-        <div>
+        <div class="card">
           <div class="miniTitle">Who this is not for</div>
-          <ul class="plainList">
-            <li>People who need novelty to stay engaged</li>
-            <li>People who want endless options and experimentation</li>
-            <li>People who resist structure and prefer improvisation</li>
-            <li>People looking for a quick fix with no compliance</li>
-          </ul>
+          <p class="small">
+            People who want health to become their main focus, identity, or main project.
+            If you need complexity, constant customization, or time-intensive routines, MN8 will feel too simple — by design.
+          </p>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- SECTION 7: FAQ (no graphics) -->
-    <section class="section" id="faq" aria-label="FAQ">
-      <h2>FAQ.</h2>
-      <div style="margin-top: var(--s2);">
+  <!-- FAQ -->
+  <section>
+    <div class="sectionHair"></div>
+    <div class="wrap">
+      <h2 class="h2">FAQ</h2>
 
+      <div class="faq">
         <details>
-          <summary>Why qualification?<span class="chev" aria-hidden="true"></span></summary>
-          <div class="faqBody">
-            Because MN8 is private, expectation-driven, and designed to run continuously. Fit matters.
-          </div>
+          <summary>What is MN8, really?<span class="chev"></span></summary>
+          <div class="answer">A private system that makes weight control hold inside dense schedules by reducing decision load and building repeatable structure.</div>
         </details>
 
         <details>
-          <summary>Is MN8 a workout program?<span class="chev" aria-hidden="true"></span></summary>
-          <div class="faqBody">
-            No. Training is one component. MN8 is a structure that stabilizes execution across nutrition and movement.
-          </div>
+          <summary>Is MN8 a workout program?<span class="chev"></span></summary>
+          <div class="answer">No. Training is one component. The system is built to prevent drift under pressure, not to max out workouts.</div>
         </details>
 
         <details>
-          <summary>Do I need tracking or constant logging?<span class="chev" aria-hidden="true"></span></summary>
-          <div class="faqBody">
-            No. MN8 reduces decision load. It’s built to function without daily tracking dependence.
-          </div>
+          <summary>Is MN8 a diet?<span class="chev"></span></summary>
+          <div class="answer">No. It’s a structure that removes daily negotiation so nutrition stays consistent without obsession.</div>
         </details>
 
         <details>
-          <summary>What happens if I miss days?<span class="chev" aria-hidden="true"></span></summary>
-          <div class="faqBody">
-            MN8 is built around continuity. Missed days don’t become resets. You return without punishment loops.
-          </div>
+          <summary>How does MN8 fit into a full schedule?<span class="chev"></span></summary>
+          <div class="answer">By minimizing decisions and keeping execution short, repeatable, and anchored to your real constraints.</div>
         </details>
 
+        <details>
+          <summary>What happens when life gets chaotic?<span class="chev"></span></summary>
+          <div class="answer">The structure is designed to degrade gracefully — so missed days don’t trigger resets and momentum doesn’t collapse.</div>
+        </details>
+
+        <details>
+          <summary>Why is MN8 private?<span class="chev"></span></summary>
+          <div class="answer">Because the system requires buy-in and compliance. Private access filters for people who will actually follow the structure.</div>
+        </details>
       </div>
 
-      <div class="ctaRow" style="margin-top: var(--s3);">
-        <a class="btn" href="./qualify.html">Begin Qualification</a>
+      <div class="finalCta" style="margin-top:26px;">
+        <div class="finalInner">
+          <div class="finalTitle">If you’re done “starting over,” begin qualification.</div>
+          <p class="finalCopy">No hype. No lifestyle takeover. A system built for real responsibility.</p>
+        </div>
+        <div class="ctaRow" style="margin:0; position:relative; z-index:1;">
+          <button class="btn btnPrimary" type="button" onclick="location.href='qualify.html'">Begin Qualification</button>
+        </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-  </main>
+  <script>
+    // ===== MN8 Kinetic Field (Stripe-inspired, but premium + restrained) =====
+    (function(){
+      const canvas = document.getElementById('mn8Field');
+      const ctx = canvas.getContext('2d', { alpha: true });
+
+      let w = 0, h = 0, dpr = 1;
+      let mouseX = 0.5, mouseY = 0.35;         // normalized
+      let targetMX = mouseX, targetMY = mouseY;
+      let scrollT = 0;
+
+      const DOTS = [];
+      const COUNT = 160;                       // keep it premium: not a snowstorm
+      const BASE_SPEED = 0.10;
+
+      function resize(){
+        dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+        const rect = canvas.getBoundingClientRect();
+        w = Math.floor(rect.width);
+        h = Math.floor(rect.height);
+        canvas.width = Math.floor(w * dpr);
+        canvas.height = Math.floor(h * dpr);
+        ctx.setTransform(dpr,0,0,dpr,0,0);
+      }
+
+      function rand(min,max){ return min + Math.random()*(max-min); }
+
+      function seed(){
+        DOTS.length = 0;
+        for(let i=0;i<COUNT;i++){
+          const z = Math.random();             // depth 0..1
+          DOTS.push({
+            x: rand(0,w),
+            y: rand(0,h),
+            r: rand(0.8, 2.2) * (0.6 + z),
+            z,
+            vx: rand(-1,1) * (0.25 + z),
+            vy: rand(-1,1) * (0.12 + z),
+            phase: rand(0, Math.PI*2)
+          });
+        }
+      }
+
+      function onMove(e){
+        const rect = canvas.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width;
+        const y = (e.clientY - rect.top) / rect.height;
+        targetMX = Math.max(0, Math.min(1, x));
+        targetMY = Math.max(0, Math.min(1, y));
+      }
+
+      function onTouch(e){
+        if(!e.touches || !e.touches[0]) return;
+        onMove(e.touches[0]);
+      }
+
+      function onScroll(){
+        const y = window.scrollY || 0;
+        scrollT = y * 0.0006;                  // subtle parallax drive
+      }
+
+      function draw(){
+        // ease mouse
+        mouseX += (targetMX - mouseX) * 0.06;
+        mouseY += (targetMY - mouseY) * 0.06;
+
+        ctx.clearRect(0,0,w,h);
+
+        // soft global glow
+        const gx = w*(0.18 + mouseX*0.22);
+        const gy = h*(0.18 + mouseY*0.18);
+        const grad = ctx.createRadialGradient(gx, gy, 0, gx, gy, Math.max(w,h)*0.55);
+        grad.addColorStop(0, 'rgba(109,59,210,.14)');
+        grad.addColorStop(0.55, 'rgba(109,59,210,.05)');
+        grad.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0,0,w,h);
+
+        // dots + micro-lines (Stripe-ish)
+        for(const p of DOTS){
+          // drift
+          const driftX = (mouseX - 0.5) * (18 + p.z*34);
+          const driftY = (mouseY - 0.5) * (10 + p.z*22);
+          const sway = Math.sin(p.phase + scrollT*2.2) * (2 + p.z*6);
+
+          p.x += (p.vx * BASE_SPEED) + (Math.cos(p.phase + scrollT) * 0.05);
+          p.y += (p.vy * BASE_SPEED) + (Math.sin(p.phase*0.7 + scrollT) * 0.03);
+
+          // wrap
+          if(p.x < -40) p.x = w + 40;
+          if(p.x > w + 40) p.x = -40;
+          if(p.y < -40) p.y = h + 40;
+          if(p.y > h + 40) p.y = -40;
+
+          const x = p.x + driftX;
+          const y = p.y + driftY + sway;
+
+          // dot
+          ctx.beginPath();
+          ctx.fillStyle = `rgba(109,59,210,${0.25 + p.z*0.45})`;
+          ctx.arc(x, y, p.r, 0, Math.PI*2);
+          ctx.fill();
+
+          // faint line (not every dot)
+          if(p.z > 0.55 && (p.x % 3.2) < 0.22){
+            ctx.strokeStyle = `rgba(109,59,210,${0.07 + p.z*0.10})`;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.lineTo(x + (driftX*0.35), y + 18 + p.z*26);
+            ctx.stroke();
+          }
+
+          p.phase += 0.004 + p.z*0.006;
+        }
+
+        requestAnimationFrame(draw);
+      }
+
+      function init(){
+        resize();
+        seed();
+        draw();
+      }
+
+      window.addEventListener('resize', () => { resize(); seed(); }, { passive:true });
+      window.addEventListener('mousemove', onMove, { passive:true });
+      window.addEventListener('touchmove', onTouch, { passive:true });
+      window.addEventListener('scroll', onScroll, { passive:true });
+
+      init();
+    })();
+  </script>
 </body>
 </html>
-
