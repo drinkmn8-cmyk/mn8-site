@@ -3,579 +3,581 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>MN8 Private</title>
+  <title>MN8 — Qualification</title>
 
   <!-- Lato -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
 
-<style>
-  :root{
-    --bg:#0B0D12;
-    --text:#F2F2F3;
-    --muted:rgba(242,242,243,.70);
-    --hair:rgba(255,255,255,.08);
+  <style>
+    :root{
+      --bg:#0B0D12;
+      --text:#F2F2F3;
+      --muted:rgba(242,242,243,.70);
+      --hair:rgba(255,255,255,.10);
 
-    --panel:rgba(255,255,255,.04);
-    --panel2:rgba(255,255,255,.06);
+      --mn8:#6D3BD2;
+      --mn8Soft:rgba(109,59,210,.20);
 
-    --mn8:#6D3BD2;             /* purple */
-    --mn8Soft:rgba(109,59,210,.25);
+      --radiusLG:22px;
+      --radiusMD:16px;
 
-    --radiusXL:28px;
-    --radiusLG:22px;
-    --radiusMD:16px;
+      --wrap: 980px;
+      --padX: 48px;
 
-    /* === MN8 spacing scale (adds “air”) === */
-    --spaceXS:10px;
-    --spaceSM:18px;
-    --spaceMD:32px;
-    --spaceLG:56px;
-    --spaceXL:88px;
-  }
+      /* spacing rhythm (big, calm, Stripe-like) */
+      --s1: 18px;
+      --s2: 28px;
+      --s3: 44px;
+      --s4: 72px;
+      --s5: 96px;
+    }
 
-  *{box-sizing:border-box}
-  html,body{height:100%}
-  body{
-    margin:0;
-    background:var(--bg);
-    color:var(--text);
-    font-family:"Lato", system-ui, -apple-system, Segoe UI, Roboto, Arial;
-    -webkit-font-smoothing:antialiased;
-    text-rendering:optimizeLegibility;
-  }
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--text);
+      font-family:"Lato", system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
+    }
 
-  .wrap{
-    width:min(980px, calc(100% - 48px));
-    margin: 0 auto;
-    padding: var(--spaceLG) 0 var(--spaceXL);
-  }
+    .wrap{
+      width:min(var(--wrap), calc(100% - var(--padX)));
+      margin:0 auto;
+      padding: var(--s4) 0 var(--s5);
+    }
 
-  /* Type */
-  .kicker{
-    font-size:13px;
-    color:var(--muted);
-    margin:0 0 var(--spaceXS);
-  }
-  h1{
-    margin:0 0 var(--spaceMD);
-    font-size:44px;
-    line-height:1.08;
-    font-weight:900;
-    letter-spacing:-.02em;
-  }
-  h2{
-    /* BIGGER breathing room between sections */
-    margin: var(--spaceXL) 0 var(--spaceMD);
-    font-size:28px;
-    line-height:1.15;
-    font-weight:900;
-    letter-spacing:-.01em;
-  }
-  p{
-    margin:0;
-    color:var(--muted);
-    font-size:16px;
-    line-height:1.7;
-  }
-  /* give stacked paragraphs clean separation */
-  p + p{ margin-top: var(--spaceSM); }
+    /* Type */
+    .kicker{
+      margin:0 0 8px;
+      font-size:13px;
+      color:var(--muted);
+      letter-spacing:.02em;
+    }
+    h1{
+      margin:0 0 16px;
+      font-size:46px;
+      line-height:1.08;
+      font-weight:900;
+      letter-spacing:-.02em;
+    }
+    h2{
+      margin:0 0 14px;
+      font-size:28px;
+      line-height:1.15;
+      font-weight:900;
+      letter-spacing:-.01em;
+    }
+    p{
+      margin:0;
+      font-size:16px;
+      line-height:1.75;
+      color:var(--muted);
+    }
 
-  /* Video */
-  .videoShell{
-    margin-top: var(--spaceSM);
-    width:100%;
-    border-radius: var(--radiusXL);
-    overflow:hidden;
-    background: rgba(255,255,255,.20);
-    border: 1px solid rgba(255,255,255,.10);
-  }
-  .videoFrame{
-    width:100%;
-    aspect-ratio: 16 / 9;
-    background: rgba(255,255,255,.20);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-  }
-  .videoFrame iframe{
-    width:100%;
-    height:100%;
-    border:0;
-    display:block;
-  }
-  .videoPlaceholder{
-    font-size:28px;
-    font-weight:700;
-    color:rgba(255,255,255,.85);
-  }
+    /* Section spacing */
+    .section{
+      padding: var(--s4) 0;
+      border-top: 1px solid var(--hair);
+    }
+    .section.first{
+      border-top: 0;
+      padding-top: 0;
+    }
 
-/* TIME-SCALED TIMELINE (perfect rail/dot/text alignment) */
-.timeline.timeScaled{
-  --railX: 7px;      /* rail x-position */
-  --dot: 8px;        /* dot size */
-  --gutter: 44px;    /* space from rail to text column */
+    /* CTA */
+    .ctaRow{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      flex-wrap:wrap;
+      margin-top: var(--s2);
+    }
+    .btn{
+      appearance:none;
+      border:0;
+      background: var(--mn8);
+      color: #fff;
+      padding: 12px 18px;
+      border-radius: 999px;
+      font-weight:900;
+      font-size:13px;
+      letter-spacing:.01em;
+      cursor:pointer;
+      transition: transform .12s ease, filter .12s ease, opacity .12s ease;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+    }
+    .btn:hover{ filter: brightness(1.05); }
+    .btn:active{ transform: translateY(1px); }
 
-  position:relative;
-  margin-top: 18px;
-  height: 420px;     /* increase if you want more separation */
-}
+    .btnGhost{
+      background: transparent;
+      border: 1px solid rgba(255,255,255,.14);
+      color: rgba(242,242,243,.86);
+    }
+    .btnGhost:hover{ border-color: rgba(255,255,255,.22); }
 
-/* vertical rail */
-.timeline.timeScaled:before{
-  content:"";
-  position:absolute;
-  left: var(--railX);
-  top: 0;
-  bottom: 0;
-  width:1px;
-  background: rgba(255,255,255,.18);
-}
+    /* Small helper text */
+    .meta{
+      margin-top: 10px;
+      font-size:12px;
+      color: rgba(242,242,243,.55);
+      font-weight:700;
+    }
 
-/* each point placed by percentage */
-.timeline.timeScaled .tItem{
-  position:absolute;
-  top: var(--pos);
-  left: 0;
-  transform: translateY(-50%);
-  width: 100%;
-}
+    /* ---------- Section 2: Contrast (Approved graphic zone #1) ---------- */
+    .contrastGrid{
+      margin-top: var(--s2);
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .card{
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: var(--radiusLG);
+      padding: 18px;
+      background: transparent;
+    }
+    .cardTitle{
+      margin:0 0 10px;
+      font-size:14px;
+      font-weight:900;
+      letter-spacing:-.01em;
+      color: rgba(242,242,243,.92);
+    }
+    .bullets{
+      margin:0;
+      padding-left: 18px;
+      color: rgba(242,242,243,.78);
+      font-size:14px;
+      line-height:1.75;
+    }
+    .bullets li{ margin: 4px 0; }
+    .cardNote{
+      margin-top: 10px;
+      font-size:12px;
+      color: rgba(242,242,243,.55);
+      font-weight:700;
+    }
 
-/* dot sits dead-center on the rail */
-.timeline.timeScaled .tDot{
-  position:absolute;
-  left: calc(var(--railX) - (var(--dot) / 2));
-  top: 50%;
-  transform: translateY(-50%);
-  width: var(--dot);
-  height: var(--dot);
-  border-radius: 999px;
-  background: var(--mn8);
-  box-shadow: 0 0 0 6px rgba(109,59,210,.12);
-}
+    /* contrast graphic (code-first, no decoration) */
+    .contrastGraphic{
+      margin-top: 14px;
+      border-top: 1px solid rgba(255,255,255,.10);
+      padding-top: 14px;
+      display:flex;
+      gap:10px;
+      flex-direction:column;
+    }
+    .rail{
+      height: 26px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .railLabel{
+      width: 84px;
+      font-size:12px;
+      font-weight:900;
+      color: rgba(242,242,243,.72);
+      letter-spacing:.01em;
+    }
+    .railTrack{
+      position:relative;
+      flex:1;
+      height: 2px;
+      background: rgba(255,255,255,.14);
+      border-radius: 999px;
+      overflow:hidden;
+    }
+    /* broken line segments */
+    .railTrack.broken::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(90deg,
+          rgba(255,255,255,.14) 0%,
+          rgba(255,255,255,.14) 18%,
+          transparent 18%,
+          transparent 28%,
+          rgba(255,255,255,.14) 28%,
+          rgba(255,255,255,.14) 46%,
+          transparent 46%,
+          transparent 56%,
+          rgba(255,255,255,.14) 56%,
+          rgba(255,255,255,.14) 74%,
+          transparent 74%,
+          transparent 84%,
+          rgba(255,255,255,.14) 84%,
+          rgba(255,255,255,.14) 100%
+        );
+    }
+    /* continuous line + subtle purple continuity */
+    .railTrack.continuous::after{
+      content:"";
+      position:absolute;
+      left:0;
+      top:0;
+      height: 2px;
+      width: 100%;
+      background: linear-gradient(90deg, rgba(109,59,210,.0), rgba(109,59,210,.75), rgba(109,59,210,.0));
+      opacity: .65;
+      mix-blend-mode: screen;
+    }
 
-/* text block starts AFTER rail + gutter */
-.timeline.timeScaled .tRow{
-  margin-left: var(--gutter);
-  display:grid;
-  grid-template-columns: 92px 1fr;
-  column-gap: 18px;
-  align-items: start;
-}
+    /* ---------- Section 4: What it is / isn't (containers only) ---------- */
+    .twoCol{
+      margin-top: var(--s2);
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .defBlock p{
+      font-size:15px;
+      line-height:1.7;
+      color: rgba(242,242,243,.74);
+    }
 
-/* left label */
-.timeline.timeScaled .tTime{
-  font-size:13px;
-  font-weight:900;
-  color:rgba(255,255,255,.92);
-  line-height:1.2;
-  white-space: nowrap; /* prevents “6 months” from wrapping weird */
-}
+    /* ---------- Section 5: Process (Approved graphic zone #2) ---------- */
+    .steps{
+      margin-top: var(--s2);
+      position:relative;
+      display:grid;
+      gap: 18px;
+    }
+    .steps::before{
+      content:"";
+      position:absolute;
+      left: 14px;
+      top: 8px;
+      bottom: 8px;
+      width: 1px;
+      background: rgba(255,255,255,.16);
+    }
+    .step{
+      display:grid;
+      grid-template-columns: 30px 1fr;
+      column-gap: 16px;
+      align-items:start;
+    }
+    .num{
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:900;
+      font-size:12px;
+      color: rgba(242,242,243,.90);
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.04);
+      position:relative;
+      z-index:1;
+      margin-left: 0;
+    }
+    .stepTitle{
+      margin: 0 0 6px;
+      font-size:15px;
+      font-weight:900;
+      color: rgba(242,242,243,.92);
+      letter-spacing:-.01em;
+    }
+    .stepCopy{
+      font-size:15px;
+      color: rgba(242,242,243,.72);
+      line-height:1.7;
+    }
 
-/* copy */
-.timeline.timeScaled .tCopy{
-  font-size:15px;
-  line-height:1.55;
-  color:rgba(255,255,255,.78);
-}
-  @media (max-width: 640px){
-  .tItem{
-    grid-template-columns: 24px 1fr;
-    row-gap: 6px;
-  }
+    /* ---------- Section 6: For / Not for (text only) ---------- */
+    .forGrid{
+      margin-top: var(--s2);
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
+    }
+    .miniTitle{
+      margin:0 0 10px;
+      font-size:14px;
+      font-weight:900;
+      color: rgba(242,242,243,.92);
+      letter-spacing:-.01em;
+    }
+    .plainList{
+      margin:0;
+      padding-left: 18px;
+      color: rgba(242,242,243,.74);
+      font-size:14px;
+      line-height:1.75;
+    }
+    .plainList li{ margin: 4px 0; }
 
-  .tTime{
-    grid-column: 2;
-  }
+    /* ---------- FAQ (accordion, text only) ---------- */
+    details{
+      border-top: 1px solid rgba(255,255,255,.10);
+      padding: 14px 0;
+    }
+    details:last-child{
+      border-bottom: 1px solid rgba(255,255,255,.10);
+    }
+    summary{
+      cursor:pointer;
+      list-style:none;
+      font-weight:900;
+      font-size:14px;
+      color: rgba(242,242,243,.90);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    summary::-webkit-details-marker{ display:none; }
+    .chev{
+      width: 10px; height: 10px;
+      border-right: 2px solid rgba(242,242,243,.55);
+      border-bottom: 2px solid rgba(242,242,243,.55);
+      transform: rotate(45deg);
+      transition: transform .14s ease;
+      flex: 0 0 auto;
+      margin-top: 2px;
+    }
+    details[open] .chev{
+      transform: rotate(225deg);
+    }
+    .faqBody{
+      padding: 10px 0 0;
+      color: rgba(242,242,243,.70);
+      font-size:15px;
+      line-height:1.7;
+      max-width: 74ch;
+    }
 
-  .tCopy{
-    grid-column: 2;
-  }
-}
-
-
-
-  /* Offer cards */
-  .offerWrap{
-    /* MORE separation before the offer cards */
-    margin-top: var(--spaceLG);
-    display:grid;
-    gap: 20px;
-  }
-  .offerCard{
-    display:grid;
-    grid-template-columns: 1fr 170px;
-    gap: 18px;
-    padding: 18px 18px 16px;
-    border-radius: var(--radiusLG);
-    background: transparent;
-    border: 1px solid rgba(255,255,255,.10);
-    cursor:pointer;
-    transition: border-color .12s ease, box-shadow .12s ease, transform .12s ease;
-    outline:none;
-  }
-  .offerCard:hover{ transform: translateY(-1px); }
-  .offerCard[aria-selected="true"]{
-    border-color: rgba(109,59,210,.95);
-    box-shadow: 0 0 0 2px rgba(109,59,210,.25);
-  }
-
-  .offerTitle{
-    font-size:18px;
-    font-weight:900;
-    margin:0 0 var(--spaceSM);
-    letter-spacing:-.01em;
-    color:rgba(255,255,255,.96);
-  }
-
-  ul{
-    margin:0;
-    padding-left: 18px;
-    color:rgba(255,255,255,.78);
-    font-size:14px;
-    line-height:1.7;
-  }
-  li{ margin: 6px 0; }
-
-  .offerFootnote{
-    margin-top: var(--spaceSM);
-    font-size:12px;
-    color: rgba(255,255,255,.55);
-  }
-
-  .priceBox{
-    text-align:right;
-    padding-top: 2px;
-  }
-  .price{
-    font-size:20px;
-    font-weight:900;
-    color: rgba(255,255,255,.95);
-  }
-  .priceMeta{
-    margin-top: 2px;
-    font-size:12px;
-    color: rgba(255,255,255,.55);
-    font-weight:700;
-  }
-
-  /* Agreement */
-  .agreeBlock{
-    /* MORE breathing room between offer cards and agreement */
-    margin-top: var(--spaceLG);
-    padding-top: var(--spaceMD);
-    border-top: 1px solid rgba(255,255,255,.10);
-  }
-  .agreeTitle{
-    font-size:16px;
-    font-weight:900;
-    margin:0 0 var(--spaceXS);
-    color:rgba(255,255,255,.92);
-  }
-  .pillRow{
-    display:flex;
-    gap:10px;
-    flex-wrap:wrap;
-    margin-top: var(--spaceSM);
-  }
-  .pillBtn{
-    appearance:none;
-    border:1px solid rgba(255,255,255,.10);
-    background: rgba(255,255,255,.04);
-    color: rgba(255,255,255,.78);
-    padding: 8px 12px;
-    border-radius: 999px;
-    font-weight:900;
-    font-size:11px;
-    letter-spacing:.02em;
-    cursor:pointer;
-  }
-  .pillBtn:hover{ border-color: rgba(255,255,255,.18); }
-
-  .checkRow{
-    display:flex;
-    gap:10px;
-    align-items:flex-start;
-    margin-top: var(--spaceSM);
-  }
-  .checkRow input{ margin-top: 4px; }
-  .checkRow label{
-    color: rgba(255,255,255,.72);
-    font-size:13px;
-    line-height:1.5;
-  }
-
-  .ctaRow{
-    display:flex;
-    gap: 14px;
-    align-items:center;
-    flex-wrap:wrap;
-    margin-top: var(--spaceSM);
-  }
-  .cta{
-    appearance:none;
-    border: 0;
-    background: var(--mn8);
-    color: white;
-    padding: 12px 16px;
-    border-radius: 999px;
-    font-weight:900;
-    font-size:13px;
-    cursor:pointer;
-    transition: transform .12s ease, opacity .12s ease, filter .12s ease;
-  }
-  .cta:hover{ filter: brightness(1.05); }
-  .cta:active{ transform: translateY(1px); }
-  .cta:disabled{
-    opacity:.45;
-    cursor:not-allowed;
-    filter:none;
-  }
-  .selectedHint{
-    font-size:12px;
-    color: rgba(255,255,255,.55);
-    font-weight:700;
-  }
-
-  /* Mobile */
-  @media (max-width: 740px){
-    .wrap{ width:min(980px, calc(100% - 32px)); }
-    h1{ font-size:38px; }
-    h2{ margin: 72px 0 22px; } /* keep sections spacious on mobile */
-    .offerCard{ grid-template-columns: 1fr; }
-    .priceBox{ text-align:left; margin-top: 10px; }
-  }
-</style>
+    /* Mobile */
+    @media (max-width: 780px){
+      :root{ --padX: 32px; }
+      h1{ font-size:40px; }
+      .contrastGrid, .twoCol, .forGrid{ grid-template-columns: 1fr; }
+      .railLabel{ width: 72px; }
+    }
+  </style>
 </head>
 
 <body>
-  <main class="wrap">
-    <!-- Hero -->
-    <p class="kicker">Private access</p>
-    <h1>Operate with MN8.</h1>
+  <main class="wrap" id="top">
 
-    <!-- Video -->
-    <div class="videoShell" aria-label="Authority video">
-      <div class="videoFrame">
-        <!-- OPTION A: leave placeholder (matches your mock) -->
-        <div class="videoPlaceholder">video</div>
-
-        <!-- OPTION B: use YouTube/Vimeo embed (uncomment) -->
-        <!--
-        <iframe
-          src="VIDEO_EMBED_URL"
-          title="MN8 Authority Video"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen
-        ></iframe>
-        -->
-      </div>
-    </div>
-
-    <!-- Integration over time -->
-<h2>Integration over time</h2>
-
-<div class="timeline timeScaled">
-  <div class="tItem" style="--pos: 8%;">
-    <span class="tDot"></span>
-    <div class="tRow">
-      <div class="tTime">30 days</div>
-      <div class="tCopy">Decisions get lighter. Food and training stop taking mental space.</div>
-    </div>
-  </div>
-
-  <div class="tItem" style="--pos: 26%;">
-    <span class="tDot"></span>
-    <div class="tRow">
-      <div class="tTime">120 days</div>
-      <div class="tCopy">Missed days stop creating resets. You return to structure without friction.</div>
-    </div>
-  </div>
-
-  <div class="tItem" style="--pos: 50%;">
-    <span class="tDot"></span>
-    <div class="tRow">
-      <div class="tTime">6 months</div>
-      <div class="tCopy">Energy holds longer. The body supports the schedule instead of competing with it.</div>
-    </div>
-  </div>
-
-  <div class="tItem" style="--pos: 92%;">
-    <span class="tDot"></span>
-    <div class="tRow">
-      <div class="tTime">12 months</div>
-      <div class="tCopy">Health is no longer a project. Weight is managed without daily attention.</div>
-    </div>
-  </div>
-</div>
-
-
-    <!-- Integrity guarantee -->
-    <h2>Integrity guarantee</h2>
-    <p>MN8 does not guarantee speed, motivation, or a specific outcome timeline. MN8 guarantees the integrity of the structure when followed as designed.</p>
-    <p style="margin-top:10px;">If you complete 12 months inside MN8, follow it as designed, and there is no observable physical change compared to your documented baseline, your program investment will be refunded.</p>
-
-    <!-- Select access level -->
-    <h2>Select access level</h2>
-
-    <div class="offerWrap" role="list" aria-label="Access levels">
-      <!-- PRIVATE -->
-      <div class="offerCard" role="listitem" tabindex="0" data-plan="private" aria-selected="false">
-        <div>
-          <div class="offerTitle">MN8 Private</div>
-          <ul>
-            <li>Eating windows adjusted as workload and travel shift</li>
-            <li>Training volume recalibrated when energy drops or spikes</li>
-            <li>Nutrition structure tightened or loosened based on results</li>
-            <li>Weekly execution reviewed and corrected before drift compounds</li>
-            <li>Constraints updated so progress continues under pressure</li>
-          </ul>
-          <div class="offerFootnote">MN8 manages adaptation so execution doesn’t collapse.</div>
-        </div>
-
-        <div class="priceBox">
-          <div class="price">$9,500</div>
-          <div class="priceMeta">one-time / year</div>
-        </div>
-      </div>
-
-      <!-- STRUCTURED -->
-      <div class="offerCard" role="listitem" tabindex="0" data-plan="structured" aria-selected="false">
-        <div>
-          <div class="offerTitle">MN8 Structured</div>
-          <ul>
-            <li>Predefined eating windows</li>
-            <li>Standard nutrition structure</li>
-            <li>Short daily training sessions</li>
-            <li>Repeatable weekly rhythm</li>
-            <li>No personalization or adjustment</li>
-          </ul>
-          <div class="offerFootnote">MN8 does not adapt to you.</div>
-        </div>
-
-        <div class="priceBox">
-          <div class="price">$6,000</div>
-          <div class="priceMeta">one-time / year</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Agreement -->
-    <div class="agreeBlock" id="agreement">
-      <div class="agreeTitle">Agreement required</div>
-      <p>Before checkout, you will review and sign the written agreement. This defines expectations, participation, and what “followed as designed” means.</p>
-
-      <div class="pillRow">
-        <button class="pillBtn" type="button" id="openAgreement">WRITTEN AGREEMENT</button>
-        <button class="pillBtn" type="button" id="openTerms">TERMS</button>
-        <button class="pillBtn" type="button" id="openPrivacy">PRIVACY</button>
-      </div>
-
-      <div class="checkRow">
-        <input type="checkbox" id="agreeCheck" />
-        <label for="agreeCheck">I reviewed the agreement and I agree to the terms and policies.</label>
-      </div>
+    <!-- HERO (no graphics) -->
+    <section class="section first" id="hero" aria-label="Hero">
+      <p class="kicker">Private access begins with qualification</p>
+      <h1>Weight control built for full schedules —<br>not time-rich lifestyles.</h1>
+      <p style="max-width:72ch;">
+        MN8 is a private weight control system for people who need structure that runs without constant attention.
+      </p>
 
       <div class="ctaRow">
-        <button class="cta" id="checkoutBtn" disabled>Proceed to checkout</button>
-        <div class="selectedHint" id="selectedHint">Selected: none</div>
+        <a class="btn" href="./qualify.html">Begin Qualification</a>
+        <a class="btn btnGhost" href="#how">See how it works</a>
       </div>
-    </div>
+
+      <div class="meta">Qualification exists to protect fit, expectations, and outcome quality.</div>
+    </section>
+
+    <!-- SECTION 2: WHY THE OLD WAY FAILS (graphics allowed here) -->
+    <section class="section" id="why" aria-label="Why the old way fails">
+      <h2>The old way fails when life densifies.</h2>
+      <p style="max-width:76ch;">
+        Not because you “lost discipline.” Because the approach assumes time, margin, and mental space you no longer have.
+      </p>
+
+      <div class="contrastGrid" role="list" aria-label="Contrast">
+        <div class="card" role="listitem">
+          <div class="cardTitle">What used to work</div>
+          <ul class="bullets">
+            <li>Time to plan and prepare</li>
+            <li>Space for longer workouts</li>
+            <li>Bandwidth to “stay on it” daily</li>
+            <li>Routines that survived stable weeks</li>
+          </ul>
+
+          <div class="contrastGraphic" aria-label="Broken structure graphic">
+            <div class="rail">
+              <div class="railLabel">Breaks</div>
+              <div class="railTrack broken"></div>
+            </div>
+          </div>
+
+          <div class="cardNote">It worked when your days had space.</div>
+        </div>
+
+        <div class="card" role="listitem">
+          <div class="cardTitle">Why it doesn’t now</div>
+          <ul class="bullets">
+            <li>Schedules compress</li>
+            <li>Decisions stack all day</li>
+            <li>Energy is spent on responsibility</li>
+            <li>Missed days create resets</li>
+          </ul>
+
+          <div class="contrastGraphic" aria-label="Continuous structure graphic">
+            <div class="rail">
+              <div class="railLabel">Holds</div>
+              <div class="railTrack continuous"></div>
+            </div>
+          </div>
+
+          <div class="cardNote">Your life changed. The approach didn’t.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: REFRAME (no graphics) -->
+    <section class="section" id="reframe" aria-label="Reframe">
+      <h2>It’s not effort. It’s fit.</h2>
+      <p style="max-width:76ch;">
+        If a plan requires constant attention, it collapses under pressure. MN8 is designed to keep running when attention moves elsewhere.
+      </p>
+    </section>
+
+    <!-- SECTION 4: WHAT MN8 IS / IS NOT (containers only, no internal graphics) -->
+    <section class="section" id="what" aria-label="What MN8 is and is not">
+      <h2>Definition.</h2>
+      <p style="max-width:76ch;">
+        This is a private structure with clear rules and clear expectations. Nothing extra.
+      </p>
+
+      <div class="twoCol">
+        <div class="card defBlock">
+          <div class="cardTitle">What MN8 is</div>
+          <p>
+            A private weight control structure that reduces decision load and keeps execution consistent with minimal disruption.
+          </p>
+        </div>
+
+        <div class="card defBlock">
+          <div class="cardTitle">What MN8 is not</div>
+          <p>
+            Not a challenge, not a lifestyle takeover, not constant tracking, and not a system that depends on motivation to function.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 5: PROCESS (minimal structural graphic only) -->
+    <section class="section" id="how" aria-label="How it works">
+      <h2>How it works.</h2>
+      <p style="max-width:76ch;">
+        Three steps. No complexity. The goal is stability, not intensity.
+      </p>
+
+      <div class="steps" role="list" aria-label="Process steps">
+        <div class="step" role="listitem">
+          <div class="num">01</div>
+          <div>
+            <div class="stepTitle">Nutrition tightens first</div>
+            <div class="stepCopy">Structure reduces decisions so consistency stops relying on willpower.</div>
+          </div>
+        </div>
+
+        <div class="step" role="listitem">
+          <div class="num">02</div>
+          <div>
+            <div class="stepTitle">Training stays short</div>
+            <div class="stepCopy">Repeatable sessions that fit real weeks without negotiation.</div>
+          </div>
+        </div>
+
+        <div class="step" role="listitem">
+          <div class="num">03</div>
+          <div>
+            <div class="stepTitle">Execution becomes automatic</div>
+            <div class="stepCopy">So missed days don’t become resets and progress doesn’t require attention.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ctaRow" style="margin-top: var(--s3);">
+        <a class="btn" href="./qualify.html">Begin Qualification</a>
+      </div>
+    </section>
+
+    <!-- SECTION 6: WHO IT’S FOR (no graphics) -->
+    <section class="section" id="fit" aria-label="Who it is for">
+      <h2>Fit.</h2>
+      <p style="max-width:76ch;">
+        MN8 is intentionally simple. The right people prefer that.
+      </p>
+
+      <div class="forGrid">
+        <div>
+          <div class="miniTitle">Who this is for</div>
+          <ul class="plainList">
+            <li>People who want structure that runs without constant thinking</li>
+            <li>People who value simplicity over customization</li>
+            <li>People who want progress to hold through imperfect weeks</li>
+            <li>People willing to follow what’s written as designed</li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="miniTitle">Who this is not for</div>
+          <ul class="plainList">
+            <li>People who need novelty to stay engaged</li>
+            <li>People who want endless options and experimentation</li>
+            <li>People who resist structure and prefer improvisation</li>
+            <li>People looking for a quick fix with no compliance</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 7: FAQ (no graphics) -->
+    <section class="section" id="faq" aria-label="FAQ">
+      <h2>FAQ.</h2>
+      <div style="margin-top: var(--s2);">
+
+        <details>
+          <summary>Why qualification?<span class="chev" aria-hidden="true"></span></summary>
+          <div class="faqBody">
+            Because MN8 is private, expectation-driven, and designed to run continuously. Fit matters.
+          </div>
+        </details>
+
+        <details>
+          <summary>Is MN8 a workout program?<span class="chev" aria-hidden="true"></span></summary>
+          <div class="faqBody">
+            No. Training is one component. MN8 is a structure that stabilizes execution across nutrition and movement.
+          </div>
+        </details>
+
+        <details>
+          <summary>Do I need tracking or constant logging?<span class="chev" aria-hidden="true"></span></summary>
+          <div class="faqBody">
+            No. MN8 reduces decision load. It’s built to function without daily tracking dependence.
+          </div>
+        </details>
+
+        <details>
+          <summary>What happens if I miss days?<span class="chev" aria-hidden="true"></span></summary>
+          <div class="faqBody">
+            MN8 is built around continuity. Missed days don’t become resets. You return without punishment loops.
+          </div>
+        </details>
+
+      </div>
+
+      <div class="ctaRow" style="margin-top: var(--s3);">
+        <a class="btn" href="./qualify.html">Begin Qualification</a>
+      </div>
+    </section>
+
   </main>
-
-  <script>
-    (function(){
-      // === Replace with real links ===
-      const CHECKOUT_LINKS = {
-        private: "https://your-checkout-link.com/mn8-private",
-        structured: "https://your-checkout-link.com/mn8-structured"
-      };
-
-      // === Replace with real docs ===
-      const DOC_LINKS = {
-        agreement: "#",
-        terms: "#",
-        privacy: "#"
-      };
-
-      const cards = Array.from(document.querySelectorAll(".offerCard"));
-      const agree = document.getElementById("agreeCheck");
-      const checkoutBtn = document.getElementById("checkoutBtn");
-      const selectedHint = document.getElementById("selectedHint");
-
-      const openAgreement = document.getElementById("openAgreement");
-      const openTerms = document.getElementById("openTerms");
-      const openPrivacy = document.getElementById("openPrivacy");
-
-      let selectedPlan = null;
-
-      function render(){
-        // selection visuals
-        cards.forEach(c => c.setAttribute("aria-selected", c.dataset.plan === selectedPlan ? "true" : "false"));
-
-        // button state
-        checkoutBtn.disabled = !(selectedPlan && agree.checked);
-
-        // hint text
-        if(!selectedPlan){
-          selectedHint.textContent = "Selected: none";
-          return;
-        }
-
-        if(selectedPlan === "private"){
-          selectedHint.textContent = "Selected: MN8 Private — $9,500 (one-time)";
-        } else {
-          selectedHint.textContent = "Selected: MN8 Structured — $6,000 (one-time)";
-        }
-      }
-
-      function select(plan){
-        selectedPlan = plan;
-        // force re-agreement when switching plans (clean, operator-grade)
-        agree.checked = false;
-        render();
-      }
-
-      cards.forEach(card => {
-        card.addEventListener("click", () => select(card.dataset.plan));
-        card.addEventListener("keydown", (e) => {
-          if(e.key === "Enter" || e.key === " "){
-            e.preventDefault();
-            select(card.dataset.plan);
-          }
-        });
-      });
-
-      agree.addEventListener("change", render);
-
-      checkoutBtn.addEventListener("click", () => {
-        if(!selectedPlan || !agree.checked) return;
-        const link = CHECKOUT_LINKS[selectedPlan];
-        if(!link || link === "#") return alert("Add your real checkout link first.");
-        window.location.href = link;
-      });
-
-      // Docs
-      openAgreement.addEventListener("click", () => {
-        const link = DOC_LINKS.agreement;
-        if(!link || link === "#") return alert("Add your written agreement link.");
-        window.open(link, "_blank", "noopener,noreferrer");
-      });
-      openTerms.addEventListener("click", () => {
-        const link = DOC_LINKS.terms;
-        if(!link || link === "#") return alert("Add your terms link.");
-        window.open(link, "_blank", "noopener,noreferrer");
-      });
-      openPrivacy.addEventListener("click", () => {
-        const link = DOC_LINKS.privacy;
-        if(!link || link === "#") return alert("Add your privacy link.");
-        window.open(link, "_blank", "noopener,noreferrer");
-      });
-
-      render();
-    })();
-  </script>
 </body>
 </html>
-
