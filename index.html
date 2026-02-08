@@ -1,305 +1,558 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MN8</title>
-    <link rel="stylesheet" href="./style.css?v=2" />
-  </head>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MN8</title>
 
-  <body id="top">
-    <!-- TOPBAR -->
-    <header class="topbar">
-      <div class="wrap topbar-inner">
-        <!-- LOGO -->
-        <a class="brand" href="#top" aria-label="MN8 Home">
-       <img class="brand-logo" src="./logo.svg" alt="MN8" />
-        </a>
+  <!-- Lato -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
 
-        <!-- DESKTOP NAV -->
-        <nav class="nav" aria-label="Primary">
-          <a href="#mn8">What it is</a>
-          <a href="#process">Process</a>
-          <a href="#faq">FAQ</a>
-        </nav>
+  <style>
+    :root{
+      --bg:#0B0D12;
+      --text:#F2F2F3;
+      --muted:rgba(242,242,243,.72);
+      --muted2:rgba(242,242,243,.58);
+      --hair:rgba(255,255,255,.10);
 
-        <!-- MOBILE MENU BUTTON -->
-        <button
-          class="menu-btn"
-          type="button"
-          aria-label="Open menu"
-          aria-expanded="false"
-          aria-controls="menuPanel"
-        >
-          <span class="dots" aria-hidden="true">
-            <i></i><i></i><i></i>
-          </span>
-        </button>
+      --mn8:#6D3BD2;
+      --mn8Soft:rgba(109,59,210,.22);
+
+      --radius:999px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--text);
+      font-family:"Lato", system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
+    }
+
+    a{ color:inherit; text-decoration:none; }
+    button{ font-family:inherit; }
+
+    .wrap{
+      width:min(980px, calc(100% - 48px));
+      margin:0 auto;
+      padding: 54px 0 84px;
+    }
+
+    /* Vertical rhythm */
+    .section{
+      padding: 64px 0;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    .section:last-child{ border-bottom:0; padding-bottom: 24px; }
+
+    /* Type */
+    .kicker{
+      margin:0 0 10px;
+      font-size:13px;
+      letter-spacing:.02em;
+      color:var(--muted);
+    }
+
+    h1{
+      margin:0 0 18px;
+      font-size: 56px;
+      line-height: 1.05;
+      font-weight: 900;
+      letter-spacing: -.03em;
+    }
+
+    h2{
+      margin:0 0 14px;
+      font-size: 34px;
+      line-height: 1.14;
+      font-weight: 900;
+      letter-spacing: -.02em;
+    }
+
+    .sub{
+      margin:0 0 22px;
+      color:var(--muted);
+      font-size:16px;
+      line-height:1.75;
+      max-width: 760px;
+    }
+
+    .lead{
+      margin:0;
+      color:var(--muted);
+      font-size:16px;
+      line-height:1.75;
+      max-width: 760px;
+    }
+
+    .lead strong{ color: rgba(242,242,243,.92); font-weight:900; }
+
+    /* Buttons */
+    .btnRow{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top: 26px;
+      align-items:center;
+    }
+
+    .btn{
+      appearance:none;
+      border: 1px solid rgba(255,255,255,.14);
+      background: transparent;
+      color: rgba(242,242,243,.92);
+      padding: 12px 18px;
+      border-radius: var(--radius);
+      font-weight: 900;
+      font-size: 13px;
+      letter-spacing:.01em;
+      cursor:pointer;
+      transition: transform .12s ease, border-color .12s ease, filter .12s ease, opacity .12s ease;
+    }
+
+    .btnPrimary{
+      border-color: rgba(109,59,210,.55);
+      background: var(--mn8);
+      color:#fff;
+    }
+
+    .btn:hover{ filter: brightness(1.06); }
+    .btn:active{ transform: translateY(1px); }
+
+    /* Two list blocks (stacked, no cards) */
+    .splitStack{
+      margin-top: 22px;
+      display:grid;
+      gap: 22px;
+      max-width: 900px;
+    }
+
+    .label{
+      margin:0 0 10px;
+      font-size: 14px;
+      font-weight: 900;
+      color: rgba(242,242,243,.92);
+      letter-spacing: -.01em;
+    }
+
+    ul.clean{
+      margin:0;
+      padding-left: 18px;
+      color: rgba(242,242,243,.80);
+      font-size: 15px;
+      line-height: 1.8;
+    }
+    ul.clean li{ margin: 6px 0; }
+
+    .closingLine{
+      margin-top: 22px;
+      color: rgba(242,242,243,.86);
+      font-weight: 900;
+      font-size: 16px;
+      letter-spacing: -.01em;
+    }
+
+    /* Process */
+    .steps{
+      margin-top: 18px;
+      display:grid;
+      gap: 18px;
+      max-width: 860px;
+    }
+    .step{
+      display:flex;
+      gap: 16px;
+      align-items:flex-start;
+      padding: 0;
+    }
+    .num{
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight: 900;
+      color: rgba(242,242,243,.92);
+      background: rgba(255,255,255,.03);
+    }
+    .stepTitle{
+      margin:0 0 6px;
+      font-size: 18px;
+      font-weight: 900;
+      letter-spacing:-.01em;
+      color: rgba(242,242,243,.96);
+    }
+    .stepDesc{
+      margin:0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.75;
+    }
+
+    /* Who it's for */
+    .whoBlock{
+      margin-top: 18px;
+      display:grid;
+      gap: 20px;
+      max-width: 880px;
+    }
+    .whoTitle{
+      margin:0 0 8px;
+      font-size: 16px;
+      font-weight: 900;
+      color: rgba(242,242,243,.92);
+    }
+    .whoText{
+      margin:0;
+      color: rgba(242,242,243,.78);
+      font-size: 15px;
+      line-height: 1.85;
+      max-width: 820px;
+    }
+
+    /* FAQ */
+    .faq{
+      margin-top: 18px;
+      display:grid;
+      gap: 10px;
+      max-width: 900px;
+    }
+    .faqItem{
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 16px;
+      overflow:hidden;
+      background: rgba(255,255,255,.02);
+    }
+    .faqQ{
+      width:100%;
+      text-align:left;
+      padding: 16px 16px;
+      background: transparent;
+      border:0;
+      color: rgba(242,242,243,.92);
+      font-weight: 900;
+      font-size: 14px;
+      letter-spacing:-.01em;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+    }
+    .chev{
+      width: 10px;
+      height: 10px;
+      border-right: 2px solid rgba(242,242,243,.70);
+      border-bottom: 2px solid rgba(242,242,243,.70);
+      transform: rotate(45deg);
+      transition: transform .14s ease;
+      flex: 0 0 auto;
+      margin-top: -2px;
+    }
+    .faqItem[data-open="true"] .chev{ transform: rotate(-135deg); }
+
+    .faqA{
+      display:none;
+      padding: 0 16px 16px;
+      color: rgba(242,242,243,.74);
+      font-size: 15px;
+      line-height: 1.8;
+    }
+    .faqItem[data-open="true"] .faqA{ display:block; }
+
+    /* Final CTA */
+    .finalCta{
+      margin-top: 18px;
+      max-width: 900px;
+    }
+    .finalLine{
+      margin:0 0 18px;
+      color: rgba(242,242,243,.86);
+      font-size: 16px;
+      line-height: 1.8;
+    }
+
+    /* Small footer */
+    .foot{
+      padding-top: 22px;
+      color: rgba(242,242,243,.42);
+      font-size: 12px;
+      border-top: 1px solid rgba(255,255,255,.06);
+      margin-top: 42px;
+    }
+
+    /* Mobile */
+    @media (max-width: 740px){
+      .wrap{ width:min(980px, calc(100% - 32px)); padding: 40px 0 72px; }
+      .section{ padding: 52px 0; }
+      h1{ font-size: 44px; }
+      h2{ font-size: 28px; }
+      .sub,.lead{ font-size: 15px; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="wrap">
+
+    <!-- HERO -->
+    <section class="section" id="top">
+      <p class="kicker">Private system built for real responsibility</p>
+      <h1>Weight control built for full schedules —<br>not time-rich lifestyles.</h1>
+      <p class="sub">
+        MN8 is a private weight control system designed to fit inside dense days.<br>
+        Minimal disruption. Repeatable structure. Control that holds.
+      </p>
+
+      <div class="btnRow">
+        <a class="btn btnPrimary" href="./qualify.html">Begin Qualification</a>
+        <button class="btn" type="button" id="jumpHow">See how it works</button>
       </div>
+    </section>
 
-      <!-- MOBILE DROPDOWN -->
-      <div class="menu-panel" id="menuPanel" hidden>
-        <div class="wrap menu-panel-inner">
-          <a href="#mn8" class="menu-link">What it is</a>
-          <a href="#process" class="menu-link">Process</a>
-          <a href="#faq" class="menu-link">FAQ</a>
+    <!-- PROBLEM -->
+    <section class="section" id="how">
+      <h2>The real reason the old way keeps failing</h2>
+      <p class="lead">Responsibility increased, and the old system stopped fitting.</p>
+
+      <div class="splitStack">
+        <div>
+          <div class="label">What used to work</div>
+          <ul class="clean">
+            <li>Time to plan and prepare</li>
+            <li>Space for long workouts</li>
+            <li>Mental bandwidth to “stay on it”</li>
+            <li>Rules you could follow consistently</li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="label">Why it doesn’t now</div>
+          <ul class="clean">
+            <li>Your schedule is dense</li>
+            <li>Decisions stack all day</li>
+            <li>Energy is spent on responsibility</li>
+            <li>The system demands attention you don’t have</li>
+          </ul>
         </div>
       </div>
-    </header>
 
-    <!-- STICKY CTA -->
-    <div class="sticky" id="sticky" aria-hidden="true">
-      <div class="sticky-inner">
-        <a class="btn btn-primary btn-sm" href="./qualify.html">Begin Qualification</a>
-      </div>
-    </div>
+      <div class="closingLine">Your system didn’t fail. It stopped fitting your life.</div>
+    </section>
 
-    <!-- MAIN -->
-    <main>
-      <!-- HERO -->
-      <section class="hero">
-        <div class="wrap hero-inner">
-          <div class="eyebrow reveal">
-            <span class="pill">Private System</span>
-            <span class="divider"></span>
-            <span class="muted">Built for real responsibility</span>
+    <!-- WHAT IT IS -->
+    <section class="section" id="mn8">
+      <h2>What MN8 is</h2>
+      <p class="lead">
+        MN8 is a private weight control system for people with full schedules.
+        It’s built to operate under pressure — not ideal conditions.
+      </p>
+
+      <div style="height:22px;"></div>
+
+      <h2 style="margin:0 0 14px;">What MN8 is not</h2>
+      <p class="lead">
+        MN8 is not a program, a challenge, or a lifestyle takeover.
+        It does not require constant tracking, long workouts, or daily mental effort.
+        It exists to fit inside your life — not compete with it.
+      </p>
+    </section>
+
+    <!-- PROCESS -->
+    <section class="section" id="process">
+      <h2>Process</h2>
+      <p class="lead">Built for people who can’t “start over” every month.</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="num">01</div>
+          <div>
+            <div class="stepTitle">Tighten nutrition</div>
+            <p class="stepDesc">Reduce friction and decision load first.</p>
           </div>
+        </div>
 
-          <h1 class="hero-title reveal delay-1">
-            Weight control built for full schedules —<br />
-            not time-rich lifestyles.
-          </h1>
+        <div class="step">
+          <div class="num">02</div>
+          <div>
+            <div class="stepTitle">Short daily training</div>
+            <p class="stepDesc">Repeatable sessions that fit real schedules.</p>
+          </div>
+        </div>
 
-          <p class="hero-subtitle reveal delay-2">
-            MN8 is a private weight control system designed to fit inside dense days.
-            Minimal disruption. Repeatable structure. Control that holds.
+        <div class="step">
+          <div class="num">03</div>
+          <div>
+            <div class="stepTitle">Automatic structure</div>
+            <p class="stepDesc">So it holds under stress.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="btnRow" style="margin-top:28px;">
+        <a class="btn btnPrimary" href="./qualify.html">Begin Qualification</a>
+      </div>
+    </section>
+
+    <!-- WHO IT'S FOR -->
+    <section class="section" id="who">
+      <h2>Who MN8 is for</h2>
+      <p class="lead">Designed for a specific type of life. Not everyone.</p>
+
+      <div class="whoBlock">
+        <div>
+          <div class="whoTitle">Who this is for</div>
+          <p class="whoText">
+            People who already carry responsibility and don’t have space for complicated health systems.
+            Schedules are full. Days are dense. Progress has to happen inside real constraints.
           </p>
+          <p class="whoText" style="margin-top:10px;">
+            It’s for people who want progress without disruption, structure without friction,
+            and control without health becoming a second job.
+          </p>
+        </div>
 
-          <div class="hero-ctas reveal delay-3">
-            <a class="btn btn-primary" href="./qualify.html">Begin Qualification</a>
-            <a class="btn btn-ghost" href="#mn8">See how it works</a>
-          </div>
+        <div>
+          <div class="whoTitle">Who this is not for</div>
+          <p class="whoText">
+            People who want their health to become their main focus, their main identity, or their main project.
+            If someone needs complexity, constant customization, or time-intensive routines,
+            MN8 will feel too simple — because it’s designed to fit into life, not replace it.
+          </p>
+        </div>
+      </div>
+    </section>
 
-          <div class="hero-metrics reveal delay-4">
-            <div class="metric">
-              <div class="metric-k">Simple</div>
-              <div class="metric-v">No tracking obsession.</div>
-            </div>
-            <div class="metric">
-              <div class="metric-k">Built for density</div>
-              <div class="metric-v">Works when days are full.</div>
-            </div>
-            <div class="metric">
-              <div class="metric-k">Private</div>
-              <div class="metric-v">Qualification protects fit.</div>
-            </div>
+    <!-- FAQ -->
+    <section class="section" id="faq">
+      <h2>FAQ</h2>
+
+      <div class="faq" role="list">
+        <div class="faqItem" role="listitem" data-open="false">
+          <button class="faqQ" type="button">
+            <span>What is MN8, really?</span><span class="chev"></span>
+          </button>
+          <div class="faqA">
+            MN8 is a private system that stabilizes weight control under real responsibility. It’s built as structure, not motivation.
           </div>
         </div>
 
-        <div class="hero-bg" aria-hidden="true"></div>
-      </section>
-
-      <!-- PROBLEM -->
-      <section class="section" id="problem">
-        <div class="wrap">
-          <div class="section-head reveal">
-            <h2 class="h2">The real reason the old way keeps failing</h2>
-            <p class="lead">Responsibility increased, and the “old system” stopped fitting.</p>
-          </div>
-
-          <div class="grid-2">
-            <article class="card reveal">
-              <h3 class="h3">What used to work</h3>
-              <ul class="list">
-                <li>Time to plan and prepare</li>
-                <li>Space for long workouts</li>
-                <li>Mental bandwidth to “stay on it”</li>
-                <li>Rules you could follow consistently</li>
-              </ul>
-              <div class="card-note">It worked when your days had space.</div>
-            </article>
-
-            <article class="card reveal delay-1">
-              <h3 class="h3">Why it doesn’t now</h3>
-              <ul class="list">
-                <li>Your schedule is dense</li>
-                <li>Decisions stack all day</li>
-                <li>Energy is spent on responsibility</li>
-                <li>The system demands attention you don’t have</li>
-              </ul>
-              <div class="card-note">The old approach doesn’t fit your life anymore.</div>
-            </article>
-          </div>
-
-          <div class="callout reveal delay-2">
-            <div class="callout-line"></div>
-            <p class="callout-text">Your system failed because it wasn’t built for your life.</p>
+        <div class="faqItem" role="listitem" data-open="false">
+          <button class="faqQ" type="button">
+            <span>Is MN8 a workout program?</span><span class="chev"></span>
+          </button>
+          <div class="faqA">
+            No. Training is only one component. MN8 is the full structure that makes execution automatic when life gets heavy.
           </div>
         </div>
-      </section>
 
-      <!-- SECTION: Definition -->
-      <section class="section" id="mn8">
-        <div class="wrap">
-          <div class="section-head reveal">
-            <h2 class="h2">What MN8 is</h2>
-            <p class="lead">What MN8 is and what it is not.</p>
-          </div>
-
-          <div class="grid-2">
-            <article class="card reveal">
-              <h3 class="h3">What this is</h3>
-              <p class="p">
-                MN8 is a private weight control platform for high-responsibility people who want progress
-                without disrupting their lives. It’s built for people whose schedules are full, whose days
-                are dense, and whose responsibilities leave no room for complicated routines.
-              </p>
-            </article>
-
-            <article class="card reveal delay-1">
-              <h3 class="h3">What this is not</h3>
-              <p class="p">
-                MN8 isn’t built to take over your life. It doesn’t require constant tracking, long workouts,
-                rigid routines, or daily mental effort. It doesn’t turn health into a second job or identity
-                project. MN8 exists to fit inside a full life — not compete with it.
-              </p>
-            </article>
+        <div class="faqItem" role="listitem" data-open="false">
+          <button class="faqQ" type="button">
+            <span>Is MN8 a diet?</span><span class="chev"></span>
+          </button>
+          <div class="faqA">
+            No. It’s a repeatable nutrition structure designed to reduce decision load and hold under pressure.
           </div>
         </div>
-      </section>
 
-      <!-- PROCESS -->
-      <section class="section" id="process">
-        <div class="wrap">
-          <div class="section-head reveal">
-            <h2 class="h2">Process</h2>
-            <p class="lead">Built for people who can’t “start over” every month.</p>
-          </div>
-
-          <div class="steps">
-            <div class="step reveal">
-              <div class="step-index">01</div>
-              <div class="step-body">
-                <h3 class="h3">Tighten nutrition</h3>
-                <p class="p">Reduce friction and decision load first.</p>
-              </div>
-            </div>
-
-            <div class="step reveal delay-1">
-              <div class="step-index">02</div>
-              <div class="step-body">
-                <h3 class="h3">Short daily training</h3>
-                <p class="p">Repeatable sessions that fit real schedules.</p>
-              </div>
-            </div>
-
-            <div class="step reveal delay-2">
-              <div class="step-index">03</div>
-              <div class="step-body">
-                <h3 class="h3">Automatic structure</h3>
-                <p class="p">So it holds under stress.</p>
-              </div>
-            </div>
+        <div class="faqItem" role="listitem" data-open="false">
+          <button class="faqQ" type="button">
+            <span>How does MN8 fit into a full schedule?</span><span class="chev"></span>
+          </button>
+          <div class="faqA">
+            By removing complexity. Short sessions, predefined structure, low cognitive cost. It’s built to operate inside dense days.
           </div>
         </div>
-      </section>
 
-      <!-- SECTION: Alignment -->
-      <section class="section" id="alignment">
-        <div class="wrap">
-          <div class="section-head reveal">
-            <h2 class="h2">Who MN8 is for</h2>
-            <p class="lead">Designed for a specific type of life. Not everyone.</p>
-          </div>
-
-          <div class="grid-2">
-            <article class="card reveal">
-              <h3 class="h3">Who this is for</h3>
-              <p class="p">
-                MN8 is for people who already carry responsibility and don’t have space for complicated health
-                systems. It’s built for individuals whose schedules are full, whose days are dense, and whose
-                lives don’t allow time-heavy routines, constant tracking, or constant decision-making.
-                <br /><br />
-                It’s for people who want progress without disruption, structure without friction, and control
-                without their health becoming their second job.
-              </p>
-            </article>
-
-            <article class="card reveal delay-1">
-              <h3 class="h3">Who this is not for</h3>
-              <p class="p">
-                MN8 is not for people who want their health to become their main focus, their main identity, or
-                their main project. It isn’t built for those who enjoy complexity, customization, experimentation,
-                or time-intensive routines. If someone needs their system to take over their schedule, dominate their
-                attention, or become their lifestyle, MN8 will feel too simple — because it’s designed to fit into life,
-                not replace it.
-              </p>
-            </article>
+        <div class="faqItem" role="listitem" data-open="false">
+          <button class="faqQ" type="button">
+            <span>What makes MN8 different from everything else?</span><span class="chev"></span>
+          </button>
+          <div class="faqA">
+            MN8 is designed for continuity — not perfection. Missed days don’t become resets. Pressure doesn’t break the system.
           </div>
         </div>
-      </section>
 
-      <!-- FAQ -->
-      <section class="section" id="faq">
-        <div class="wrap">
-          <div class="section-head reveal">
-            <h2 class="h2">FAQ</h2>
-          </div>
-
-          <div class="faq">
-            <details class="faq-item reveal">
-              <summary>What is MN8, really?</summary>
-              <p>MN8 is weight control built for people with real responsibility — not people with free time.</p>
-            </details>
-
-            <details class="faq-item reveal delay-1">
-              <summary>Is MN8 a workout program?</summary>
-              <p>No. MN8 isn’t built around training — it’s built around control.</p>
-            </details>
-
-            <details class="faq-item reveal delay-2">
-              <summary>Is MN8 a diet?</summary>
-              <p>No. Diets create dependence. MN8 creates structure.</p>
-            </details>
-
-            <details class="faq-item reveal">
-              <summary>How does MN8 fit into a full schedule?</summary>
-              <p>Because it was designed for full schedules — not added on top of them.</p>
-            </details>
-
-            <details class="faq-item reveal delay-1">
-              <summary>What makes MN8 different from everything else?</summary>
-              <p>Everything else assumes you have time. MN8 assumes you don’t.</p>
-            </details>
-
-            <details class="faq-item reveal delay-2">
-              <summary>What happens when my life gets chaotic?</summary>
-              <p>MN8 doesn’t collapse when your week does.</p>
-            </details>
-
-            <details class="faq-item reveal">
-              <summary>Who is MN8 not for?</summary>
-              <p>People who want health to become their lifestyle, identity, and personality.</p>
-            </details>
-
-            <details class="faq-item reveal delay-1">
-              <summary>Why is MN8 private?</summary>
-              <p>Because not everyone should be inside it.</p>
-            </details>
+        <div class="faqItem" role="listitem" data-open="false">
+          <button class="faqQ" type="button">
+            <span>What happens when my life gets chaotic?</span><span class="chev"></span>
+          </button>
+          <div class="faqA">
+            The system is built for that reality. Structure holds. Execution stabilizes. You don’t “start over.”
           </div>
         </div>
-      </section>
 
-      <!-- FOOTER -->
-      <footer class="footer">
-        <div class="wrap footer-inner">
-          <span class="muted">MN8</span>
-          <span class="muted">Private system</span>
+        <div class="faqItem" role="listitem" data-open="false">
+          <button class="faqQ" type="button">
+            <span>Who is MN8 not for?</span><span class="chev"></span>
+          </button>
+          <div class="faqA">
+            If you want complexity, constant experimentation, or your health to become your lifestyle project, this isn’t for you.
+          </div>
         </div>
-      </footer>
-    </main>
 
-    <script src="./script.js?v=2" defer></script>
-  </body>
+        <div class="faqItem" role="listitem" data-open="false">
+          <button class="faqQ" type="button">
+            <span>Why is MN8 private?</span><span class="chev"></span>
+          </button>
+          <div class="faqA">
+            Because fit matters. The system is designed for a specific type of schedule, pressure, and responsibility.
+          </div>
+        </div>
+      </div>
+
+      <div class="btnRow" style="margin-top:26px;">
+        <a class="btn btnPrimary" href="./qualify.html">Begin Qualification</a>
+      </div>
+    </section>
+
+    <!-- FINAL CTA -->
+    <section class="section" id="final">
+      <h2>MN8 is private by design.</h2>
+      <div class="finalCta">
+        <p class="finalLine">
+          If this matches how you live, begin qualification.
+        </p>
+        <div class="btnRow">
+          <a class="btn btnPrimary" href="./qualify.html">Begin Qualification</a>
+        </div>
+      </div>
+
+      <div class="foot">© MN8 — Private system.</div>
+    </section>
+
+  </main>
+
+  <script>
+    (function(){
+      // Smooth scroll to "how it works"
+      const jumpHow = document.getElementById("jumpHow");
+      const how = document.getElementById("how");
+      if (jumpHow && how){
+        jumpHow.addEventListener("click", () => {
+          how.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+      }
+
+      // FAQ accordion (single-open, clean)
+      const items = Array.from(document.querySelectorAll(".faqItem"));
+      items.forEach(item => {
+        const btn = item.querySelector(".faqQ");
+        btn.addEventListener("click", () => {
+          const isOpen = item.getAttribute("data-open") === "true";
+          items.forEach(i => i.setAttribute("data-open", "false"));
+          item.setAttribute("data-open", isOpen ? "false" : "true");
+        });
+      });
+    })();
+  </script>
+</body>
 </html>
-
