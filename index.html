@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>MN8 — Public</title>
+  <title>Emanate — Public</title>
 
   <!-- Lato -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,20 +12,29 @@
 
   <style>
     :root{
-      --bg:#0B0D12;
-      --text:#F2F2F3;
-      --muted:rgba(242,242,243,.72);
-      --hair:rgba(255,255,255,.10);
+      /* Core */
+      --bg:#ffffff;
+      --ink:#0B0D12;
+      --muted: rgba(11,13,18,.68);
+      --hair: rgba(11,13,18,.10);
 
+      /* Accent */
       --mn8:#6D3BD2;
-      --mn8Soft:rgba(109,59,210,.22);
-      --mn8Glow:rgba(109,59,210,.35);
+      --mn8Soft: rgba(109,59,210,.16);
+      --mn8Soft2: rgba(109,59,210,.10);
 
-      --radiusXL:28px;
-      --radiusLG:22px;
-      --radiusMD:16px;
+      /* Shape */
+      --rXL: 26px;
+      --rLG: 22px;
+      --rMD: 16px;
 
-      --wrap: min(1100px, calc(100% - 48px));
+      /* Elevation */
+      --sh0: 0 10px 30px rgba(11,13,18,.08);
+      --sh1: 0 18px 50px rgba(11,13,18,.14);
+
+      /* Layout */
+      --wrap: min(1120px, calc(100% - 48px));
+      --sPad: 96px; /* desktop */
     }
 
     *{ box-sizing:border-box; }
@@ -33,646 +42,989 @@
     body{
       margin:0;
       background:var(--bg);
-      color:var(--text);
+      color:var(--ink);
       font-family:"Lato", system-ui, -apple-system, Segoe UI, Roboto, Arial;
       -webkit-font-smoothing: antialiased;
       text-rendering: optimizeLegibility;
       overflow-x:hidden;
     }
 
-    /* ====== Global layout ====== */
     .wrap{ width:var(--wrap); margin:0 auto; }
-    section{ padding: 86px 0; position:relative; }
-    .sectionHair{
+    section{ padding: var(--sPad) 0; position:relative; }
+    .hairTop::before{
+      content:"";
       position:absolute; left:0; right:0; top:0;
-      height:1px; background: rgba(255,255,255,.06);
+      height:1px; background: rgba(11,13,18,.06);
     }
 
-    /* ====== Type ====== */
+    /* Type */
     .kicker{
+      margin:0 0 10px;
       font-size:13px;
       letter-spacing:.02em;
-      color:rgba(242,242,243,.70);
-      margin:0 0 10px;
+      color: rgba(11,13,18,.55);
+      font-weight:700;
     }
     .h1{
-      margin:0 0 16px;
-      font-weight:900;
+      margin:0 0 14px;
+      font-size: clamp(42px, 6.0vw, 74px);
       letter-spacing:-.03em;
       line-height:1.02;
-      font-size: clamp(42px, 6.2vw, 74px);
+      font-weight:900;
       max-width: 20ch;
     }
     .sub{
-      margin:0 0 26px;
+      margin:0 0 22px;
       color: var(--muted);
-      font-size: 16px;
-      line-height: 1.7;
-      max-width: 68ch;
+      font-size:16px;
+      line-height:1.75;
+      max-width: 72ch;
     }
     .h2{
       margin:0 0 12px;
-      font-size: clamp(26px, 3.2vw, 44px);
-      font-weight:900;
+      font-size: clamp(26px, 3.1vw, 44px);
       letter-spacing:-.02em;
       line-height:1.08;
+      font-weight:900;
+      max-width: 26ch;
     }
     .lead{
-      margin:0 0 26px;
-      color:var(--muted);
+      margin:0 0 22px;
+      color: var(--muted);
       font-size:16px;
       line-height:1.75;
-      max-width: 70ch;
-    }
-    .miniTitle{
-      margin:0 0 10px;
-      font-weight:900;
-      letter-spacing:-.01em;
-      font-size:18px;
-      color:rgba(255,255,255,.94);
-    }
-    .small{
-      margin:0;
-      color:rgba(255,255,255,.70);
-      font-size:14px;
-      line-height:1.7;
+      max-width: 78ch;
     }
 
-    /* ====== Hero ====== */
-    .hero{
-      padding: 84px 0 54px;
-      position:relative;
-      isolation:isolate;
-    }
-
-    /* Kinetic field */
-    .field{
-      position:absolute;
-      inset: -140px -80px -180px -80px;
-      pointer-events:none;
-      z-index:0;
-    }
-    canvas#mn8Field{
-      width:100%;
-      height:100%;
-      display:block;
-      filter: drop-shadow(0 0 22px rgba(109,59,210,.20));
-      opacity:.95;
-    }
-
-    /* Subtle vignette + glow (NOT a gradient background — just a spotlight mask) */
-    .heroMask{
-      position:absolute;
-      inset:0;
-      z-index:1;
-      pointer-events:none;
-      background:
-        radial-gradient(900px 420px at 30% 28%, rgba(109,59,210,.10), transparent 60%),
-        radial-gradient(700px 360px at 70% 40%, rgba(255,255,255,.04), transparent 60%);
-      mix-blend-mode: screen;
-      opacity:.8;
-    }
-
-    .heroInner{ position:relative; z-index:2; }
-
+    /* Buttons */
     .ctaRow{
-      display:flex;
-      gap: 12px;
-      align-items:center;
-      flex-wrap:wrap;
-      margin-top: 10px;
+      display:flex; gap:12px; flex-wrap:wrap; align-items:center;
+      margin-top: 6px;
     }
     .btn{
       appearance:none;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.04);
-      color: rgba(255,255,255,.92);
-      padding: 12px 18px;
       border-radius: 999px;
-      font-weight:900;
+      padding: 12px 18px;
       font-size:13px;
+      font-weight:900;
       cursor:pointer;
-      transition: transform .14s ease, border-color .14s ease, background .14s ease, box-shadow .14s ease;
+      transition: transform .14s ease, box-shadow .14s ease, background .14s ease, border-color .14s ease;
+      border:1px solid rgba(11,13,18,.10);
+      background: #fff;
+      color: rgba(11,13,18,.92);
+      box-shadow: 0 10px 30px rgba(11,13,18,.06);
     }
-    .btn:hover{
-      transform: translateY(-1px);
-      border-color: rgba(255,255,255,.18);
-      background: rgba(255,255,255,.06);
-    }
+    .btn:hover{ transform: translateY(-1px); box-shadow: 0 14px 38px rgba(11,13,18,.10); border-color: rgba(11,13,18,.14); }
     .btnPrimary{
-      border: 0;
+      border:0;
       background: var(--mn8);
-      color: white;
-      box-shadow: 0 14px 40px rgba(109,59,210,.22);
+      color:#fff;
+      box-shadow: 0 16px 44px rgba(109,59,210,.22);
     }
-    .btnPrimary:hover{
-      background: rgba(109,59,210,.95);
-      box-shadow: 0 16px 46px rgba(109,59,210,.28);
-    }
+    .btnPrimary:hover{ box-shadow: 0 18px 50px rgba(109,59,210,.28); }
 
-    /* ====== Card system ====== */
+    /* Hero */
+    header.hero{
+      padding: 88px 0 64px;
+      position:relative;
+      overflow:hidden;
+    }
+    .heroBg{
+      position:absolute; inset:-120px -120px -120px -120px;
+      pointer-events:none;
+      z-index:0;
+    }
+    canvas#heroField{
+      width:100%;
+      height:100%;
+      display:block;
+      opacity: .95;
+    }
+    .heroGlow{
+      position:absolute; inset:0;
+      pointer-events:none;
+      z-index:1;
+      background:
+        radial-gradient(820px 420px at 32% 30%, rgba(109,59,210,.12), transparent 62%),
+        radial-gradient(720px 380px at 70% 40%, rgba(11,13,18,.05), transparent 65%);
+      mix-blend-mode: multiply;
+      opacity: .9;
+    }
+    .heroInner{ position:relative; z-index:2; }
+
+    /* Cards */
     .grid2{
       display:grid;
       grid-template-columns: 1fr 1fr;
       gap: 18px;
+      margin-top: 18px;
     }
     .card{
-      border-radius: var(--radiusXL);
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-      padding: 22px;
       position:relative;
+      border-radius: var(--rXL);
+      border: 1px solid rgba(11,13,18,.10);
+      background: #fff;
+      box-shadow: var(--sh0);
       overflow:hidden;
-      transition: transform .14s ease, border-color .14s ease, box-shadow .14s ease;
+      padding: 22px;
+      transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
     }
     .card:hover{
       transform: translateY(-2px);
-      border-color: rgba(255,255,255,.16);
-      box-shadow: 0 18px 60px rgba(0,0,0,.35);
+      box-shadow: var(--sh1);
+      border-color: rgba(11,13,18,.14);
     }
-    .card::after{
-      content:"";
+
+    /* Hybrid graphics layer inside cards */
+    .gfx{
       position:absolute;
-      inset:-2px;
+      inset:-1px;
       pointer-events:none;
-      border-radius: inherit;
-      background: radial-gradient(500px 220px at 20% 20%, rgba(109,59,210,.16), transparent 55%);
+      z-index:0;
+    }
+    .gfx .mesh{
+      position:absolute;
+      inset:-40px -40px -40px -40px;
+      background:
+        radial-gradient(420px 220px at 20% 20%, rgba(109,59,210,.18), transparent 60%),
+        radial-gradient(360px 220px at 78% 30%, rgba(109,59,210,.10), transparent 62%),
+        radial-gradient(420px 260px at 40% 85%, rgba(11,13,18,.06), transparent 68%);
+      filter: blur(2px);
+      opacity:.75;
+      transition: transform .22s ease, opacity .22s ease;
+    }
+    .gfx svg{
+      position:absolute;
+      right:-18px;
+      top:-18px;
+      width: 240px;
+      height: 140px;
       opacity:.55;
-      mix-blend-mode: screen;
+      transition: transform .22s ease, opacity .22s ease;
     }
+    .card:hover .gfx .mesh{ transform: translate3d(10px,-6px,0); opacity:.85; }
+    .card:hover .gfx svg{ transform: translate3d(-8px,6px,0); opacity:.70; }
 
-    .bullets{
-      margin: 10px 0 0;
-      padding-left: 18px;
-      color: rgba(255,255,255,.78);
-      font-size: 14px;
-      line-height: 1.8;
-    }
-    .bullets li{ margin: 4px 0; }
+    .cardInner{ position:relative; z-index:1; }
 
-    /* ====== Process steps ====== */
-    .steps{
-      display:grid;
-      gap: 14px;
-      margin-top: 10px;
-    }
-    .step{
-      display:grid;
-      grid-template-columns: 60px 1fr;
-      gap: 16px;
-      align-items:center;
-      border-radius: var(--radiusXL);
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.02);
-      padding: 18px 18px;
-      transition: transform .14s ease, border-color .14s ease, box-shadow .14s ease;
-    }
-    .step:hover{
-      transform: translateY(-2px);
-      border-color: rgba(109,59,210,.35);
-      box-shadow: 0 18px 60px rgba(0,0,0,.35);
-    }
-    .chip{
-      width: 52px; height: 52px;
-      border-radius: 16px;
-      display:flex; align-items:center; justify-content:center;
-      background: rgba(255,255,255,.03);
-      border: 1px solid rgba(255,255,255,.10);
-      color: rgba(255,255,255,.90);
-      font-weight:900;
-    }
-    .stepTitle{ margin:0 0 4px; font-weight:900; font-size:18px; letter-spacing:-.01em; }
-    .stepCopy{ margin:0; color: rgba(255,255,255,.70); font-size:14px; line-height:1.65; }
-
-    /* ====== FAQ ====== */
-    .faq{
-      display:grid;
-      gap: 12px;
-      margin-top: 18px;
-    }
-    details{
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.02);
-      padding: 14px 16px;
-      transition: border-color .14s ease, transform .14s ease;
-    }
-    details:hover{
-      border-color: rgba(255,255,255,.16);
-      transform: translateY(-1px);
-    }
-    summary{
-      list-style:none;
-      cursor:pointer;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 16px;
-      font-weight:900;
-      color: rgba(255,255,255,.92);
-    }
-    summary::-webkit-details-marker{ display:none; }
-    .chev{
-      width: 10px; height:10px;
-      border-right: 2px solid rgba(255,255,255,.65);
-      border-bottom: 2px solid rgba(255,255,255,.65);
-      transform: rotate(45deg);
-      transition: transform .14s ease;
-      flex: 0 0 auto;
-      margin-right: 2px;
-    }
-    details[open] .chev{ transform: rotate(225deg); }
-    .answer{
-      margin-top: 10px;
-      color: rgba(255,255,255,.70);
-      font-size: 14px;
-      line-height: 1.75;
-      max-width: 90ch;
-    }
-
-    /* ====== Footer CTA ====== */
-    .finalCta{
-      border-radius: var(--radiusXL);
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.02);
-      padding: 26px;
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap: 18px;
-      overflow:hidden;
-      position:relative;
-    }
-    .finalCta::after{
-      content:"";
-      position:absolute;
-      inset:-2px;
-      border-radius: inherit;
-      background: radial-gradient(650px 240px at 20% 30%, rgba(109,59,210,.22), transparent 55%);
-      mix-blend-mode: screen;
-      opacity:.7;
-      pointer-events:none;
-    }
-    .finalInner{ position:relative; z-index:1; max-width: 70ch; }
-    .finalTitle{
+    .cTitle{
       margin:0 0 8px;
-      font-size: 22px;
+      font-size:18px;
       font-weight:900;
       letter-spacing:-.01em;
     }
-    .finalCopy{ margin:0; color: rgba(255,255,255,.70); line-height:1.7; font-size:14px; }
+    .bullets{
+      margin: 10px 0 0;
+      padding-left: 18px;
+      color: rgba(11,13,18,.78);
+      font-size:14px;
+      line-height:1.8;
+    }
+    .bullets li{ margin: 4px 0; }
 
-    /* ====== Responsive ====== */
-    @media (max-width: 900px){
+    /* Tall cards (graphic header) */
+    .tall{
+      padding:0;
+    }
+    .tallTop{
+      height: 150px;
+      position:relative;
+      border-bottom: 1px solid rgba(11,13,18,.08);
+      overflow:hidden;
+    }
+    .tallTop .mesh{
+      position:absolute; inset:-50px;
+      opacity:.9;
+      filter: blur(2px);
+    }
+    .tallTop svg{
+      position:absolute;
+      inset:auto -18px -16px auto;
+      width: 320px;
+      height: 190px;
+      opacity:.65;
+      transform: rotate(-2deg);
+    }
+    .tallBody{
+      padding: 22px;
+    }
+
+    /* Process rail */
+    .railWrap{
+      margin-top: 18px;
+      position:relative;
+    }
+    .rail{
+      display:flex;
+      gap: 14px;
+      align-items:stretch;
+      width:100%;
+    }
+    .pCard{
+      position:relative;
+      flex: 1 1 0;
+      border-radius: var(--rXL);
+      border: 1px solid rgba(11,13,18,.10);
+      background:#fff;
+      box-shadow: var(--sh0);
+      overflow:hidden;
+      padding: 20px;
+      cursor:pointer;
+      transition: flex .26s ease, transform .18s ease, box-shadow .18s ease, border-color .18s ease, opacity .18s ease;
+      min-height: 220px;
+      outline:none;
+    }
+    .pCard:hover{ transform: translateY(-2px); box-shadow: var(--sh1); }
+    .pCard[aria-expanded="true"]{
+      flex: 1.85 1 0;
+      border-color: rgba(109,59,210,.45);
+      box-shadow: 0 20px 60px rgba(109,59,210,.12), var(--sh1);
+    }
+    .pCard[aria-expanded="false"].dim{
+      opacity:.65;
+      transform: translateY(0);
+      box-shadow: 0 10px 30px rgba(11,13,18,.06);
+    }
+
+    .pTop{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      margin-bottom: 10px;
+    }
+    .badge{
+      width: 44px; height: 44px;
+      border-radius: 14px;
+      display:flex; align-items:center; justify-content:center;
+      background: rgba(109,59,210,.10);
+      border: 1px solid rgba(109,59,210,.18);
+      color: rgba(11,13,18,.92);
+      font-weight:900;
+    }
+    .pTitle{
+      margin:0;
+      font-size:18px;
+      font-weight:900;
+      letter-spacing:-.01em;
+    }
+    .pOne{
+      margin:0;
+      color: var(--muted);
+      font-size:14px;
+      line-height:1.7;
+      max-width: 52ch;
+    }
+
+    .pMore{
+      margin-top: 14px;
+      display:none;
+      border-top: 1px solid rgba(11,13,18,.08);
+      padding-top: 14px;
+      gap: 14px;
+      grid-template-columns: 1fr 220px;
+      align-items:start;
+    }
+    .pCard[aria-expanded="true"] .pMore{ display:grid; }
+
+    .pMore ul{
+      margin:0;
+      padding-left: 18px;
+      color: rgba(11,13,18,.78);
+      font-size:14px;
+      line-height:1.8;
+    }
+
+    .miniPanel{
+      border-radius: 18px;
+      border: 1px solid rgba(11,13,18,.10);
+      background: rgba(109,59,210,.06);
+      overflow:hidden;
+      position:relative;
+      min-height: 160px;
+    }
+    canvas.processMini{
+      width:100%;
+      height:100%;
+      display:block;
+      opacity:.95;
+    }
+
+    /* Outcomes timeline (scroll draw) */
+    .timeline{
+      margin-top: 18px;
+      display:grid;
+      grid-template-columns: 34px 1fr;
+      gap: 18px;
+      align-items:stretch;
+      max-width: 880px;
+    }
+    .railCol{ position:relative; }
+    .railLine{
+      position:absolute;
+      left: 16px;
+      top: 6px;
+      bottom: 6px;
+      width: 2px;
+      background: rgba(11,13,18,.10);
+      border-radius: 99px;
+      overflow:hidden;
+    }
+    .railFill{
+      position:absolute;
+      left:0; top:0;
+      width:100%;
+      height:0%;
+      background: rgba(109,59,210,.85);
+      border-radius: 99px;
+      transition: height .18s linear;
+      transform-origin: top;
+    }
+    .nodes{
+      position:relative;
+      height: 520px; /* desktop height to reflect time spacing */
+    }
+    .node{
+      position:absolute;
+      left: 7px;
+      width: 18px; height:18px;
+      border-radius: 999px;
+      background:#fff;
+      border: 2px solid rgba(11,13,18,.16);
+      box-shadow: 0 10px 26px rgba(11,13,18,.10);
+      transform: translateY(-50%);
+      transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease, background .18s ease;
+    }
+    .node::after{
+      content:"";
+      position:absolute;
+      inset:4px;
+      border-radius:999px;
+      background: rgba(109,59,210,.10);
+      opacity:0;
+      transition: opacity .18s ease;
+    }
+    .node.active{
+      border-color: rgba(109,59,210,.60);
+      box-shadow: 0 18px 44px rgba(109,59,210,.22);
+      transform: translateY(-50%) scale(1.03);
+      background: #fff;
+    }
+    .node.active::after{ opacity:1; }
+
+    .tItems{
+      position:relative;
+      height: 520px;
+    }
+    .tItem{
+      position:absolute;
+      left:0; right:0;
+      transform: translateY(-50%);
+      opacity:.55;
+      transition: opacity .22s ease, transform .22s ease;
+    }
+    .tItem.active{
+      opacity:1;
+      transform: translateY(-50%) translateX(0);
+    }
+    .tWhen{
+      font-size:13px;
+      font-weight:900;
+      color: rgba(11,13,18,.78);
+      margin:0 0 6px;
+      letter-spacing:.01em;
+    }
+    .tText{
+      margin:0;
+      color: rgba(11,13,18,.70);
+      font-size:15px;
+      line-height:1.7;
+      max-width: 70ch;
+    }
+
+    /* Final CTA block */
+    .final{
+      border-radius: var(--rXL);
+      border: 1px solid rgba(11,13,18,.10);
+      background:#fff;
+      box-shadow: var(--sh0);
+      padding: 26px;
+      position:relative;
+      overflow:hidden;
+    }
+    .final::before{
+      content:"";
+      position:absolute;
+      inset:-60px;
+      background:
+        radial-gradient(520px 240px at 18% 40%, rgba(109,59,210,.14), transparent 60%),
+        radial-gradient(480px 240px at 80% 30%, rgba(11,13,18,.05), transparent 64%);
+      pointer-events:none;
+    }
+    .finalInner{ position:relative; z-index:1; display:flex; gap:18px; align-items:center; justify-content:space-between; flex-wrap:wrap; }
+    .finalTitle{
+      margin:0 0 6px;
+      font-size:22px;
+      font-weight:900;
+      letter-spacing:-.01em;
+    }
+    .finalCopy{
+      margin:0;
+      color: rgba(11,13,18,.68);
+      font-size:14px;
+      line-height:1.7;
+      max-width: 70ch;
+    }
+
+    /* Responsive */
+    @media (max-width: 980px){
+      :root{ --sPad: 78px; }
       .grid2{ grid-template-columns: 1fr; }
-      section{ padding: 72px 0; }
-      .finalCta{ flex-direction:column; align-items:stretch; }
+      .rail{ flex-direction:column; }
+      .pCard[aria-expanded="true"]{ flex: 1 1 auto; }
+      .pCard[aria-expanded="false"].dim{ opacity:1; }
+      .pMore{ grid-template-columns: 1fr; }
+      .timeline{ grid-template-columns: 30px 1fr; }
+      .nodes, .tItems{ height: 560px; }
     }
     @media (max-width: 560px){
-      .wrap{ width: min(1100px, calc(100% - 32px)); }
-      .hero{ padding: 70px 0 44px; }
-      section{ padding: 62px 0; }
-      .step{ grid-template-columns: 54px 1fr; }
-      .chip{ width:48px; height:48px; border-radius: 14px; }
+      :root{ --sPad: 60px; --wrap: min(1120px, calc(100% - 32px)); }
+      header.hero{ padding: 70px 0 48px; }
+      .nodes, .tItems{ height: 600px; }
     }
   </style>
 </head>
 
 <body>
 
-  <!-- HERO -->
-  <header class="hero">
-    <div class="field" aria-hidden="true">
-      <canvas id="mn8Field"></canvas>
+<header class="hero">
+  <div class="heroBg" aria-hidden="true">
+    <canvas id="heroField"></canvas>
+  </div>
+  <div class="heroGlow" aria-hidden="true"></div>
+
+  <div class="wrap heroInner">
+    <p class="kicker">Private access • Qualification required</p>
+    <h1 class="h1">Weight control built for full schedules.</h1>
+    <p class="sub">
+      Not a lifestyle takeover. Not a “restart.” A structured approach that fits inside dense days and holds under pressure.
+    </p>
+    <div class="ctaRow">
+      <button class="btn btnPrimary" type="button" id="qualifyBtn">Begin Qualification</button>
+      <button class="btn" type="button" id="jumpProcess">See process</button>
     </div>
-    <div class="heroMask" aria-hidden="true"></div>
+  </div>
+</header>
 
-    <div class="wrap heroInner">
-      <p class="kicker">Private system built for real responsibility</p>
-      <h1 class="h1">Weight control built for full schedules — not time-rich lifestyles.</h1>
-      <p class="sub">
-        MN8 is a private weight control system designed to fit inside dense days.
-        Minimal disruption. Repeatable structure. Control that holds.
-      </p>
+<!-- PROBLEM -->
+<section class="hairTop" id="problem">
+  <div class="wrap">
+    <h2 class="h2">Why the old approach stopped working</h2>
+    <p class="lead">It worked when your days had space. Your life changed. The approach didn’t.</p>
 
-      <div class="ctaRow">
-        <button class="btn btnPrimary" type="button" onclick="location.href='qualify.html'">Begin Qualification</button>
-        <button class="btn" type="button" onclick="document.getElementById('process').scrollIntoView({behavior:'smooth'})">See how it works</button>
-      </div>
-    </div>
-  </header>
-
-  <!-- WHY IT FAILS -->
-  <section>
-    <div class="sectionHair"></div>
-    <div class="wrap">
-      <h2 class="h2">The real reason the old way keeps failing</h2>
-      <p class="lead">Responsibility increased, and the “old system” stopped fitting.</p>
-
-      <div class="grid2">
-        <div class="card">
-          <div class="miniTitle">What used to work</div>
+    <div class="grid2">
+      <div class="card">
+        <div class="gfx" aria-hidden="true">
+          <div class="mesh"></div>
+          <svg viewBox="0 0 360 220" fill="none">
+            <path d="M30 160 C80 90, 140 200, 210 120 C260 70, 300 110, 330 60" stroke="rgba(109,59,210,.55)" stroke-width="2"/>
+            <path d="M60 180 C110 120, 150 160, 220 140 C270 120, 295 140, 340 120" stroke="rgba(109,59,210,.25)" stroke-width="2"/>
+            <circle cx="80" cy="120" r="4" fill="rgba(109,59,210,.55)"/>
+            <circle cx="210" cy="120" r="4" fill="rgba(109,59,210,.45)"/>
+            <circle cx="330" cy="60" r="4" fill="rgba(109,59,210,.55)"/>
+          </svg>
+        </div>
+        <div class="cardInner">
+          <div class="cTitle">What used to work</div>
           <ul class="bullets">
-            <li>Time to plan and prepare</li>
-            <li>Space for long workouts</li>
-            <li>Mental bandwidth to “stay on it”</li>
-            <li>Rules you could follow consistently</li>
+            <li>Time margin for planning</li>
+            <li>Long workouts without friction</li>
+            <li>Mental bandwidth for tracking</li>
+            <li>Consistency built on “ideal weeks”</li>
           </ul>
-          <p class="small" style="margin-top:10px;">It worked when your days had space.</p>
         </div>
+      </div>
 
-        <div class="card">
-          <div class="miniTitle">Why it doesn’t now</div>
+      <div class="card">
+        <div class="gfx" aria-hidden="true">
+          <div class="mesh" style="background:
+            radial-gradient(420px 220px at 22% 20%, rgba(109,59,210,.16), transparent 60%),
+            radial-gradient(360px 240px at 80% 35%, rgba(11,13,18,.08), transparent 66%),
+            radial-gradient(520px 260px at 40% 90%, rgba(109,59,210,.10), transparent 70%);"></div>
+          <svg viewBox="0 0 360 220" fill="none">
+            <path d="M40 60 L120 120 L90 150 L170 170 L210 130 L280 180" stroke="rgba(11,13,18,.22)" stroke-width="2"/>
+            <path d="M60 80 L160 110 L140 160 L240 150 L310 190" stroke="rgba(109,59,210,.25)" stroke-width="2"/>
+            <circle cx="120" cy="120" r="4" fill="rgba(11,13,18,.22)"/>
+            <circle cx="210" cy="130" r="4" fill="rgba(109,59,210,.42)"/>
+            <circle cx="310" cy="190" r="4" fill="rgba(109,59,210,.42)"/>
+          </svg>
+        </div>
+        <div class="cardInner">
+          <div class="cTitle">Why it doesn’t now</div>
           <ul class="bullets">
-            <li>Your schedule is dense</li>
-            <li>Decisions stack all day</li>
-            <li>Energy is spent on responsibility</li>
-            <li>The system demands attention you don’t have</li>
+            <li>Schedule density kills prep</li>
+            <li>Decision fatigue stacks daily</li>
+            <li>Travel + stress breaks routines</li>
+            <li>Missed days trigger resets</li>
           </ul>
-          <p class="small" style="margin-top:10px;">The old approach doesn’t fit your life anymore.</p>
-        </div>
-      </div>
-
-      <p class="lead" style="margin-top:18px; max-width:70ch;">
-        Your system didn’t fail. It stopped fitting your life.
-      </p>
-    </div>
-  </section>
-
-  <!-- WHAT IT IS / IS NOT -->
-  <section>
-    <div class="sectionHair"></div>
-    <div class="wrap">
-      <h2 class="h2">What MN8 is</h2>
-      <p class="lead">A private weight control system for people operating under pressure — not ideal conditions.</p>
-
-      <div class="grid2">
-        <div class="card">
-          <div class="miniTitle">What this is</div>
-          <p class="small">
-            A minimal, repeatable structure that fits inside dense schedules and keeps weight control from turning into a second job.
-          </p>
-        </div>
-
-        <div class="card">
-          <div class="miniTitle">What this is not</div>
-          <p class="small">
-            Not a challenge. Not a lifestyle takeover. Not constant tracking, long workouts, or daily mental effort.
-            MN8 is designed to fit into your life — not compete with it.
-          </p>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- PROCESS -->
-  <section id="process">
-    <div class="sectionHair"></div>
-    <div class="wrap">
-      <h2 class="h2">Process</h2>
-      <p class="lead">Built for people who can’t “start over” every month.</p>
+<!-- WHAT IT IS / IS NOT -->
+<section class="hairTop" id="what">
+  <div class="wrap">
+    <h2 class="h2">What this is — and what it isn’t</h2>
+    <p class="lead">Clarity reduces doubt. Doubt kills execution.</p>
 
-      <div class="steps">
-        <div class="step">
-          <div class="chip">01</div>
-          <div>
-            <p class="stepTitle">Tighten nutrition</p>
-            <p class="stepCopy">Reduce friction and decision load first.</p>
+    <div class="grid2">
+      <div class="card tall">
+        <div class="tallTop">
+          <div class="mesh" style="background:
+            radial-gradient(420px 240px at 28% 30%, rgba(109,59,210,.20), transparent 60%),
+            radial-gradient(420px 260px at 70% 60%, rgba(11,13,18,.07), transparent 70%);"></div>
+          <svg viewBox="0 0 520 280" fill="none">
+            <path d="M40 190 C110 120, 200 240, 290 140 C360 70, 420 110, 480 60" stroke="rgba(109,59,210,.55)" stroke-width="2"/>
+            <path d="M70 210 C160 150, 240 190, 320 170 C390 150, 430 170, 500 140" stroke="rgba(109,59,210,.26)" stroke-width="2"/>
+            <path d="M70 70 H450" stroke="rgba(11,13,18,.12)" stroke-width="2" stroke-dasharray="6 10"/>
+            <path d="M110 90 H420" stroke="rgba(11,13,18,.10)" stroke-width="2" stroke-dasharray="6 10"/>
+          </svg>
+        </div>
+        <div class="tallBody">
+          <div class="cTitle">What this is</div>
+          <p class="lead" style="margin:0; font-size:15px;">
+            A structured approach built to fit inside dense schedules, reduce daily negotiation, and keep progress holding under pressure.
+          </p>
+        </div>
+      </div>
+
+      <div class="card tall">
+        <div class="tallTop">
+          <div class="mesh" style="background:
+            radial-gradient(420px 240px at 30% 30%, rgba(11,13,18,.07), transparent 60%),
+            radial-gradient(420px 260px at 72% 55%, rgba(109,59,210,.14), transparent 68%);"></div>
+          <svg viewBox="0 0 520 280" fill="none">
+            <path d="M60 70 C140 140, 210 50, 280 140 C340 220, 430 140, 500 220" stroke="rgba(11,13,18,.18)" stroke-width="2"/>
+            <path d="M80 210 C160 120, 230 240, 320 150 C390 80, 450 140, 500 90" stroke="rgba(109,59,210,.22)" stroke-width="2"/>
+            <circle cx="140" cy="140" r="4" fill="rgba(11,13,18,.18)"/>
+            <circle cx="280" cy="140" r="4" fill="rgba(109,59,210,.35)"/>
+            <circle cx="500" cy="90" r="4" fill="rgba(109,59,210,.35)"/>
+          </svg>
+        </div>
+        <div class="tallBody">
+          <div class="cTitle">What this isn’t</div>
+          <p class="lead" style="margin:0; font-size:15px;">
+            Not a challenge, not a lifestyle takeover, not constant tracking, and not a system that collapses when your week gets heavy.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS (interactive rail) -->
+<section class="hairTop" id="process">
+  <div class="wrap">
+    <h2 class="h2">Process</h2>
+    <p class="lead">Hover or tap a step. It expands. You see more. That’s the point.</p>
+
+    <div class="railWrap">
+      <div class="rail" id="processRail" role="list" aria-label="Process steps">
+        <div class="pCard" role="listitem" tabindex="0" data-step="1" aria-expanded="true">
+          <div class="pTop">
+            <div class="badge">01</div>
+            <p class="pTitle">Tighten nutrition</p>
+          </div>
+          <p class="pOne">Reduce decision load first. Remove negotiation.</p>
+
+          <div class="pMore">
+            <div>
+              <ul>
+                <li>Simple structure that survives busy days</li>
+                <li>Rules that don’t require obsession</li>
+                <li>Built to prevent nightly drift</li>
+              </ul>
+            </div>
+            <div class="miniPanel" aria-hidden="true">
+              <canvas class="processMini" data-seed="11"></canvas>
+            </div>
           </div>
         </div>
 
-        <div class="step">
-          <div class="chip">02</div>
-          <div>
-            <p class="stepTitle">Short daily training</p>
-            <p class="stepCopy">Repeatable sessions that fit real schedules.</p>
+        <div class="pCard" role="listitem" tabindex="0" data-step="2" aria-expanded="false">
+          <div class="pTop">
+            <div class="badge">02</div>
+            <p class="pTitle">Short daily training</p>
+          </div>
+          <p class="pOne">Repeatable sessions. Low friction. High consistency.</p>
+
+          <div class="pMore">
+            <div>
+              <ul>
+                <li>Sessions that fit real schedules</li>
+                <li>Minimum effective dose approach</li>
+                <li>Consistency over intensity</li>
+              </ul>
+            </div>
+            <div class="miniPanel" aria-hidden="true">
+              <canvas class="processMini" data-seed="22"></canvas>
+            </div>
           </div>
         </div>
 
-        <div class="step">
-          <div class="chip">03</div>
-          <div>
-            <p class="stepTitle">Automatic structure</p>
-            <p class="stepCopy">So it holds under stress.</p>
+        <div class="pCard" role="listitem" tabindex="0" data-step="3" aria-expanded="false">
+          <div class="pTop">
+            <div class="badge">03</div>
+            <p class="pTitle">Lock the structure</p>
+          </div>
+          <p class="pOne">So it holds when stress rises and time collapses.</p>
+
+          <div class="pMore">
+            <div>
+              <ul>
+                <li>Rules that don’t break under travel</li>
+                <li>Missed days don’t cause resets</li>
+                <li>Progress continues under constraints</li>
+              </ul>
+            </div>
+            <div class="miniPanel" aria-hidden="true">
+              <canvas class="processMini" data-seed="33"></canvas>
+            </div>
           </div>
         </div>
       </div>
-
-      <div class="ctaRow" style="margin-top:22px;">
-        <button class="btn btnPrimary" type="button" onclick="location.href='qualify.html'">Begin Qualification</button>
-      </div>
     </div>
-  </section>
 
-  <!-- WHO IT'S FOR -->
-  <section>
-    <div class="sectionHair"></div>
-    <div class="wrap">
-      <h2 class="h2">Who MN8 is for</h2>
-      <p class="lead">Designed for a specific type of life. Not everyone.</p>
+  </div>
+</section>
 
-      <div class="grid2">
-        <div class="card">
-          <div class="miniTitle">Who this is for</div>
-          <p class="small">
-            People who already carry responsibility and don’t have space for complicated health systems.
-            Schedules are full. Days are dense. Progress must happen inside real constraints.
-          </p>
-        </div>
+<!-- OUTCOMES -->
+<section class="hairTop" id="outcomes">
+  <div class="wrap">
+    <h2 class="h2">Outcome over time</h2>
+    <p class="lead">Time spacing is intentional. Early wins appear fast. Control becomes permanent.</p>
 
-        <div class="card">
-          <div class="miniTitle">Who this is not for</div>
-          <p class="small">
-            People who want health to become their main focus, identity, or main project.
-            If you need complexity, constant customization, or time-intensive routines, MN8 will feel too simple — by design.
-          </p>
+    <div class="timeline" id="timeline">
+      <div class="railCol" aria-hidden="true">
+        <div class="railLine"><div class="railFill" id="railFill"></div></div>
+
+        <div class="nodes" id="nodes">
+          <!-- positions reflect time distance -->
+          <div class="node" data-k="30"  style="top:10%;"></div>
+          <div class="node" data-k="120" style="top:28%;"></div>
+          <div class="node" data-k="6m"  style="top:54%;"></div>
+          <div class="node" data-k="12m" style="top:92%;"></div>
         </div>
       </div>
-    </div>
-  </section>
 
-  <!-- FAQ -->
-  <section>
-    <div class="sectionHair"></div>
-    <div class="wrap">
-      <h2 class="h2">FAQ</h2>
-
-      <div class="faq">
-        <details>
-          <summary>What is MN8, really?<span class="chev"></span></summary>
-          <div class="answer">A private system that makes weight control hold inside dense schedules by reducing decision load and building repeatable structure.</div>
-        </details>
-
-        <details>
-          <summary>Is MN8 a workout program?<span class="chev"></span></summary>
-          <div class="answer">No. Training is one component. The system is built to prevent drift under pressure, not to max out workouts.</div>
-        </details>
-
-        <details>
-          <summary>Is MN8 a diet?<span class="chev"></span></summary>
-          <div class="answer">No. It’s a structure that removes daily negotiation so nutrition stays consistent without obsession.</div>
-        </details>
-
-        <details>
-          <summary>How does MN8 fit into a full schedule?<span class="chev"></span></summary>
-          <div class="answer">By minimizing decisions and keeping execution short, repeatable, and anchored to your real constraints.</div>
-        </details>
-
-        <details>
-          <summary>What happens when life gets chaotic?<span class="chev"></span></summary>
-          <div class="answer">The structure is designed to degrade gracefully — so missed days don’t trigger resets and momentum doesn’t collapse.</div>
-        </details>
-
-        <details>
-          <summary>Why is MN8 private?<span class="chev"></span></summary>
-          <div class="answer">Because the system requires buy-in and compliance. Private access filters for people who will actually follow the structure.</div>
-        </details>
-      </div>
-
-      <div class="finalCta" style="margin-top:26px;">
-        <div class="finalInner">
-          <div class="finalTitle">If you’re done “starting over,” begin qualification.</div>
-          <p class="finalCopy">No hype. No lifestyle takeover. A system built for real responsibility.</p>
+      <div class="tItems" id="tItems">
+        <div class="tItem" data-k="30"  style="top:10%;">
+          <p class="tWhen">30 days</p>
+          <p class="tText">Decisions get lighter. Food and training stop taking mental space.</p>
         </div>
-        <div class="ctaRow" style="margin:0; position:relative; z-index:1;">
-          <button class="btn btnPrimary" type="button" onclick="location.href='qualify.html'">Begin Qualification</button>
+
+        <div class="tItem" data-k="120" style="top:28%;">
+          <p class="tWhen">120 days</p>
+          <p class="tText">Missed days stop creating resets. You return to structure without friction.</p>
+        </div>
+
+        <div class="tItem" data-k="6m"  style="top:54%;">
+          <p class="tWhen">6 months</p>
+          <p class="tText">Energy holds longer. The body supports the schedule instead of competing with it.</p>
+        </div>
+
+        <div class="tItem" data-k="12m" style="top:92%;">
+          <p class="tWhen">12 months</p>
+          <p class="tText">Health is no longer a project. Weight is managed without daily attention.</p>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <script>
-    // ===== MN8 Kinetic Field (Stripe-inspired, but premium + restrained) =====
-    (function(){
-      const canvas = document.getElementById('mn8Field');
-      const ctx = canvas.getContext('2d', { alpha: true });
+<!-- FINAL CTA -->
+<section class="hairTop" id="cta">
+  <div class="wrap">
+    <div class="final">
+      <div class="finalInner">
+        <div>
+          <p class="finalTitle">Begin qualification when you’re ready to stop restarting.</p>
+          <p class="finalCopy">One application. Clear acceptance or rejection. No endless back-and-forth.</p>
+        </div>
+        <button class="btn btnPrimary" type="button" id="qualifyBtn2">Begin Qualification</button>
+      </div>
+    </div>
+  </div>
+</section>
 
-      let w = 0, h = 0, dpr = 1;
-      let mouseX = 0.5, mouseY = 0.35;         // normalized
-      let targetMX = mouseX, targetMY = mouseY;
-      let scrollT = 0;
+<script>
+(function(){
+  /* ====== CONFIG ====== */
+  const QUALIFY_URL = "./qualify.html"; // change if needed
 
-      const DOTS = [];
-      const COUNT = 160;                       // keep it premium: not a snowstorm
-      const BASE_SPEED = 0.10;
+  document.getElementById("qualifyBtn").onclick = () => location.href = QUALIFY_URL;
+  document.getElementById("qualifyBtn2").onclick = () => location.href = QUALIFY_URL;
+  document.getElementById("jumpProcess").onclick = () => document.getElementById("process").scrollIntoView({behavior:"smooth"});
+
+  /* =========================================================
+     HERO FIELD — Hybrid: particles + mild parallax + glow
+     (White background friendly. Premium restraint.)
+  ========================================================= */
+  (function heroField(){
+    const canvas = document.getElementById("heroField");
+    const ctx = canvas.getContext("2d", { alpha: true });
+
+    let w=0,h=0,dpr=1;
+    let mx=0.55,my=0.35, tx=mx, ty=my;
+    let scrollT=0;
+
+    const DOTS=[];
+    const COUNT=140;
+
+    function resize(){
+      dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+      const rect = canvas.getBoundingClientRect();
+      w = Math.floor(rect.width);
+      h = Math.floor(rect.height);
+      canvas.width = Math.floor(w*dpr);
+      canvas.height = Math.floor(h*dpr);
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+    }
+
+    function rand(a,b){ return a + Math.random()*(b-a); }
+
+    function seed(){
+      DOTS.length=0;
+      for(let i=0;i<COUNT;i++){
+        const z=Math.random();
+        DOTS.push({
+          x: rand(0,w),
+          y: rand(0,h),
+          r: rand(1.2,2.6) * (0.55 + z),
+          z,
+          vx: rand(-1,1) * (0.18 + z*0.25),
+          vy: rand(-1,1) * (0.08 + z*0.18),
+          p: rand(0, Math.PI*2)
+        });
+      }
+    }
+
+    function move(e){
+      const rect = canvas.getBoundingClientRect();
+      tx = (e.clientX - rect.left) / rect.width;
+      ty = (e.clientY - rect.top) / rect.height;
+      tx = Math.max(0, Math.min(1, tx));
+      ty = Math.max(0, Math.min(1, ty));
+    }
+
+    function onScroll(){ scrollT = (window.scrollY || 0) * 0.0006; }
+
+    function draw(){
+      mx += (tx-mx)*0.06;
+      my += (ty-my)*0.06;
+
+      ctx.clearRect(0,0,w,h);
+
+      // soft purple spot
+      const gx = w*(0.22 + mx*0.18);
+      const gy = h*(0.18 + my*0.14);
+      const g = ctx.createRadialGradient(gx, gy, 0, gx, gy, Math.max(w,h)*0.55);
+      g.addColorStop(0, "rgba(109,59,210,.14)");
+      g.addColorStop(0.45, "rgba(109,59,210,.06)");
+      g.addColorStop(1, "rgba(255,255,255,0)");
+      ctx.fillStyle=g;
+      ctx.fillRect(0,0,w,h);
+
+      for(const d of DOTS){
+        d.x += d.vx;
+        d.y += d.vy;
+
+        if(d.x < -40) d.x = w+40;
+        if(d.x > w+40) d.x = -40;
+        if(d.y < -40) d.y = h+40;
+        if(d.y > h+40) d.y = -40;
+
+        const driftX = (mx-0.5) * (18 + d.z*28);
+        const driftY = (my-0.5) * (10 + d.z*18);
+        const sway = Math.sin(d.p + scrollT*2.0) * (2 + d.z*5);
+
+        const x = d.x + driftX;
+        const y = d.y + driftY + sway;
+
+        // dot
+        ctx.beginPath();
+        ctx.fillStyle = `rgba(109,59,210,${0.18 + d.z*0.28})`;
+        ctx.arc(x, y, d.r, 0, Math.PI*2);
+        ctx.fill();
+
+        // occasional faint line
+        if(d.z > 0.60 && (d.x % 3.3) < 0.18){
+          ctx.strokeStyle = `rgba(109,59,210,${0.05 + d.z*0.06})`;
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(x, y);
+          ctx.lineTo(x + driftX*0.22, y + 22 + d.z*26);
+          ctx.stroke();
+        }
+
+        d.p += 0.004 + d.z*0.006;
+      }
+
+      requestAnimationFrame(draw);
+    }
+
+    window.addEventListener("resize", ()=>{ resize(); seed(); }, {passive:true});
+    window.addEventListener("mousemove", move, {passive:true});
+    window.addEventListener("scroll", onScroll, {passive:true});
+
+    resize(); seed(); draw();
+  })();
+
+  /* =========================================================
+     PROCESS RAIL — hover/tap expands
+  ========================================================= */
+  (function processRail(){
+    const rail = document.getElementById("processRail");
+    const cards = Array.from(rail.querySelectorAll(".pCard"));
+
+    let active = cards.findIndex(c => c.getAttribute("aria-expanded")==="true");
+    if(active < 0) active = 0;
+
+    function setActive(i){
+      active = i;
+      cards.forEach((c, idx) => {
+        const on = idx === active;
+        c.setAttribute("aria-expanded", on ? "true" : "false");
+        c.classList.toggle("dim", !on);
+      });
+    }
+
+    cards.forEach((card, idx) => {
+      card.addEventListener("mouseenter", () => setActive(idx));
+      card.addEventListener("click", () => setActive(idx));
+      card.addEventListener("keydown", (e) => {
+        if(e.key==="Enter" || e.key===" "){ e.preventDefault(); setActive(idx); }
+        if(e.key==="ArrowRight"){ e.preventDefault(); setActive(Math.min(cards.length-1, active+1)); cards[Math.min(cards.length-1, active)].focus(); }
+        if(e.key==="ArrowLeft"){ e.preventDefault(); setActive(Math.max(0, active-1)); cards[Math.max(0, active)].focus(); }
+      });
+    });
+
+    // mini canvases (only run once)
+    function miniCanvas(canvas, seed){
+      const ctx = canvas.getContext("2d", { alpha:true });
+      let w=0,h=0,dpr=1,t=0;
 
       function resize(){
         dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
         const rect = canvas.getBoundingClientRect();
         w = Math.floor(rect.width);
         h = Math.floor(rect.height);
-        canvas.width = Math.floor(w * dpr);
-        canvas.height = Math.floor(h * dpr);
+        canvas.width = Math.floor(w*dpr);
+        canvas.height = Math.floor(h*dpr);
         ctx.setTransform(dpr,0,0,dpr,0,0);
       }
 
-      function rand(min,max){ return min + Math.random()*(max-min); }
-
-      function seed(){
-        DOTS.length = 0;
-        for(let i=0;i<COUNT;i++){
-          const z = Math.random();             // depth 0..1
-          DOTS.push({
-            x: rand(0,w),
-            y: rand(0,h),
-            r: rand(0.8, 2.2) * (0.6 + z),
-            z,
-            vx: rand(-1,1) * (0.25 + z),
-            vy: rand(-1,1) * (0.12 + z),
-            phase: rand(0, Math.PI*2)
-          });
-        }
+      // deterministic-ish rng
+      let s = seed;
+      function rnd(){
+        s = (s * 9301 + 49297) % 233280;
+        return s / 233280;
       }
 
-      function onMove(e){
-        const rect = canvas.getBoundingClientRect();
-        const x = (e.clientX - rect.left) / rect.width;
-        const y = (e.clientY - rect.top) / rect.height;
-        targetMX = Math.max(0, Math.min(1, x));
-        targetMY = Math.max(0, Math.min(1, y));
-      }
-
-      function onTouch(e){
-        if(!e.touches || !e.touches[0]) return;
-        onMove(e.touches[0]);
-      }
-
-      function onScroll(){
-        const y = window.scrollY || 0;
-        scrollT = y * 0.0006;                  // subtle parallax drive
-      }
+      const pts = Array.from({length: 32}).map(()=>({
+        x: rnd()*1,
+        y: rnd()*1,
+        z: rnd()*1
+      }));
 
       function draw(){
-        // ease mouse
-        mouseX += (targetMX - mouseX) * 0.06;
-        mouseY += (targetMY - mouseY) * 0.06;
-
+        t += 0.016;
         ctx.clearRect(0,0,w,h);
 
-        // soft global glow
-        const gx = w*(0.18 + mouseX*0.22);
-        const gy = h*(0.18 + mouseY*0.18);
-        const grad = ctx.createRadialGradient(gx, gy, 0, gx, gy, Math.max(w,h)*0.55);
-        grad.addColorStop(0, 'rgba(109,59,210,.14)');
-        grad.addColorStop(0.55, 'rgba(109,59,210,.05)');
-        grad.addColorStop(1, 'rgba(0,0,0,0)');
-        ctx.fillStyle = grad;
+        // soft mesh
+        const g = ctx.createRadialGradient(w*0.25, h*0.35, 0, w*0.25, h*0.35, Math.max(w,h)*0.8);
+        g.addColorStop(0, "rgba(109,59,210,.20)");
+        g.addColorStop(0.55, "rgba(109,59,210,.06)");
+        g.addColorStop(1, "rgba(255,255,255,0)");
+        ctx.fillStyle = g;
         ctx.fillRect(0,0,w,h);
 
-        // dots + micro-lines (Stripe-ish)
-        for(const p of DOTS){
-          // drift
-          const driftX = (mouseX - 0.5) * (18 + p.z*34);
-          const driftY = (mouseY - 0.5) * (10 + p.z*22);
-          const sway = Math.sin(p.phase + scrollT*2.2) * (2 + p.z*6);
+        // points + connecting arcs
+        for(let i=0;i<pts.length;i++){
+          const p = pts[i];
+          const x = w*(p.x) + Math.sin(t + p.z*6)*6;
+          const y = h*(p.y) + Math.cos(t*0.9 + p.z*6)*4;
 
-          p.x += (p.vx * BASE_SPEED) + (Math.cos(p.phase + scrollT) * 0.05);
-          p.y += (p.vy * BASE_SPEED) + (Math.sin(p.phase*0.7 + scrollT) * 0.03);
-
-          // wrap
-          if(p.x < -40) p.x = w + 40;
-          if(p.x > w + 40) p.x = -40;
-          if(p.y < -40) p.y = h + 40;
-          if(p.y > h + 40) p.y = -40;
-
-          const x = p.x + driftX;
-          const y = p.y + driftY + sway;
-
-          // dot
           ctx.beginPath();
-          ctx.fillStyle = `rgba(109,59,210,${0.25 + p.z*0.45})`;
-          ctx.arc(x, y, p.r, 0, Math.PI*2);
+          ctx.fillStyle = `rgba(109,59,210,${0.16 + p.z*0.22})`;
+          ctx.arc(x,y, 1.6 + p.z*1.5, 0, Math.PI*2);
           ctx.fill();
 
-          // faint line (not every dot)
-          if(p.z > 0.55 && (p.x % 3.2) < 0.22){
-            ctx.strokeStyle = `rgba(109,59,210,${0.07 + p.z*0.10})`;
+          if(i % 6 === 0){
+            ctx.strokeStyle = `rgba(109,59,210,${0.07 + p.z*0.06})`;
             ctx.lineWidth = 1;
             ctx.beginPath();
-            ctx.moveTo(x, y);
-            ctx.lineTo(x + (driftX*0.35), y + 18 + p.z*26);
+            ctx.moveTo(x,y);
+            ctx.quadraticCurveTo(w*0.55, h*0.35, w*(0.85 - p.x*0.3), h*(0.65 - p.y*0.2));
             ctx.stroke();
           }
-
-          p.phase += 0.004 + p.z*0.006;
         }
 
         requestAnimationFrame(draw);
       }
 
-      function init(){
-        resize();
-        seed();
-        draw();
-      }
+      resize(); draw();
+      window.addEventListener("resize", resize, {passive:true});
+    }
 
-      window.addEventListener('resize', () => { resize(); seed(); }, { passive:true });
-      window.addEventListener('mousemove', onMove, { passive:true });
-      window.addEventListener('touchmove', onTouch, { passive:true });
-      window.addEventListener('scroll', onScroll, { passive:true });
+    document.querySelectorAll("canvas.processMini").forEach((c)=>{
+      const seed = parseInt(c.dataset.seed || "10", 10);
+      miniCanvas(c, seed);
+    });
 
-      init();
-    })();
-  </script>
+    setActive(active);
+  })();
+
+  /* =========================================================
+     OUTCOMES TIMELINE — scroll draw + dot activation
+  ========================================================= */
+  (function timeline(){
+    const root = document.getElementById("timeline");
+    const fill = document.getElementById("railFill");
+    const nodes = Array.from(document.querySelectorAll(".node"));
+    const items = Array.from(document.querySelectorAll(".tItem"));
+
+    function update(){
+      const rect = root.getBoundingClientRect();
+      const vh = window.innerHeight || 800;
+
+      // progress of section in viewport (0..1)
+      const start = vh * 0.20;
+      const end = vh * 0.85;
+      const p = (start - rect.top) / (rect.height - (start - end));
+      const prog = Math.max(0, Math.min(1, p));
+
+      fill.style.height = (prog * 100).toFixed(2) + "%";
+
+      // activate nodes when fill passes their top%
+      nodes.forEach(n=>{
+        const top = parseFloat(n.style.top || "0") / 100; // 0..1
+        const on = prog >= top - 0.02;
+        n.classList.toggle("active", on);
+        const key = n.dataset.k;
+        const match = items.find(i=>i.dataset.k===key);
+        if(match) match.classList.toggle("active", on);
+      });
+    }
+
+    window.addEventListener("scroll", update, {passive:true});
+    window.addEventListener("resize", update, {passive:true});
+    update();
+  })();
+
+})();
+</script>
+
 </body>
 </html>
