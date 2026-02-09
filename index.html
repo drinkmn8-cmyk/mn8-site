@@ -27,7 +27,6 @@
     --shadow1: 0 10px 30px rgba(15,18,24,.06);
     --shadow2: 0 18px 60px rgba(109,59,210,.14);
 
-    /* gutter control */
     --gutter: 64px;
     --gutterMobile: 32px;
   }
@@ -44,29 +43,21 @@
     overflow-x:hidden;
   }
 
-  /* ========= Global layout (FIX: wider + better gutters) ========= */
-
-.wrap{
-  width:min(1180px, calc(100% - 24px)); /* tighter sides */
-  margin:0 auto;
-}
-@media (max-width:740px){
-  .wrap{ width:min(1180px, calc(100% - 18px)); }
-}
-
-  /* Hero gets more width (premium) */
-  .hero .wrap{
-    width: min(1400px, calc(100% - var(--gutter)));
+  .wrap{
+    width:min(1180px, calc(100% - 24px));
+    margin:0 auto;
   }
+  @media (max-width:740px){
+    .wrap{ width:min(1180px, calc(100% - 18px)); }
+  }
+
+  .hero .wrap{ width: min(1400px, calc(100% - var(--gutter))); }
   @media (max-width:900px){
     .hero .wrap{ width: calc(100% - var(--gutterMobile)); }
   }
 
-  /* Visual-heavy sections wider */
   #process .wrap,
-  #outcome .wrap{
-    width: min(1360px, calc(100% - var(--gutter)));
-  }
+  #outcome .wrap{ width: min(1360px, calc(100% - var(--gutter))); }
   @media (max-width:900px){
     #process .wrap,
     #outcome .wrap{ width: calc(100% - var(--gutterMobile)); }
@@ -74,7 +65,7 @@
 
   .section{
     padding: 88px 0;
-    border-top: 0; /* NO BORDERS: remove section lines */
+    border-top: 0;
     position:relative;
     z-index:1;
   }
@@ -82,7 +73,7 @@
     .section{ padding: 68px 0; }
   }
 
-  /* ========= Motion background (subtle, premium) ========= */
+  /* Background */
   .bgStage{
     position:fixed;
     inset:-20vh -20vw;
@@ -112,14 +103,14 @@
     to{ transform:translate3d(-140px,-90px,0); }
   }
 
-  /* ========= Top bar ========= */
+  /* Topbar */
   .topbar{
     position:sticky;
     top:0;
     z-index:50;
     backdrop-filter: blur(14px);
     background: rgba(255,255,255,.78);
-    border-bottom: 0; /* NO BORDERS */
+    border-bottom: 0;
   }
   .topbarInner{
     display:flex;
@@ -139,11 +130,7 @@
     width:10px;height:10px;border-radius:99px;background:var(--mn8);
     box-shadow: 0 0 0 6px rgba(109,59,210,.10);
   }
-  .nav{
-    display:flex;
-    gap:18px;
-    align-items:center;
-  }
+  .nav{ display:flex; gap:18px; align-items:center; }
   .nav a{
     color: rgba(11,13,18,.70);
     text-decoration:none;
@@ -151,14 +138,11 @@
     font-size:13px;
     padding:8px 10px;
     border-radius:999px;
-    border:0; /* NO BORDERS */
+    border:0;
     transition: background .15s ease, color .15s ease;
     white-space:nowrap;
   }
-  .nav a:hover{
-    background: rgba(109,59,210,.08);
-    color: rgba(11,13,18,.90);
-  }
+  .nav a:hover{ background: rgba(109,59,210,.08); color: rgba(11,13,18,.90); }
   .navCTA{
     appearance:none;
     border:0;
@@ -173,11 +157,9 @@
   }
   .navCTA:hover{ filter:brightness(1.05); }
   .navCTA:active{ transform: translateY(1px); }
-  @media (max-width:740px){
-    .nav a{ display:none; }
-  }
+  @media (max-width:740px){ .nav a{ display:none; } }
 
-  /* ========= Type ========= */
+  /* Type */
   .kicker{
     margin:0 0 10px;
     font-size:13px;
@@ -214,7 +196,7 @@
     max-width: 70ch;
   }
 
-  /* ========= Buttons ========= */
+  /* Buttons */
   .ctaRow{
     display:flex;
     gap:12px;
@@ -240,7 +222,7 @@
   .btnGhost{
     appearance:none;
     background: rgba(255,255,255,.70);
-    border:0; /* NO BORDERS */
+    border:0;
     color: rgba(11,13,18,.86);
     padding: 14px 18px;
     border-radius:999px;
@@ -252,7 +234,7 @@
   }
   .btnGhost:hover{ background: rgba(109,59,210,.08); }
 
-  /* ========= Hero ========= */
+  /* Hero */
   .hero{
     padding: 68px 0 84px;
     position:relative;
@@ -265,20 +247,17 @@
     align-items:stretch;
     margin-top: 20px;
   }
-  @media (max-width:900px){
-    .heroGrid{ grid-template-columns:1fr; }
-  }
+  @media (max-width:900px){ .heroGrid{ grid-template-columns:1fr; } }
 
   .heroCard{
     border-radius: var(--radiusXL);
-    border:0; /* NO BORDERS */
+    border:0;
     background: rgba(255,255,255,.78);
     box-shadow: var(--shadow1);
     overflow:hidden;
     position:relative;
     min-height: 320px;
   }
-
   .heroViz{
     position:absolute;
     inset:0;
@@ -304,14 +283,9 @@
     justify-content:flex-end;
     gap: 10px;
   }
-  .heroMini{
-    display:flex;
-    gap:10px;
-    flex-wrap:wrap;
-    align-items:center;
-  }
+  .heroMini{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
   .chip{
-    border:0; /* NO BORDERS */
+    border:0;
     background: rgba(255,255,255,.78);
     border-radius: 999px;
     padding: 8px 10px;
@@ -321,20 +295,18 @@
     box-shadow: 0 10px 24px rgba(15,18,24,.05);
   }
 
-  /* ========= Cards ========= */
+  /* Cards */
   .grid2{
     display:grid;
     grid-template-columns: 1fr 1fr;
     gap: 16px;
     margin-top: 22px;
   }
-  @media (max-width:900px){
-    .grid2{ grid-template-columns:1fr; }
-  }
+  @media (max-width:900px){ .grid2{ grid-template-columns:1fr; } }
 
   .card{
     border-radius: var(--radiusXL);
-    border:0; /* NO BORDERS */
+    border:0;
     background: rgba(255,255,255,.92);
     box-shadow: var(--shadow1);
     overflow:hidden;
@@ -349,17 +321,13 @@
     font-weight:900;
     letter-spacing:-.01em;
   }
-  .cardText{
-    margin:0;
-    color: rgba(11,13,18,.70);
-    line-height:1.65;
-  }
+  .cardText{ margin:0; color: rgba(11,13,18,.70); line-height:1.65; }
 
-  /* ========= Process ========= */
+  /* Process */
   .processGrid{ display:grid; gap:16px; margin-top:22px; }
   .processCard{
     background: rgba(255,255,255,.92);
-    border:0; /* NO BORDERS */
+    border:0;
     border-radius: 26px;
     padding: 18px;
     box-shadow: var(--shadow1);
@@ -367,17 +335,14 @@
     transition: transform .18s ease, box-shadow .18s ease;
     cursor:pointer;
   }
-  .processCard.is-active{
-    box-shadow: var(--shadow2);
-    transform: translateY(-2px);
-  }
+  .processCard.is-active{ box-shadow: var(--shadow2); transform: translateY(-2px); }
   .processTop{ display:flex; gap:14px; align-items:flex-start; }
   .stepBadge{
     width:54px;height:54px;border-radius:16px;
     display:flex;align-items:center;justify-content:center;
     font-weight:900;color:var(--ink);
     background: rgba(109,59,210,.10);
-    border:0; /* NO BORDERS */
+    border:0;
     flex:0 0 auto;
   }
   .processTitle{ margin:0; font-size:20px; font-weight:900; letter-spacing:-.01em; }
@@ -386,17 +351,14 @@
   .processViz{
     margin-top:14px;
     border-radius:18px;
-    border:0; /* NO BORDERS */
+    border:0;
     background: linear-gradient(180deg, rgba(109,59,210,.12), rgba(109,59,210,.05));
     overflow:hidden;
     position:relative;
     height: 160px;
   }
-  @media (min-width:900px){
-    .processViz{ height: 175px; }
-  }
+  @media (min-width:900px){ .processViz{ height: 175px; } }
 
-  /* Step 01 “lines merge” */
   .mergeLines{ position:absolute; inset:0; pointer-events:none; }
   .mLine{
     position:absolute;
@@ -427,12 +389,8 @@
     opacity: .95;
     background: rgba(109,59,210,.70);
   }
-  .pStep1.is-active .mLine.is-faint{
-    opacity: .40;
-    width: 62%;
-  }
+  .pStep1.is-active .mLine.is-faint{ opacity: .40; width: 62%; }
 
-  /* Step 03 “dots merge” */
   .mergeDots{ position:absolute; inset:0; pointer-events:none; }
   .mDot{
     position:absolute;
@@ -464,7 +422,6 @@
     box-shadow: 0 0 0 10px rgba(109,59,210,.14);
   }
 
-  /* Step 02 svg */
   .processViz svg{
     position:absolute; inset:0; width:100%; height:100%; display:block;
     opacity:.95;
@@ -474,7 +431,7 @@
 
   .processDetails{
     margin-top:14px;
-    border-top:0; /* NO BORDERS */
+    border-top:0;
     padding-top:14px;
     max-height:0;
     opacity:0;
@@ -492,223 +449,155 @@
   }
   .bullets li{ margin:6px 0; }
 
-  /* ========= Fit section (FIX: remove hard padding + use wrap) ========= */
+  /* Fit section (clean, single definition — no duplicates) */
   .fit-section{
-    padding: 96px 0; /* was 96px 24px */
+    padding: 88px 0;
     background:#fff;
     color:#0b0d12;
+    border-top: 0;
   }
   .fit-section h2{
-    font-size: 40px;
-    font-weight: 900;
-    margin: 0 0 12px;
+    font-size: clamp(30px, 3.2vw, 44px);
+    font-weight:900;
     letter-spacing:-.02em;
+    margin:0 0 10px;
   }
   .fit-sub{
-    font-size: 18px;
-    color: rgba(11,13,18,.65);
-    margin: 0 0 48px;
+    margin:0;
+    font-size:18px;
+    line-height:1.65;
+    color: rgba(11,13,18,.72);
+    max-width: 70ch;
   }
   .fit-grid{
     display:grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 24px; /* slightly tighter */
+    gap:16px;
+    margin-top:22px;
   }
   .fit-card{
-    position:relative;
-    padding: 28px;
-    border-radius: 24px;
-    border:0; /* NO BORDERS */
+    padding: 22px;
+    border-radius: 26px;
+    border: 0;
     background: rgba(255,255,255,.92);
     box-shadow: var(--shadow1);
-    overflow:hidden;
   }
   .fit-card h3{
-    font-size: 18px;
-    margin: 0 0 12px;
-    font-weight: 900;
-    letter-spacing:-.01em;
+    font-size:18px;
+    font-weight:900;
+    margin:0 0 10px;
   }
   .fit-card ul{
-    margin: 0 0 24px;
-    padding-left: 18px;
-    color: rgba(11,13,18,.72);
+    margin:0;
+    padding-left:18px;
+    color: rgba(11,13,18,.70);
+    line-height:1.7;
   }
-  .dots{ position:relative; height: 160px; }
-  .dots span{
-    position:absolute;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: rgba(109,59,210,0.35);
-    transition: transform 1.2s cubic-bezier(.22,.61,.36,1), opacity 0.6s ease;
-  }
-  .entropy-dots span{ opacity:0; }
-  .alignment-dots span{ opacity:0; }
-  .entropy-active span{ opacity:1; }
-  .alignment-active span{ opacity:1; }
-
   @media (max-width:900px){
     .fit-grid{ grid-template-columns:1fr; }
   }
 
-  .fit-section{
-  padding: 88px 0;            /* match your section rhythm */
-  background:#fff;
-  color:#0b0d12;
-  border-top: 1px solid rgba(15,18,24,.06);
-}
-.fit-section h2{
-  font-size: clamp(30px, 3.2vw, 44px);
-  font-weight:900;
-  letter-spacing:-.02em;
-  margin:0 0 10px;
-}
-.fit-sub{
-  margin:0;
-  font-size:18px;
-  line-height:1.65;
-  color: rgba(11,13,18,.72);
-  max-width: 70ch;
-}
-.fit-grid{
-  display:grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap:16px;
-  margin-top:22px;
-}
-.fit-card{
-  padding: 22px;
-  border-radius: 26px;
-  border: 1px solid rgba(15,18,24,.10);
-  background: rgba(255,255,255,.92);
-  box-shadow: var(--shadow1);
-}
-.fit-card h3{
-  font-size:18px;
-  font-weight:900;
-  margin:0 0 10px;
-}
-.fit-card ul{
-  margin:0;
-  padding-left:18px;
-  color: rgba(11,13,18,.70);
-  line-height:1.7;
-}
-@media (max-width:900px){
-  .fit-grid{ grid-template-columns:1fr; }
-}
+  /* =======================
+     OUTCOME (TIME-WEIGHTED)
+     ======================= */
+  #outcome.section{ padding: 120px 0; }
+  @media (max-width:740px){
+    #outcome.section{ padding: 96px 0; }
+  }
 
-  /* ===== Outcome (FIXED: rail anchored to first/last dot + dots centered) ===== */
-#outcome.section{
-  padding: 120px 0;
-}
-@media (max-width:740px){
-  #outcome.section{ padding: 96px 0; }
-}
-
-/* Big enough so user must scroll */
-.outcomeTrack{
-  position:relative;                 /* CRITICAL */
-  min-height: 780px;
-  padding-left: 48px;
-  padding-top: 18px;                 /* breathing room under subtext */
-  padding-bottom: 220px;             /* forces scroll */
-}
-@media (max-width:740px){
+  /* Track is a "stage" (absolute-positioned items) */
   .outcomeTrack{
-    min-height: 820px;
-    padding-left: 44px;
-    padding-bottom: 260px;
+    position:relative;
+    margin-top: 26px;
+    padding-left: 56px;         /* space for rail + dot */
+    padding-top: 28px;          /* IMPORTANT: rail starts after subtext */
+    height: 780px;              /* BIG + forces scroll */
   }
-}
+  @media (max-width:740px){
+    .outcomeTrack{
+      padding-left: 52px;
+      padding-top: 26px;
+      height: 820px;
+    }
+  }
 
-/* Rail container positioned by JS */
-.outcomeRail{
-  position:absolute;
-  left: 14px;                        /* rail x */
-  width: 3px;
-  border-radius: 999px;
-  overflow:hidden;
-}
-.outcomeRailBg{
-  position:absolute; inset:0;
-  background: rgba(15,18,24,.14);
-}
-.outcomeRailFill{
-  position:absolute; left:0; top:0; right:0;
-  height: 0;
-  background: rgba(109,59,210,.95);
-}
+  /* Rail */
+  .outcomeRail{
+    position:absolute;
+    left: 18px;
+    top: var(--railTop, 120px);
+    height: var(--railH, 520px);
+    width: 3px;
+    border-radius:999px;
+    overflow:hidden;
+    pointer-events:none;
+  }
+  .outcomeRailBg{ position:absolute; inset:0; background: rgba(15,18,24,.14); }
+  .outcomeRailFill{
+    position:absolute; left:0; top:0; right:0;
+    height: calc(var(--p, 0) * 1px);
+    background: rgba(109,59,210,.95);
+  }
 
-/* rows */
-.oItem{
-  position:relative;
-  display:grid;
-  grid-template-columns: 110px 1fr;
-  gap: 18px;
-  padding: 22px 0;
-  align-items:start;
-}
-
-/* dot centered ON rail */
-.oDot{
-  position:absolute;
-  left: 14px;                        /* same as rail x */
-  top: 32px;
-  transform: translateX(-50%);       /* centers on the 3px rail */
-  width: 14px;
-  height: 14px;
-  border-radius: 999px;
-  background:#fff;
-  border: 2px solid rgba(15,18,24,.18);
-}
-
-/* default dim */
-.oTime,
-.oCopy{
-  color: rgba(11,13,18,.38);
-  transition: color .22s ease;
-}
-
-/* active */
-.oItem.is-on .oTime{ color: rgba(11,13,18,.92); }
-.oItem.is-on .oCopy{ color: rgba(11,13,18,.72); }
-.oItem.is-on .oDot{
-  border-color: rgba(109,59,210,.95);
-  box-shadow: 0 0 0 10px rgba(109,59,210,.14);
-}
-
-@media (max-width:740px){
+  /* Items positioned by data-pos (0..1) */
   .oItem{
-    grid-template-columns: 96px 1fr;
-    gap: 14px;
-    padding: 20px 0;
+    position:absolute;
+    left: 0;
+    right: 0;
+    top: calc(var(--pos, .1) * 100%);
+    transform: translateY(-50%);
+    display:grid;
+    grid-template-columns: 110px 1fr;
+    gap: 18px;
+    align-items:start;
+    padding: 0;
   }
-  .oDot{ top: 30px; }
-}
+  @media (max-width:740px){
+    .oItem{ grid-template-columns: 96px 1fr; gap: 14px; }
+  }
 
+  /* Dot centered ON rail */
+  .oDot{
+    position:absolute;
+    left: 18px;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    width: 14px;
+    height: 14px;
+    border-radius: 999px;
+    background:#fff;
+    border: 2px solid rgba(15,18,24,.18);
+  }
 
+  /* Default dim */
+  .oTime, .oCopy{
+    color: rgba(11,13,18,.38);
+    transition: color .22s ease;
+  }
 
+  /* Active */
+  .oItem.is-on .oTime{ color: rgba(11,13,18,.92); }
+  .oItem.is-on .oCopy{ color: rgba(11,13,18,.72); }
+  .oItem.is-on .oDot{
+    border-color: rgba(109,59,210,.95);
+    box-shadow: 0 0 0 10px rgba(109,59,210,.14);
+  }
 
   /* reduced motion */
   @media (prefers-reduced-motion: reduce){
     .particles{ animation:none; }
-    .heroViz svg, .processViz svg, .finalGlow{ transition:none; }
+    .heroViz svg, .processViz svg{ transition:none; }
     .card, .processCard{ transition:none; }
     .mLine, .mDot{ transition:none; }
   }
-
 </style>
 </head>
 
 <body>
-  <!-- Motion background -->
   <div class="bgStage" id="bgStage" aria-hidden="true">
     <div class="particles"></div>
   </div>
 
-  <!-- Topbar -->
   <header class="topbar">
     <div class="wrap">
       <div class="topbarInner">
@@ -728,7 +617,6 @@
     </div>
   </header>
 
-  <!-- HERO -->
   <main class="hero">
     <div class="wrap">
       <p class="kicker">Private access • Qualification required</p>
@@ -798,38 +686,35 @@
     </div>
   </main>
 
-<!-- PROBLEM -->
-<section class="fit-section" id="problem">
-  <div class="wrap">
-    <h2>Why the old approach stopped working</h2>
-    <p class="fit-sub">Your life changed. The system didn’t.</p>
+  <section class="fit-section" id="problem">
+    <div class="wrap">
+      <h2>Why the old approach stopped working</h2>
+      <p class="fit-sub">Your life changed. The system didn’t.</p>
 
-    <div class="fit-grid">
-      <div class="fit-card">
-        <h3>Why it doesn’t work</h3>
-        <ul>
-          <li>Schedule density kills prep</li>
-          <li>Decision fatigue stacks daily</li>
-          <li>Stress breaks routines</li>
-          <li>Missed days trigger resets</li>
-        </ul>
-      </div>
+      <div class="fit-grid">
+        <div class="fit-card">
+          <h3>Why it doesn’t work</h3>
+          <ul>
+            <li>Schedule density kills prep</li>
+            <li>Decision fatigue stacks daily</li>
+            <li>Stress breaks routines</li>
+            <li>Missed days trigger resets</li>
+          </ul>
+        </div>
 
-      <div class="fit-card">
-        <h3>Why MN8 fits</h3>
-        <ul>
-          <li>Structure survives pressure</li>
-          <li>Rules don’t require obsession</li>
-          <li>Missed days don’t collapse progress</li>
-          <li>Control holds inside real life</li>
-        </ul>
+        <div class="fit-card">
+          <h3>Why MN8 fits</h3>
+          <ul>
+            <li>Structure survives pressure</li>
+            <li>Rules don’t require obsession</li>
+            <li>Missed days don’t collapse progress</li>
+            <li>Control holds inside real life</li>
+          </ul>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-
-  <!-- DEFINITION (graphics removed) -->
   <section id="definition" class="section">
     <div class="wrap">
       <h2 class="h2">What this is — and what it isn’t</h2>
@@ -853,14 +738,12 @@
     </div>
   </section>
 
-  <!-- PROCESS (updated visuals: Step1 lines merge, Step2 unchanged, Step3 dots merge) -->
   <section id="process" class="section">
     <div class="wrap">
       <h2 class="h2">Process</h2>
       <p class="sub">Hover or tap a step. It expands. You see more. That’s the point.</p>
 
       <div class="processGrid">
-        <!-- 01 -->
         <article class="processCard is-active pStep1" data-process tabindex="0">
           <div class="processTop">
             <div class="stepBadge">01</div>
@@ -872,7 +755,6 @@
 
           <div class="processViz" aria-hidden="true">
             <div class="mergeLines">
-              <!-- scattered lines that collapse into ONE line when active -->
               <span class="mLine" style="--x:18;--y:28;--w:22;--r:-14"></span>
               <span class="mLine is-faint" style="--x:28;--y:44;--w:18;--r:10"></span>
               <span class="mLine" style="--x:35;--y:62;--w:26;--r:-8"></span>
@@ -897,7 +779,6 @@
           </div>
         </article>
 
-        <!-- 02 -->
         <article class="processCard" data-process tabindex="0">
           <div class="processTop">
             <div class="stepBadge">02</div>
@@ -908,7 +789,6 @@
           </div>
 
           <div class="processViz" data-parallax3 aria-hidden="true">
-            <!-- keep step 02 (good) -->
             <svg viewBox="0 0 1200 520" preserveAspectRatio="none">
               <path d="M80,420 L210,260 L320,360 L460,190 L600,310 L760,140 L920,240 L1120,120"
                     fill="none" stroke="rgba(109,59,210,.62)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
@@ -931,7 +811,6 @@
           </div>
         </article>
 
-        <!-- 03 -->
         <article class="processCard pStep3" data-process tabindex="0">
           <div class="processTop">
             <div class="stepBadge">03</div>
@@ -943,7 +822,6 @@
 
           <div class="processViz" aria-hidden="true">
             <div class="mergeDots">
-              <!-- dots that merge into ONE dot when active -->
               <span class="mDot" style="--x:14;--y:26"></span>
               <span class="mDot" style="--x:22;--y:48"></span>
               <span class="mDot" style="--x:28;--y:72"></span>
@@ -983,41 +861,46 @@
     </div>
   </section>
 
- <!-- OUTCOME -->
-<section id="outcome" class="section">
-<div class="outcomeTrack" id="outcomeTrack">
-  <div class="outcomeRail" id="outcomeRail" aria-hidden="true">
-    <div class="outcomeRailBg"></div>
-    <div class="outcomeRailFill" id="outcomeRailFill"></div>
-  </div>
+  <!-- OUTCOME (fixed) -->
+  <section id="outcome" class="section">
+    <div class="wrap">
+      <h2 class="h2">Outcome over time</h2>
+      <p class="sub">Time spacing is intentional. Early wins appear fast. Control becomes permanent.</p>
 
-  <div class="oItem">
-    <span class="oDot"></span>
-    <div class="oTime">30 days</div>
-    <div class="oCopy">Decisions get lighter. Food and training stop taking mental space.</div>
-  </div>
+      <div class="outcomeTrack" id="outcomeTrack">
+        <div class="outcomeRail" id="outcomeRail" aria-hidden="true">
+          <div class="outcomeRailBg"></div>
+          <div class="outcomeRailFill" id="outcomeRailFill"></div>
+        </div>
 
-  <div class="oItem">
-    <span class="oDot"></span>
-    <div class="oTime">120 days</div>
-    <div class="oCopy">Missed days stop creating resets. You return to structure without friction.</div>
-  </div>
+        <!-- TIME-WEIGHTED POSITIONS (0..1) -->
+        <div class="oItem" data-pos="0.08">
+          <span class="oDot"></span>
+          <div class="oTime">30 days</div>
+          <div class="oCopy">Decisions get lighter. Food and training stop taking mental space.</div>
+        </div>
 
-  <div class="oItem">
-    <span class="oDot"></span>
-    <div class="oTime">6 months</div>
-    <div class="oCopy">Energy holds longer. The body supports the schedule instead of competing with it.</div>
-  </div>
+        <div class="oItem" data-pos="0.22">
+          <span class="oDot"></span>
+          <div class="oTime">120 days</div>
+          <div class="oCopy">Missed days stop creating resets. You return to structure without friction.</div>
+        </div>
 
-  <div class="oItem">
-    <span class="oDot"></span>
-    <div class="oTime">12 months</div>
-    <div class="oCopy">Health is no longer a project. Weight is managed without daily attention.</div>
-  </div>
-</div>
-</section>
+        <div class="oItem" data-pos="0.55">
+          <span class="oDot"></span>
+          <div class="oTime">6 months</div>
+          <div class="oCopy">Energy holds longer. The body supports the schedule instead of competing with it.</div>
+        </div>
 
-  <!-- INTEGRITY GUARANTEE -->
+        <div class="oItem" data-pos="0.98">
+          <span class="oDot"></span>
+          <div class="oTime">12 months</div>
+          <div class="oCopy">Health is no longer a project. Weight is managed without daily attention.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="section">
     <div class="wrap">
       <h2 class="h2">Integrity guarantee</h2>
@@ -1027,11 +910,9 @@
     </div>
   </section>
 
-  <!-- FINAL CTA -->
   <footer class="final">
     <div class="wrap">
       <div class="finalCard" data-parallax4>
-        <div class="finalGlow" aria-hidden="true"></div>
         <h2 class="h2" style="margin-bottom:12px;">Private access. Built for real responsibility.</h2>
         <p class="sub" style="max-width:68ch;">If you want weight control that fits inside your life — start here.</p>
         <div class="ctaRow">
@@ -1043,239 +924,189 @@
   </footer>
 
 <script>
-  (function(){
-    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+(function(){
+  const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const QUALIFY_URL = "qualify.html";
 
-    // ====== Config ======
-    const QUALIFY_URL = "qualify.html";
+  // CTA routing
+  document.querySelectorAll("[data-qualify]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{ window.location.href = QUALIFY_URL; });
+  });
 
-    // ====== CTA routing ======
-    document.querySelectorAll("[data-qualify]").forEach(btn=>{
-      btn.addEventListener("click", ()=>{ window.location.href = QUALIFY_URL; });
+  // Smooth scroll
+  function scrollToId(id){
+    const el = document.querySelector(id);
+    if(!el) return;
+    el.scrollIntoView({behavior: prefersReduced ? "auto" : "smooth", block:"start"});
+  }
+  document.querySelectorAll("[data-scroll]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const target = btn.getAttribute("data-scroll");
+      if(target) scrollToId(target);
     });
-
-    // ====== Smooth scroll ======
-    function scrollToId(id){
-      const el = document.querySelector(id);
+  });
+  document.querySelectorAll('a[href^="#"]').forEach(a=>{
+    a.addEventListener("click", (e)=>{
+      const href = a.getAttribute("href");
+      if(!href || href.length < 2) return;
+      const el = document.querySelector(href);
       if(!el) return;
-      el.scrollIntoView({behavior: prefersReduced ? "auto" : "smooth", block:"start"});
+      e.preventDefault();
+      scrollToId(href);
+    });
+  });
+
+  // Process expand
+  const processCards = Array.from(document.querySelectorAll("[data-process]"));
+  if(processCards.length){
+    function activate(card){
+      processCards.forEach(c => c.classList.toggle("is-active", c === card));
     }
-    document.querySelectorAll("[data-scroll]").forEach(btn=>{
-      btn.addEventListener("click", ()=>{
-        const target = btn.getAttribute("data-scroll");
-        if(target) scrollToId(target);
-      });
-    });
-    document.querySelectorAll('a[href^="#"]').forEach(a=>{
-      a.addEventListener("click", (e)=>{
-        const href = a.getAttribute("href");
-        if(!href || href.length < 2) return;
-        const el = document.querySelector(href);
-        if(!el) return;
-        e.preventDefault();
-        scrollToId(href);
-      });
-    });
-
-    // ====== Fit section dots (safe) ======
-    const entropy = document.querySelector('.entropy-dots');
-    const alignment = document.querySelector('.alignment-dots');
-    const DOT_COUNT = 42;
-
-    function createDots(container, mode) {
-      for (let i = 0; i < DOT_COUNT; i++) {
-        const dot = document.createElement('span');
-
-        if (mode === 'entropy') {
-          dot.style.left = Math.random() * 100 + '%';
-          dot.style.top = Math.random() * 100 + '%';
+    processCards.forEach(card=>{
+      card.addEventListener("click", ()=>activate(card));
+      card.addEventListener("keydown", (e)=>{
+        if(e.key === "Enter" || e.key === " "){
+          e.preventDefault();
+          activate(card);
         }
-
-        if (mode === 'alignment') {
-          const cols = 7;
-          const row = Math.floor(i / cols);
-          const col = i % cols;
-          dot.style.left = `${col * 14 + 10}%`;
-          dot.style.top = `${row * 18 + 10}%`;
-        }
-
-        container.appendChild(dot);
-      }
-    }
-
-    if(entropy && alignment){
-      createDots(entropy, 'entropy');
-      createDots(alignment, 'alignment');
-
-      let played = false;
-      const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting && !played) {
-            played = true;
-            entropy.classList.add('entropy-active');
-            setTimeout(() => alignment.classList.add('alignment-active'), 900);
-          }
-        });
-      }, { threshold: 0.4 });
-
-      const fitSection = document.querySelector('.fit-section');
-      if(fitSection) observer.observe(fitSection);
-    }
-
-    // ====== Process expand ======
-    const processCards = Array.from(document.querySelectorAll("[data-process]"));
-    if(processCards.length){
-      function activate(card){
-        processCards.forEach(c => c.classList.toggle("is-active", c === card));
-      }
-      processCards.forEach(card=>{
-        card.addEventListener("click", ()=>activate(card));
-        card.addEventListener("keydown", (e)=>{
-          if(e.key === "Enter" || e.key === " "){
-            e.preventDefault();
-            activate(card);
-          }
-        });
       });
-
-      const isFinePointer = matchMedia("(hover:hover) and (pointer:fine)").matches;
-      if(isFinePointer && !prefersReduced){
-        processCards.forEach(card => card.addEventListener("mouseenter", ()=>activate(card)));
-      }
-    }
-
-    // ===== Outcome timeline (FIXED: correct closures + reliable scroll mapping) =====
-(function initOutcomeTimeline(){
-  const section = document.getElementById("outcome");
-  const track = document.getElementById("outcomeTrack");
-  const rail = document.getElementById("outcomeRail");
-  const fill = document.getElementById("outcomeRailFill");
-  if(!section || !track || !rail || !fill) return;
-
-  const items = Array.from(track.querySelectorAll(".oItem"));
-  const dots = items.map(i => i.querySelector(".oDot")).filter(Boolean);
-  const clamp = (n,min,max)=> Math.max(min, Math.min(max, n));
-
-  function layoutRail(){
-    const tr = track.getBoundingClientRect();
-    const first = dots[0].getBoundingClientRect();
-    const last  = dots[dots.length - 1].getBoundingClientRect();
-
-    // centers relative to track
-    const startY = (first.top + first.height/2) - tr.top;
-    const endY   = (last.top  + last.height/2)  - tr.top;
-
-    rail.style.top = startY + "px";
-    rail.style.height = Math.max(0, endY - startY) + "px";
-    fill.style.height = "0px";
-  }
-
-  function update(){
-    const tr = track.getBoundingClientRect();
-    const railTop = parseFloat(rail.style.top || "0");
-    const railH = parseFloat(rail.style.height || "0");
-    if(!railH) return;
-
-    // viewport anchor (feels right on mobile)
-    const anchorY = window.innerHeight * 0.58;
-    const y = anchorY - tr.top;
-
-    const p = clamp((y - railTop) / railH, 0, 1);
-    const reachedY = railTop + p * railH;
-
-    fill.style.height = (p * railH) + "px";
-
-    items.forEach((item, idx) => {
-      const d = dots[idx].getBoundingClientRect();
-      const dotCenter = (d.top + d.height/2) - tr.top;
-      item.classList.toggle("is-on", dotCenter <= reachedY + 1);
     });
+
+    const isFinePointer = matchMedia("(hover:hover) and (pointer:fine)").matches;
+    if(isFinePointer && !prefersReduced){
+      processCards.forEach(card => card.addEventListener("mouseenter", ()=>activate(card)));
+    }
   }
 
-  let raf = null;
-  function tick(){
-    if(raf) return;
-    raf = requestAnimationFrame(()=>{ raf=null; update(); });
-  }
+  // OUTCOME timeline (rail + fill + activation)
+  (function initOutcome(){
+    const section = document.getElementById("outcome");
+    const track   = document.getElementById("outcomeTrack");
+    const rail    = document.getElementById("outcomeRail");
+    const fill    = document.getElementById("outcomeRailFill");
+    if(!section || !track || !rail || !fill) return;
 
-  function refresh(){
-    layoutRail();
-    update();
-  }
+    const items = Array.from(track.querySelectorAll(".oItem"));
 
-  window.addEventListener("scroll", tick, { passive:true });
-  window.addEventListener("resize", refresh);
-  window.addEventListener("load", refresh);
+    // Apply positions (time-weighted)
+    items.forEach(it=>{
+      const pos = Math.max(0, Math.min(1, parseFloat(it.getAttribute("data-pos") || "0")));
+      it.style.setProperty("--pos", pos.toFixed(4));
+    });
 
-  // initial
-  setTimeout(refresh, 50);
-  setTimeout(refresh, 250);
+    // Rail geometry in px, inside track
+    function layoutRail(){
+      const topPad = 28;                 // matches .outcomeTrack padding-top
+      const bottomPad = 26;
+      const H = track.clientHeight;
 
-  if(prefersReduced){
-    refresh();
-    fill.style.height = rail.style.height;
-    items.forEach(i => i.classList.add("is-on"));
-  }
+      const railTop = topPad + (H - topPad - bottomPad) * 0.08;
+      const railBot = topPad + (H - topPad - bottomPad) * 0.98;
 
-    // ====== Parallax + pointer-follow glow ======
-    const bg = document.getElementById("bgStage");
-    const heroPar = document.querySelector("[data-parallax]");
-    const par3 = Array.from(document.querySelectorAll("[data-parallax3]"));
-    const final = document.querySelector("[data-parallax4]");
-
-    function setVars(mx, my){
-      if(bg){
-        bg.style.setProperty("--mx", (mx*100).toFixed(2) + "%");
-        bg.style.setProperty("--my", (my*100).toFixed(2) + "%");
-      }
-      if(prefersReduced) return;
-
-      const ox = (mx - .5) * 16;
-      const oy = (my - .5) * 12;
-
-      if(heroPar){
-        heroPar.style.setProperty("--px", (ox*1.2).toFixed(2) + "px");
-        heroPar.style.setProperty("--py", (oy*1.2).toFixed(2) + "px");
-      }
-      par3.forEach(el=>{
-        el.style.setProperty("--px3", (ox*0.9).toFixed(2) + "px");
-        el.style.setProperty("--py3", (oy*0.9).toFixed(2) + "px");
-      });
-      if(final){
-        const gx = (mx - .5) * 24;
-        const gy = (my - .5) * 18;
-        final.style.setProperty("--gx", gx.toFixed(2) + "px");
-        final.style.setProperty("--gy", gy.toFixed(2) + "px");
-      }
+      track.style.setProperty("--railTop", railTop.toFixed(2) + "px");
+      track.style.setProperty("--railH", Math.max(1, railBot - railTop).toFixed(2) + "px");
     }
 
-    if(!prefersReduced){
-      window.addEventListener("pointermove", (e)=>{
-        setVars(e.clientX / window.innerWidth, e.clientY / window.innerHeight);
-      }, {passive:true});
-    } else {
-      setVars(.6,.3);
+    const clamp = (n,min,max)=> Math.max(min, Math.min(max, n));
+
+    function update(){
+      const r = section.getBoundingClientRect();
+      const vh = window.innerHeight || document.documentElement.clientHeight;
+
+      // Progress through the section
+      const start = r.top - vh * 0.20;
+      const end   = r.bottom - vh * 0.55;
+      const p01 = clamp((0 - start) / (end - start), 0, 1);
+
+      const railTop = parseFloat(getComputedStyle(track).getPropertyValue("--railTop")) || 0;
+      const railH   = parseFloat(getComputedStyle(track).getPropertyValue("--railH")) || 1;
+
+      fill.style.height = (p01 * railH) + "px";
+
+      // Activate items based on pos
+      items.forEach(it=>{
+        const pos = parseFloat(it.getAttribute("data-pos") || "0");
+        it.classList.toggle("is-on", p01 >= pos);
+      });
     }
 
-    // ====== Card tilt ======
-    const tiltCards = Array.from(document.querySelectorAll("[data-tilt]"));
-    const isFine = matchMedia("(hover:hover) and (pointer:fine)").matches;
-    if(isFine && !prefersReduced){
-      tiltCards.forEach(card=>{
-        card.addEventListener("mousemove", (e)=>{
-          const r = card.getBoundingClientRect();
-          const x = (e.clientX - r.left) / r.width;
-          const y = (e.clientY - r.top) / r.height;
-          const rx = (0.5 - y) * 6;
-          const ry = (x - 0.5) * 8;
-          card.style.transform = `perspective(900px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`;
-        });
-        card.addEventListener("mouseleave", ()=>{
-          card.style.transform = "perspective(900px) rotateX(0deg) rotateY(0deg)";
-        });
-      });
+    let raf=null;
+    function onScroll(){
+      if(raf) return;
+      raf = requestAnimationFrame(()=>{ raf=null; update(); });
+    }
+
+    function refresh(){
+      layoutRail();
+      update();
+    }
+
+    window.addEventListener("scroll", onScroll, {passive:true});
+    window.addEventListener("resize", refresh);
+
+    // initial
+    setTimeout(refresh, 30);
+    setTimeout(refresh, 250);
+
+    if(prefersReduced){
+      refresh();
+      fill.style.height = (parseFloat(getComputedStyle(track).getPropertyValue("--railH")) || 1) + "px";
+      items.forEach(it=> it.classList.add("is-on"));
     }
   })();
+
+  // Pointer-follow background / parallax
+  const bg = document.getElementById("bgStage");
+  const heroPar = document.querySelector("[data-parallax]");
+  const par3 = Array.from(document.querySelectorAll("[data-parallax3]"));
+
+  function setVars(mx, my){
+    if(bg){
+      bg.style.setProperty("--mx", (mx*100).toFixed(2) + "%");
+      bg.style.setProperty("--my", (my*100).toFixed(2) + "%");
+    }
+    if(prefersReduced) return;
+
+    const ox = (mx - .5) * 16;
+    const oy = (my - .5) * 12;
+
+    if(heroPar){
+      heroPar.style.setProperty("--px", (ox*1.2).toFixed(2) + "px");
+      heroPar.style.setProperty("--py", (oy*1.2).toFixed(2) + "px");
+    }
+    par3.forEach(el=>{
+      el.style.setProperty("--px3", (ox*0.9).toFixed(2) + "px");
+      el.style.setProperty("--py3", (oy*0.9).toFixed(2) + "px");
+    });
+  }
+
+  if(!prefersReduced){
+    window.addEventListener("pointermove", (e)=>{
+      setVars(e.clientX / window.innerWidth, e.clientY / window.innerHeight);
+    }, {passive:true});
+  } else {
+    setVars(.6,.3);
+  }
+
+  // Card tilt
+  const tiltCards = Array.from(document.querySelectorAll("[data-tilt]"));
+  const isFine = matchMedia("(hover:hover) and (pointer:fine)").matches;
+  if(isFine && !prefersReduced){
+    tiltCards.forEach(card=>{
+      card.addEventListener("mousemove", (e)=>{
+        const r = card.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width;
+        const y = (e.clientY - r.top) / r.height;
+        const rx = (0.5 - y) * 6;
+        const ry = (x - 0.5) * 8;
+        card.style.transform = `perspective(900px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`;
+      });
+      card.addEventListener("mouseleave", ()=>{
+        card.style.transform = "perspective(900px) rotateX(0deg) rotateY(0deg)";
+      });
+    });
+  }
+})();
 </script>
 </body>
 </html>
