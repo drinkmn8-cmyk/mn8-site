@@ -598,46 +598,50 @@
 @media (max-width:900px){
   .fit-grid{ grid-template-columns:1fr; }
 }
-/* ===== Outcome: make it BIGGER + bar always visible ===== */
+
+  /* ===== Outcome (FIXED: rail anchored to first/last dot + dots centered) ===== */
 #outcome.section{
-  padding: 120px 0; /* bigger section */
+  padding: 120px 0;
 }
 @media (max-width:740px){
   #outcome.section{ padding: 96px 0; }
 }
 
+/* Big enough so user must scroll */
 .outcomeTrack{
-  min-height: 720px;
-  padding-left: 34px; /* gives the bar + dots more breathing room */
+  position:relative;                 /* CRITICAL */
+  min-height: 780px;
+  padding-left: 48px;
+  padding-top: 18px;                 /* breathing room under subtext */
+  padding-bottom: 220px;             /* forces scroll */
 }
 @media (max-width:740px){
-  .outcomeTrack{ min-height: 760px; }
+  .outcomeTrack{
+    min-height: 820px;
+    padding-left: 44px;
+    padding-bottom: 260px;
+  }
 }
 
-/* base bar (grey) */
-.outcomeTrack:before{
-  content:"";
+/* Rail container positioned by JS */
+.outcomeRail{
   position:absolute;
-  left: 10px;
-  top: 10px;
-  bottom: 10px;
+  left: 14px;                        /* rail x */
   width: 3px;
+  border-radius: 999px;
+  overflow:hidden;
+}
+.outcomeRailBg{
+  position:absolute; inset:0;
   background: rgba(15,18,24,.14);
-  border-radius: 999px;
 }
-
-/* progress bar (purple) */
-.outcomeProgress{
-  position:absolute;
-  left: 10px;
-  top: 10px;
-  width: 3px;
-  height: calc((100% - 20px) * var(--p));
+.outcomeRailFill{
+  position:absolute; left:0; top:0; right:0;
+  height: 0;
   background: rgba(109,59,210,.95);
-  border-radius: 999px;
 }
 
-/* timeline rows */
+/* rows */
 .oItem{
   position:relative;
   display:grid;
@@ -647,39 +651,33 @@
   align-items:start;
 }
 
-/* dots */
+/* dot centered ON rail */
 .oDot{
   position:absolute;
-  left: -28px;
+  left: 14px;                        /* same as rail x */
   top: 32px;
+  transform: translateX(-50%);       /* centers on the 3px rail */
   width: 14px;
   height: 14px;
   border-radius: 999px;
-  background: #fff;
+  background:#fff;
   border: 2px solid rgba(15,18,24,.18);
 }
 
-/* DEFAULT (inactive): text greyed */
+/* default dim */
 .oTime,
 .oCopy{
   color: rgba(11,13,18,.38);
   transition: color .22s ease;
 }
 
-/* ACTIVE: text goes black + dot glows */
-.oItem.is-on .oTime{
-  color: rgba(11,13,18,.92);
-}
-.oItem.is-on .oCopy{
-  color: rgba(11,13,18,.72);
-}
+/* active */
+.oItem.is-on .oTime{ color: rgba(11,13,18,.92); }
+.oItem.is-on .oCopy{ color: rgba(11,13,18,.72); }
 .oItem.is-on .oDot{
   border-color: rgba(109,59,210,.95);
   box-shadow: 0 0 0 10px rgba(109,59,210,.14);
 }
-
-/* optional: make first active feel even stronger */
-.oItem.is-on:first-child .oCopy{ color: rgba(11,13,18,.76); }
 
 @media (max-width:740px){
   .oItem{
@@ -689,6 +687,7 @@
   }
   .oDot{ top: 30px; }
 }
+
 
 
 
@@ -986,38 +985,36 @@
 
  <!-- OUTCOME -->
 <section id="outcome" class="section">
-  <div class="wrap">
-    <h2 class="h2">Outcome over time</h2>
-    <p class="sub">Time spacing is intentional. Early wins appear fast. Control becomes permanent.</p>
-
-    <div class="outcomeTrack" id="outcomeTrack">
-      <div class="outcomeProgress" id="outcomeProgress" aria-hidden="true"></div>
-
-      <div class="oItem" data-o="0.08">
-        <span class="oDot"></span>
-        <div class="oTime">30 days</div>
-        <div class="oCopy">Decisions get lighter. Food and training stop taking mental space.</div>
-      </div>
-
-      <div class="oItem" data-o="0.22">
-        <span class="oDot"></span>
-        <div class="oTime">120 days</div>
-        <div class="oCopy">Missed days stop creating resets. You return to structure without friction.</div>
-      </div>
-
-      <div class="oItem" data-o="0.55">
-        <span class="oDot"></span>
-        <div class="oTime">6 months</div>
-        <div class="oCopy">Energy holds longer. The body supports the schedule instead of competing with it.</div>
-      </div>
-
-      <div class="oItem" data-o="0.98">
-        <span class="oDot"></span>
-        <div class="oTime">12 months</div>
-        <div class="oCopy">Health is no longer a project. Weight is managed without daily attention.</div>
-      </div>
-    </div>
+<div class="outcomeTrack" id="outcomeTrack">
+  <div class="outcomeRail" id="outcomeRail" aria-hidden="true">
+    <div class="outcomeRailBg"></div>
+    <div class="outcomeRailFill" id="outcomeRailFill"></div>
   </div>
+
+  <div class="oItem">
+    <span class="oDot"></span>
+    <div class="oTime">30 days</div>
+    <div class="oCopy">Decisions get lighter. Food and training stop taking mental space.</div>
+  </div>
+
+  <div class="oItem">
+    <span class="oDot"></span>
+    <div class="oTime">120 days</div>
+    <div class="oCopy">Missed days stop creating resets. You return to structure without friction.</div>
+  </div>
+
+  <div class="oItem">
+    <span class="oDot"></span>
+    <div class="oTime">6 months</div>
+    <div class="oCopy">Energy holds longer. The body supports the schedule instead of competing with it.</div>
+  </div>
+
+  <div class="oItem">
+    <span class="oDot"></span>
+    <div class="oTime">12 months</div>
+    <div class="oCopy">Health is no longer a project. Weight is managed without daily attention.</div>
+  </div>
+</div>
 </section>
 
   <!-- INTEGRITY GUARANTEE -->
@@ -1148,47 +1145,77 @@
     }
 
     // ===== Outcome timeline (FIXED: correct closures + reliable scroll mapping) =====
-    (function initOutcomeTimeline(){
-      const section = document.getElementById("outcome");
-      const track = document.getElementById("outcomeTrack");
-      if(!section || !track) return;
+(function initOutcomeTimeline(){
+  const section = document.getElementById("outcome");
+  const track = document.getElementById("outcomeTrack");
+  const rail = document.getElementById("outcomeRail");
+  const fill = document.getElementById("outcomeRailFill");
+  if(!section || !track || !rail || !fill) return;
 
-      const items = Array.from(track.querySelectorAll(".oItem"));
-      const clamp = (n,min,max)=> Math.max(min, Math.min(max, n));
+  const items = Array.from(track.querySelectorAll(".oItem"));
+  const dots = items.map(i => i.querySelector(".oDot")).filter(Boolean);
+  const clamp = (n,min,max)=> Math.max(min, Math.min(max, n));
 
-      function update(){
-        const r = section.getBoundingClientRect();
-        const vh = window.innerHeight || document.documentElement.clientHeight;
+  function layoutRail(){
+    const tr = track.getBoundingClientRect();
+    const first = dots[0].getBoundingClientRect();
+    const last  = dots[dots.length - 1].getBoundingClientRect();
 
-        // Tune these if you want it to start later/earlier
-        const start = r.top - vh * 0.10;
-        const end   = r.bottom - vh * 0.60;
+    // centers relative to track
+    const startY = (first.top + first.height/2) - tr.top;
+    const endY   = (last.top  + last.height/2)  - tr.top;
 
-        const p = clamp((0 - start) / (end - start), 0, 1);
-        track.style.setProperty("--p", p.toFixed(4));
+    rail.style.top = startY + "px";
+    rail.style.height = Math.max(0, endY - startY) + "px";
+    fill.style.height = "0px";
+  }
 
-        items.forEach(it=>{
-          const t = parseFloat(it.getAttribute("data-o") || "1");
-          it.classList.toggle("is-on", p >= t);
-        });
-      }
+  function update(){
+    const tr = track.getBoundingClientRect();
+    const railTop = parseFloat(rail.style.top || "0");
+    const railH = parseFloat(rail.style.height || "0");
+    if(!railH) return;
 
-      let raf = null;
-      function onScroll(){
-        if(raf) return;
-        raf = requestAnimationFrame(()=>{ raf=null; update(); });
-      }
+    // viewport anchor (feels right on mobile)
+    const anchorY = window.innerHeight * 0.58;
+    const y = anchorY - tr.top;
 
-      window.addEventListener("scroll", onScroll, { passive:true });
-      window.addEventListener("resize", onScroll);
+    const p = clamp((y - railTop) / railH, 0, 1);
+    const reachedY = railTop + p * railH;
 
-      if(prefersReduced){
-        track.style.setProperty("--p", "1");
-        items.forEach(it=> it.classList.add("is-on"));
-      } else {
-        update();
-      }
-    })();
+    fill.style.height = (p * railH) + "px";
+
+    items.forEach((item, idx) => {
+      const d = dots[idx].getBoundingClientRect();
+      const dotCenter = (d.top + d.height/2) - tr.top;
+      item.classList.toggle("is-on", dotCenter <= reachedY + 1);
+    });
+  }
+
+  let raf = null;
+  function tick(){
+    if(raf) return;
+    raf = requestAnimationFrame(()=>{ raf=null; update(); });
+  }
+
+  function refresh(){
+    layoutRail();
+    update();
+  }
+
+  window.addEventListener("scroll", tick, { passive:true });
+  window.addEventListener("resize", refresh);
+  window.addEventListener("load", refresh);
+
+  // initial
+  setTimeout(refresh, 50);
+  setTimeout(refresh, 250);
+
+  if(prefersReduced){
+    refresh();
+    fill.style.height = rail.style.height;
+    items.forEach(i => i.classList.add("is-on"));
+  }
 
     // ====== Parallax + pointer-follow glow ======
     const bg = document.getElementById("bgStage");
