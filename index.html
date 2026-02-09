@@ -1001,6 +1001,52 @@
         });
       });
 
+        const entropy = document.querySelector('.entropy-dots');
+  const alignment = document.querySelector('.alignment-dots');
+
+  const DOT_COUNT = 42;
+
+  function createDots(container, mode) {
+    for (let i = 0; i < DOT_COUNT; i++) {
+      const dot = document.createElement('span');
+
+      if (mode === 'entropy') {
+        dot.style.left = Math.random() * 100 + '%';
+        dot.style.top = Math.random() * 100 + '%';
+      }
+
+      if (mode === 'alignment') {
+        const cols = 7;
+        const row = Math.floor(i / cols);
+        const col = i % cols;
+        dot.style.left = `${col * 14 + 10}%`;
+        dot.style.top = `${row * 18 + 10}%`;
+      }
+
+      container.appendChild(dot);
+    }
+  }
+
+  createDots(entropy, 'entropy');
+  createDots(alignment, 'alignment');
+
+  let played = false;
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !played) {
+        played = true;
+
+        entropy.classList.add('entropy-active');
+
+        setTimeout(() => {
+          alignment.classList.add('alignment-active');
+        }, 900);
+      }
+    });
+  }, { threshold: 0.4 });
+
+  observer.observe(document.querySelector('.fit-section'));
       // ====== Process expand ======
       const processCards = Array.from(document.querySelectorAll("[data-process]"));
       if(processCards.length){
