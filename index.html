@@ -540,21 +540,29 @@
   }
 
   /* Items positioned by data-pos (0..1) */
+.oItem{
+  position:absolute;
+  left: 0;
+  right: 0;
+  top: calc(var(--pos, .1) * 100%);
+  transform: translateY(-50%);
+
+  /* THIS is the fix: move text to the right of the rail/dot */
+  padding-left: 54px;
+
+  display:grid;
+  grid-template-columns: 96px 1fr;
+  gap: 16px;
+  align-items:start;
+}
+@media (max-width:740px){
   .oItem{
-    position:absolute;
-    left: 0;
-    right: 0;
-    top: calc(var(--pos, .1) * 100%);
-    transform: translateY(-50%);
-    display:grid;
-    grid-template-columns: 110px 1fr;
-    gap: 18px;
-    align-items:start;
-    padding: 0;
+    padding-left: 52px;
+    grid-template-columns: 92px 1fr;
+    gap: 14px;
   }
-  @media (max-width:740px){
-    .oItem{ grid-template-columns: 96px 1fr; gap: 14px; }
-  }
+}
+
 
   /* Dot centered ON rail */
   .oDot{
