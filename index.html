@@ -625,48 +625,40 @@
   </main>
 
   <!-- PROBLEM -->
-  <section id="problem" class="section">
-    <div class="wrap">
-      <h2 class="h2">Why the old approach stopped working</h2>
-      <p class="sub">It worked when your days had space. Your life changed. The approach didn’t.</p>
+ <section class="fit-section">
+  <h2>Why the old approach stopped working</h2>
+  <p class="fit-sub">
+    Your life changed. The system didn’t.
+  </p>
 
-      <div class="grid2">
-        <article class="card" data-tilt>
-          <div class="cardPad">
-            <h3 class="cardTitle">What used to work</h3>
-            <ul class="bullets">
-              <li>Time margin for planning</li>
-              <li>Long workouts without friction</li>
-              <li>Mental bandwidth for tracking</li>
-              <li>Consistency built on “ideal weeks”</li>
-            </ul>
-          </div>
+  <div class="fit-grid">
+    <!-- LEFT CARD -->
+    <div class="fit-card" id="entropy">
+      <h3>Why it doesn’t work</h3>
+      <ul>
+        <li>Schedule density kills prep</li>
+        <li>Decision fatigue stacks daily</li>
+        <li>Stress breaks routines</li>
+        <li>Missed days trigger resets</li>
+      </ul>
 
-          <!-- SYNCED CANVAS (UP→DOWN) -->
-          <div class="vizPanel" data-parallax2 aria-hidden="true">
-            <canvas id="sparkUp" aria-hidden="true"></canvas>
-          </div>
-        </article>
-
-        <article class="card" data-tilt>
-          <div class="cardPad">
-            <h3 class="cardTitle">Why it doesn’t now</h3>
-            <ul class="bullets">
-              <li>Schedule density kills prep</li>
-              <li>Decision fatigue stacks daily</li>
-              <li>Travel + stress break routines</li>
-              <li>Missed days trigger resets</li>
-            </ul>
-          </div>
-
-          <!-- SYNCED CANVAS (DOWN EMPHASIS) -->
-          <div class="vizPanel" data-parallax2 aria-hidden="true">
-            <canvas id="sparkDown" aria-hidden="true"></canvas>
-          </div>
-        </article>
-      </div>
+      <div class="dots entropy-dots"></div>
     </div>
-  </section>
+
+    <!-- RIGHT CARD -->
+    <div class="fit-card" id="alignment">
+      <h3>Why MN8 fits</h3>
+      <ul>
+        <li>Structure survives pressure</li>
+        <li>Rules don’t require obsession</li>
+        <li>Missed days don’t collapse progress</li>
+        <li>Control holds inside real life</li>
+      </ul>
+
+      <div class="dots alignment-dots"></div>
+    </div>
+  </div>
+</section>
 
   <!-- DEFINITION -->
   <section id="definition" class="section">
