@@ -45,13 +45,14 @@
   }
 
   /* ========= Global layout (FIX: wider + better gutters) ========= */
-  .wrap{
-    width: min(1280px, calc(100% - var(--gutter)));
-    margin: 0 auto;
-  }
-  @media (max-width:900px){
-    .wrap{ width: calc(100% - var(--gutterMobile)); }
-  }
+
+.wrap{
+  width:min(1180px, calc(100% - 24px)); /* tighter sides */
+  margin:0 auto;
+}
+@media (max-width:740px){
+  .wrap{ width:min(1180px, calc(100% - 18px)); }
+}
 
   /* Hero gets more width (premium) */
   .hero .wrap{
@@ -551,6 +552,85 @@
     .fit-grid{ grid-template-columns:1fr; }
   }
 
+  .fit-section{
+  padding: 88px 0;            /* match your section rhythm */
+  background:#fff;
+  color:#0b0d12;
+  border-top: 1px solid rgba(15,18,24,.06);
+}
+.fit-section h2{
+  font-size: clamp(30px, 3.2vw, 44px);
+  font-weight:900;
+  letter-spacing:-.02em;
+  margin:0 0 10px;
+}
+.fit-sub{
+  margin:0;
+  font-size:18px;
+  line-height:1.65;
+  color: rgba(11,13,18,.72);
+  max-width: 70ch;
+}
+.fit-grid{
+  display:grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap:16px;
+  margin-top:22px;
+}
+.fit-card{
+  padding: 22px;
+  border-radius: 26px;
+  border: 1px solid rgba(15,18,24,.10);
+  background: rgba(255,255,255,.92);
+  box-shadow: var(--shadow1);
+}
+.fit-card h3{
+  font-size:18px;
+  font-weight:900;
+  margin:0 0 10px;
+}
+.fit-card ul{
+  margin:0;
+  padding-left:18px;
+  color: rgba(11,13,18,.70);
+  line-height:1.7;
+}
+@media (max-width:900px){
+  .fit-grid{ grid-template-columns:1fr; }
+}
+/* ========= Outcome over time (scroll driven) ========= */
+.oItem{
+  position:relative;
+  display:flex;
+  gap:16px;
+  padding: 16px 0;
+  align-items:flex-start;
+  opacity:.55; /* INACTIVE = greyed */
+}
+.oTime{
+  width: 92px;
+  font-weight:900;
+  font-size:13px;
+  padding-top:2px;
+  flex:0 0 auto;
+  color: rgba(11,13,18,.55); /* inactive */
+}
+.oCopy{
+  color: rgba(11,13,18,.55); /* inactive */
+  line-height:1.55;
+}
+
+.oItem.is-on{
+  opacity:1; /* ACTIVE = full */
+}
+.oItem.is-on .oTime{
+  color: rgba(11,13,18,.92); /* active black */
+}
+.oItem.is-on .oCopy{
+  color: rgba(11,13,18,.74); /* active readable */
+}
+
+
   /* reduced motion */
   @media (prefers-reduced-motion: reduce){
     .particles{ animation:none; }
@@ -558,6 +638,7 @@
     .card, .processCard{ transition:none; }
     .mLine, .mDot{ transition:none; }
   }
+
 </style>
 </head>
 
@@ -657,13 +738,14 @@
     </div>
   </main>
 
-  <!-- PROBLEM -->
-  <section id="problem" class="fit-section">
+<!-- PROBLEM -->
+<section class="fit-section" id="problem">
+  <div class="wrap">
     <h2>Why the old approach stopped working</h2>
     <p class="fit-sub">Your life changed. The system didn’t.</p>
 
     <div class="fit-grid">
-      <div class="fit-card" id="entropy">
+      <div class="fit-card">
         <h3>Why it doesn’t work</h3>
         <ul>
           <li>Schedule density kills prep</li>
@@ -671,10 +753,9 @@
           <li>Stress breaks routines</li>
           <li>Missed days trigger resets</li>
         </ul>
-        <div class="dots entropy-dots"></div>
       </div>
 
-      <div class="fit-card" id="alignment">
+      <div class="fit-card">
         <h3>Why MN8 fits</h3>
         <ul>
           <li>Structure survives pressure</li>
@@ -682,10 +763,11 @@
           <li>Missed days don’t collapse progress</li>
           <li>Control holds inside real life</li>
         </ul>
-        <div class="dots alignment-dots"></div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
+
 
   <!-- DEFINITION (graphics removed) -->
   <section id="definition" class="section">
@@ -841,41 +923,41 @@
     </div>
   </section>
 
-  <!-- OUTCOME -->
-  <section id="outcome" class="section">
-    <div class="wrap">
-      <h2 class="h2">Outcome over time</h2>
-      <p class="sub">Time spacing is intentional. Early wins appear fast. Control becomes permanent.</p>
+ <!-- OUTCOME -->
+<section id="outcome" class="section">
+  <div class="wrap">
+    <h2 class="h2">Outcome over time</h2>
+    <p class="sub">Time spacing is intentional. Early wins appear fast. Control becomes permanent.</p>
 
-      <div class="outcomeTrack" id="outcomeTrack">
-        <div class="outcomeProgress" id="outcomeProgress" aria-hidden="true"></div>
+    <div class="outcomeTrack" id="outcomeTrack">
+      <div class="outcomeProgress" id="outcomeProgress" aria-hidden="true"></div>
 
-        <div class="oItem" data-o="0.08">
-          <span class="oDot"></span>
-          <div class="oTime">30 days</div>
-          <div class="oCopy">Decisions get lighter. Food and training stop taking mental space.</div>
-        </div>
+      <div class="oItem" data-o="0.08">
+        <span class="oDot"></span>
+        <div class="oTime">30 days</div>
+        <div class="oCopy">Decisions get lighter. Food and training stop taking mental space.</div>
+      </div>
 
-        <div class="oItem" data-o="0.22">
-          <span class="oDot"></span>
-          <div class="oTime">120 days</div>
-          <div class="oCopy">Missed days stop creating resets. You return to structure without friction.</div>
-        </div>
+      <div class="oItem" data-o="0.22">
+        <span class="oDot"></span>
+        <div class="oTime">120 days</div>
+        <div class="oCopy">Missed days stop creating resets. You return to structure without friction.</div>
+      </div>
 
-        <div class="oItem" data-o="0.55">
-          <span class="oDot"></span>
-          <div class="oTime">6 months</div>
-          <div class="oCopy">Energy holds longer. The body supports the schedule instead of competing with it.</div>
-        </div>
+      <div class="oItem" data-o="0.55">
+        <span class="oDot"></span>
+        <div class="oTime">6 months</div>
+        <div class="oCopy">Energy holds longer. The body supports the schedule instead of competing with it.</div>
+      </div>
 
-        <div class="oItem" data-o="0.98">
-          <span class="oDot"></span>
-          <div class="oTime">12 months</div>
-          <div class="oCopy">Health is no longer a project. Weight is managed without daily attention.</div>
-        </div>
+      <div class="oItem" data-o="0.98">
+        <span class="oDot"></span>
+        <div class="oTime">12 months</div>
+        <div class="oCopy">Health is no longer a project. Weight is managed without daily attention.</div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
   <!-- INTEGRITY GUARANTEE -->
   <section class="section">
