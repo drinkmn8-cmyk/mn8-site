@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>MN8 — Private weight control built for full schedules</title>
+  <title>MN8</title>
   <meta name="description" content="MN8 is a private weight control system designed to fit inside dense days. Minimal disruption. Repeatable structure. Control that holds." />
 
   <!-- Fonts -->
@@ -769,90 +769,221 @@
 </head>
 
 <body>
-
-<header class="topbar">
-  <div class="wrap topbarInner">
-    <div class="brand"><span class="mark"></span>MN8</div>
-    <button class="btnPrimary" onclick="location.href='qualify.html'">Begin Qualification</button>
+  <div class="bgStage" id="bgStage" aria-hidden="true">
+    <div class="particles"></div>
   </div>
-</header>
 
-<main class="hero">
-  <div class="wrap">
-    <p class="kicker">Private access • Qualification required</p>
-    <h1 class="h1">Weight control built for full schedules — not time-rich lifestyles.</h1>
-    <p class="lead">A private system designed to hold when life is dense, pressure is high, and perfect weeks don’t exist.</p>
+  <header class="topbar">
+    <div class="wrap">
+      <div class="topbarInner">
+        <div class="brand">
+          <span class="mark"></span>
+          <span>MN8</span>
+        </div>
 
-    <div class="heroGrid">
-      <div class="heroCard">
-        <strong>If your old method required space, it was never built for your reality.</strong>
-        <p class="lead">MN8 keeps progress holding when life gets heavier — not lighter.</p>
-      </div>
-      <div class="heroCard">
-        <strong>Minimal disruption. Repeatable structure.</strong>
-        <p class="lead">Control that stays on without daily attention.</p>
+        <nav class="nav">
+          <a href="#problem">Problem</a>
+          <a href="#definition">Definition</a>
+          <a href="#process">Process</a>
+          <a href="#outcome">Outcome</a>
+          <button class="navCTA" data-qualify>Begin Qualification</button>
+        </nav>
       </div>
     </div>
-  </div>
-</main>
+  </header>
 
-<section class="section">
-  <div class="wrap">
-    <h2 class="h2">Why the old approach stopped working</h2>
-    <p class="sub">Your life changed. The system didn’t.</p>
-  </div>
-</section>
+  <main class="hero">
+    <div class="wrap">
+      <p class="kicker">Private access • Qualification required</p>
+      <h1 class="h1">What happens to your weight system when life stops being flexible?</h1>
+      <p class="lead">MN8 is a private weight resolution system that removes the need to think about weight — even as responsibility increases.</p>
 
+      <div class="ctaRow">
+        <button class="btnPrimary" data-qualify>Begin Qualification</button>
+        <button class="btnGhost" data-scroll="#process">See process</button>
+      </div>
+
+      <div class="heroGrid">
+        <div class="heroCard" data-parallax>
+          <div class="heroViz">
+            <svg viewBox="0 0 1200 700" preserveAspectRatio="none" aria-hidden="true">
+              <defs>
+                <linearGradient id="lgA" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="rgba(109,59,210,.25)"/>
+                  <stop offset="1" stop-color="rgba(109,59,210,.05)"/>
+                </linearGradient>
+              </defs>
+
+              <g opacity=".28" stroke="rgba(15,18,24,.10)" stroke-width="1">
+                <path d="M0 120 H1200"/><path d="M0 240 H1200"/><path d="M0 360 H1200"/><path d="M0 480 H1200"/><path d="M0 600 H1200"/>
+                <path d="M150 0 V700"/><path d="M300 0 V700"/><path d="M450 0 V700"/><path d="M600 0 V700"/><path d="M750 0 V700"/><path d="M900 0 V700"/><path d="M1050 0 V700"/>
+              </g>
+
+              <g opacity=".80" fill="url(#lgA)">
+                <rect x="90" y="160" width="10" height="240" rx="6"/>
+                <rect x="120" y="120" width="10" height="320" rx="6"/>
+                <rect x="150" y="190" width="10" height="210" rx="6"/>
+                <rect x="180" y="80" width="10" height="400" rx="6"/>
+                <rect x="210" y="140" width="10" height="280" rx="6"/>
+                <rect x="240" y="110" width="10" height="330" rx="6"/>
+              </g>
+
+              <path d="M120,470 C260,260 380,520 520,320 C640,150 760,360 920,230 C1020,170 1100,190 1140,210"
+                    fill="none" stroke="rgba(109,59,210,.65)" stroke-width="8" stroke-linecap="round"/>
+
+              <g>
+                <circle cx="520" cy="320" r="10" fill="rgba(109,59,210,.90)"/>
+                <circle cx="920" cy="230" r="10" fill="rgba(109,59,210,.65)"/>
+                <circle cx="1140" cy="210" r="10" fill="rgba(109,59,210,.65)"/>
+              </g>
+            </svg>
+          </div>
+
+          <div class="heroCardInner">
+            <div class="heroMini">
+              <span class="chip">Minimal disruption</span>
+              <span class="chip">Repeatable structure</span>
+              <span class="chip">Built for pressure</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="heroCard" style="min-height:320px;">
+          <div class="heroCardInner" style="justify-content:center; gap:12px;">
+            <p class="kicker" style="margin:0;">Built for life that got heavier</p>
+            <div style="font-weight:900; font-size:18px; letter-spacing:-.01em;">If your old method required space, it was never built for your reality.</div>
+            <p class="cardText" style="margin:0;">
+              MN8 is designed to keep progress holding when the calendar is full, the day is dense, and “perfect weeks” don’t exist.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+
+
+  <!-- PROCESS (updated mechanism) -->
 <section id="process" class="section">
   <div class="wrap">
     <h2 class="h2">Process</h2>
-    <p class="sub">Scroll-based. Automatic. No interaction required.</p>
+    <p class="sub">Scroll. The step changes. No hover. No clicks.</p>
 
-    <div class="processStage">
+    <div class="processStage" id="processStage">
+      <!-- scroll sentinels -->
+      <div class="pStep s1" data-step="1" aria-hidden="true"></div>
+      <div class="pStep s2" data-step="2" aria-hidden="true"></div>
+      <div class="pStep s3" data-step="3" aria-hidden="true"></div>
+      <div class="pStep sEnd" aria-hidden="true"></div>
+
+      <!-- pinned panel -->
       <div class="processPin" id="processPin" data-step="1">
-        <div></div>
+        <div class="pLeft">
+          <div class="pViz">
+            <svg class="mn8Glyph" viewBox="0 0 520 520" aria-hidden="true">
+              <!-- Frame -->
+              <rect class="gFrame" x="70" y="70" width="380" height="380" rx="64" ry="64"/>
+
+              <!-- STATE 1 -->
+              <g class="gState gS1">
+                <line class="gLine" x1="120" y1="170" x2="240" y2="150"/>
+                <line class="gLine gFaint" x1="150" y1="220" x2="250" y2="250"/>
+                <line class="gLine" x1="280" y1="150" x2="400" y2="185"/>
+                <line class="gLine gFaint" x1="140" y1="300" x2="250" y2="320"/>
+                <line class="gLine" x1="285" y1="300" x2="410" y2="280"/>
+                <line class="gLine gFaint" x1="200" y1="360" x2="330" y2="350"/>
+                <line class="gBand" x1="140" y1="285" x2="380" y2="285"/>
+              </g>
+
+              <!-- STATE 2 -->
+              <g class="gState gS2">
+                <path class="gWave" d="M120 260 C160 220 200 300 240 260 C280 220 320 300 360 260 C400 220 440 300 480 260"/>
+                <path class="gWave gFaint" d="M120 295 C160 255 200 335 240 295 C280 255 320 335 360 295 C400 255 440 335 480 295"/>
+                <line class="gAxis" x1="150" y1="340" x2="370" y2="340"/>
+                <circle class="gNode" cx="260" cy="340" r="6"/>
+              </g>
+
+              <!-- STATE 3 -->
+              <g class="gState gS3">
+                <circle class="gDot" cx="150" cy="180" r="6"/>
+                <circle class="gDot gFaint" cx="210" cy="320" r="6"/>
+                <circle class="gDot" cx="330" cy="200" r="6"/>
+                <circle class="gDot gFaint" cx="380" cy="320" r="6"/>
+                <circle class="gCore" cx="260" cy="260" r="10"/>
+                <circle class="gHalo" cx="260" cy="260" r="28"/>
+              </g>
+            </svg>
+          </div>
+        </div>
+
         <div class="pRight">
-          <h3 class="pTitle" id="pTitle">Reduce decisions first</h3>
+          <div class="stepPills" aria-hidden="true">
+            <div class="pill is-on" data-pill="1">1</div>
+            <div class="pill" data-pill="2">2</div>
+            <div class="pill" data-pill="3">3</div>
+          </div>
+
+          <h3 class="pTitle" id="pTitle">Tighten nutrition</h3>
           <p class="pBody" id="pBody">
-            Nutrition is simplified so eating stops consuming mental energy.
-            Fewer decisions. Less negotiation. Immediate relief.
+            Reduce decision load first. Remove negotiation. Make eating automatic inside dense days.
           </p>
         </div>
       </div>
     </div>
   </div>
 </section>
+  
+  <!-- OUTCOME (unchanged) -->
+  <section id="outcome" class="section">
+    <div class="wrap">
+      <h2 class="h2">Outcome over time</h2>
+      <p class="sub">Time spacing is intentional. Early wins appear fast. Control becomes permanent.</p>
 
-<section id="outcome" class="section">
-  <div class="wrap">
-    <h2 class="h2">Outcome over time</h2>
-    <p class="sub">This is not a phase. It becomes background.</p>
+      <div class="outcomeTrack" id="outcomeTrack">
+        <div class="outcomeRail" id="outcomeRail" aria-hidden="true">
+          <div class="outcomeRailBg"></div>
+          <div class="outcomeRailFill" id="outcomeRailFill"></div>
+        </div>
 
-    <div class="outcomeTrack">
-      <div class="oItem">
-        <div class="oTime">30 days</div>
-        <div class="oCopy">Food decisions quiet down. Mental space returns.</div>
-      </div>
-      <div class="oItem">
-        <div class="oTime">3–6 months</div>
-        <div class="oCopy">Missed days no longer break momentum.</div>
-      </div>
-      <div class="oItem">
-        <div class="oTime">12 months+</div>
-        <div class="oCopy">Weight management runs quietly in the background. Maintenance feels natural.</div>
+        <div class="oItem" data-pos="0.08">
+          <span class="oDot"></span>
+          <div class="oTime">30 days</div>
+          <div class="oCopy">Decisions get lighter. Food and training stop taking mental space.</div>
+        </div>
+
+        <div class="oItem" data-pos="0.22">
+          <span class="oDot"></span>
+          <div class="oTime">120 days</div>
+          <div class="oCopy">Missed days stop creating resets. You return to structure without friction.</div>
+        </div>
+
+        <div class="oItem" data-pos="0.55">
+          <span class="oDot"></span>
+          <div class="oTime">6 months</div>
+          <div class="oCopy">Energy holds longer. The body supports the schedule instead of competing with it.</div>
+        </div>
+
+        <div class="oItem" data-pos="0.98">
+          <span class="oDot"></span>
+          <div class="oTime">12 months</div>
+          <div class="oCopy">Health is no longer a project. Weight is managed without daily attention.</div>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<footer class="section">
-  <div class="wrap">
-    <h2 class="h2">Private access. Built for real responsibility.</h2>
-    <p class="sub">If you want weight control that fits inside your life — start here.</p>
-    <button class="btnPrimary" onclick="location.href='qualify.html'">Begin Qualification</button>
-  </div>
-</footer>
-
+  <footer class="final">
+    <div class="wrap">
+      <div class="finalCard" data-parallax4>
+        <h2 class="h2" style="margin-bottom:12px;">Private access. Built for real responsibility.</h2>
+        <p class="sub" style="max-width:68ch;">If you want weight control that fits inside your life — start here.</p>
+        <div class="ctaRow">
+          <button class="btnPrimary" data-qualify>Begin Qualification</button>
+          <button class="btnGhost" data-scroll="#problem">See the problem</button>
+        </div>
+      </div>
+    </div>
+  </footer>
 
 <script>
 (function(){
