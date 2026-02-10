@@ -448,230 +448,146 @@
     will-change: opacity, transform;
   }
 /* ===== Brand-owned single SVG (3 states) ===== */
-.mn8Glyph{
-  width:100%;
-  height:100%;
-  display:block;
-  padding: 26px;
-}
+/* ===== Glyph base (no shadows) ===== */
+.mn8Glyph{ width:100%; height:100%; display:block; padding:26px; }
 
-/* Frame */
 .gFrame{
   fill: rgba(255,255,255,.55);
   stroke: rgba(15,18,24,.12);
   stroke-width: 3;
 }
 
-/* Base state behavior */
 .gState{
-  opacity: 0;
+  opacity:0;
   transform: translateY(8px) scale(.99);
   transform-origin: 50% 50%;
-  transition: opacity .28s ease, transform .45s cubic-bezier(.22,.61,.36,1);
+  transition: opacity .22s ease, transform .35s cubic-bezier(.22,.61,.36,1);
 }
 
-/* Only one state visible based on data-step */
 .processPin[data-step="1"] .gS1{ opacity:1; transform: translateY(0) scale(1); }
 .processPin[data-step="2"] .gS2{ opacity:1; transform: translateY(0) scale(1); }
 .processPin[data-step="3"] .gS3{ opacity:1; transform: translateY(0) scale(1); }
 
-/* Line styles */
-.gLine, .gBand, .gAxis{
+/* ===== Step 1: lines float 2s then converge ===== */
+.s1Line, .s1Final{
   stroke: rgba(109,59,210,.62);
   stroke-width: 10;
   stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+  transform-box: fill-box;
+  transform-origin: center;
 }
-.gFaint{ opacity:.28; }
-
-/* State 1 band */
-.gBand{
-  stroke: rgba(109,59,210,.32);
+.s1Line.isFaint{ opacity:.28; }
+.s1Final{
+  opacity:0;
+  stroke: rgba(109,59,210,.78);
   stroke-width: 12;
-  opacity: .0;
 }
 
-/* Flow */
-.gWave{
+/* retriggered by .anim1 on the pinned container */
+.processPin.anim1 .s1Line{
+  animation:
+    s1Float 2s ease-in-out 0s 1 forwards,
+    s1Converge .8s cubic-bezier(.22,.61,.36,1) 2s 1 forwards;
+}
+.processPin.anim1 .s1Final{
+  animation:
+    s1FinalIn .5s ease 2.2s 1 forwards;
+}
+
+@keyframes s1Float{
+  0%   { transform: translate(0,0) rotate(0deg); }
+  100% { transform: translate(var(--tx, 0px), var(--ty, 0px)) rotate(var(--r, 0deg)); }
+}
+@keyframes s1Converge{
+  0%   { transform: translate(var(--tx,0px), var(--ty,0px)) rotate(var(--r,0deg)); opacity: 1; }
+  100% { transform: translate(0,0) rotate(0deg) scaleX(.2); opacity: 0; }
+}
+@keyframes s1FinalIn{
+  from { opacity:0; transform: scaleX(.6); }
+  to   { opacity:1; transform: scaleX(1); }
+}
+
+/* ===== Step 2: steady wave ===== */
+.s2Wave{
   fill:none;
   stroke: rgba(109,59,210,.62);
   stroke-width: 10;
   stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 34 16; /* makes motion visible */
 }
-.gAxis{
+.s2Wave.isFaint{ opacity:.28; }
+
+.s2Axis{
   stroke: rgba(15,18,24,.12);
   stroke-width: 3;
+  vector-effect: non-scaling-stroke;
 }
-.gNode{
-  fill: rgba(109,59,210,.85);
-  opacity: .9;
+.s2Node{ fill: rgba(109,59,210,.85); opacity:.9; }
+
+/* retriggered by .anim2 */
+.processPin.anim2 .s2Wave{
+  animation: s2Move 1.2s linear infinite;
+}
+@keyframes s2Move{
+  to { stroke-dashoffset: -50; }
 }
 
-/* Dots */
-.gDot{
-  fill: rgba(109,59,210,.42);
-}
-.gCore{
-  fill: rgba(109,59,210,.92);
-}
-.gHalo{
-  fill: none;
+/* ===== Step 3: dots show 1s then collapse into one core dot ===== */
+.s3Dot{ fill: rgba(109,59,210,.42); opacity:.95; }
+.s3Dot.isFaint{ opacity:.28; }
+
+.s3Core{ fill: rgba(109,59,210,.92); opacity:0; }
+.s3Halo{
+  fill:none;
   stroke: rgba(109,59,210,.18);
   stroke-width: 18;
+  opacity:0;
 }
 
-/* Optional: give step 1 a “converge” pop */
-.processPin[data-step="1"] .gBand{
-  opacity:.55;
+/* retriggered by .anim3 */
+.processPin.anim3 .s3Dot{
+  transform-box: fill-box;
+  transform-origin: center;
+  animation:
+    s3Scatter 1s ease 0s 1 forwards,
+    s3Collapse .9s cubic-bezier(.22,.61,.36,1) 1s 1 forwards;
 }
 
-/* Reduced motion */
+.processPin.anim3 .s3Core{
+  animation: s3CoreIn .5s ease 1.6s 1 forwards;
+}
+.processPin.anim3 .s3Halo{
+  animation: s3HaloIn .6s ease 1.7s 1 forwards;
+}
+
+@keyframes s3Scatter{
+  0%   { transform: translate(0,0) scale(1); }
+  100% { transform: translate(var(--tx, 0px), var(--ty, 0px)) scale(1); }
+}
+@keyframes s3Collapse{
+  0%   { transform: translate(var(--tx,0px), var(--ty,0px)) scale(1); opacity: 1; }
+  100% { transform: translate(0,0) scale(.15); opacity: .25; }
+}
+@keyframes s3CoreIn{
+  from { opacity:0; transform: scale(.7); }
+  to   { opacity:1; transform: scale(1); }
+}
+@keyframes s3HaloIn{
+  from { opacity:0; }
+  to   { opacity:1; }
+}
+
+/* reduced motion */
 @media (prefers-reduced-motion: reduce){
-  .gState{ transition:none; transform:none; }
+  .processPin.anim1 .s1Line,
+  .processPin.anim1 .s1Final,
+  .processPin.anim2 .s2Wave,
+  .processPin.anim3 .s3Dot,
+  .processPin.anim3 .s3Core,
+  .processPin.anim3 .s3Halo{ animation:none !important; }
 }
-
-  /* text swap animation hook */
-  .processPin.is-switching .pTitle,
-  .processPin.is-switching .pBody{
-    opacity:0;
-    transform: translateY(6px);
-    filter: blur(2px);
-  }
-
-  /* Step 1: lines -> one line */
-  .mergeLines{ position:absolute; inset:0; pointer-events:none; }
-  .mLine{
-    position:absolute;
-    left: calc(var(--x) * 1%);
-    top: calc(var(--y) * 1%);
-    width: calc(var(--w, 26) * 1%);
-    height: 3px;
-    border-radius: 999px;
-    background: rgba(109,59,210,.55);
-    box-shadow: 0 8px 20px rgba(109,59,210,.14);
-    transform: translate(-50%,-50%) rotate(calc(var(--r) * 1deg));
-    transform-origin: center;
-    opacity: .95;
-    transition:
-      left .75s cubic-bezier(.22,.61,.36,1),
-      top .75s cubic-bezier(.22,.61,.36,1),
-      width .75s cubic-bezier(.22,.61,.36,1),
-      transform .75s cubic-bezier(.22,.61,.36,1),
-      opacity .40s ease;
-    will-change: left, top, transform, width;
-  }
-  .mLine.is-faint{ opacity:.55; background: rgba(109,59,210,.35); }
-
-  .processPin[data-step="1"] .mLine{
-    left: 50%;
-    top: 58%;
-    width: 70%;
-    transform: translate(-50%,-50%) rotate(0deg);
-    opacity: .95;
-    background: rgba(109,59,210,.70);
-  }
-  .processPin[data-step="1"] .mLine.is-faint{ opacity:.40; width:62%; }
-
-  /* Step 3: dots -> one dot */
-  .mergeDots{ position:absolute; inset:0; pointer-events:none; }
-  .mDot{
-    position:absolute;
-    left: calc(var(--x) * 1%);
-    top: calc(var(--y) * 1%);
-    width: 7px;
-    height: 7px;
-    border-radius: 999px;
-    background: rgba(109,59,210,.38);
-    transform: translate(-50%,-50%) scale(1);
-    opacity: .95;
-    transition:
-      left .85s cubic-bezier(.22,.61,.36,1),
-      top .85s cubic-bezier(.22,.61,.36,1),
-      transform .85s cubic-bezier(.22,.61,.36,1),
-      opacity .40s ease;
-    will-change:left,top,transform;
-  }
-  .processPin[data-step="3"] .mDot{
-    left: 50%;
-    top: 58%;
-    transform: translate(-50%,-50%) scale(.20);
-    opacity: .35;
-  }
-  .processPin[data-step="3"] .mDot:nth-child(1){
-    transform: translate(-50%,-50%) scale(1.25);
-    opacity: 1;
-    background: rgba(109,59,210,.85);
-    box-shadow: 0 0 0 10px rgba(109,59,210,.14);
-  }
-
-  /* Step 2: wave with real motion */
-  .wave{
-    position:absolute; inset:0;
-    opacity:0;
-    transform: translateY(10px);
-    transition: opacity .30s ease, transform .30s ease;
-    pointer-events:none;
-  }
-  .processPin[data-step="2"] .wave{ opacity:1; transform: translateY(0); }
-  .wave svg{ width:100%; height:100%; display:block; opacity:.95; }
-
-  .wave path{
-    stroke-dasharray: 2400;
-    stroke-dashoffset: 2400;
-  }
-  .processPin.kick[data-step="2"] .wave path{
-    animation: waveDraw 1.05s cubic-bezier(.22,.61,.36,1) forwards;
-  }
-  @keyframes waveDraw{
-    to{ stroke-dashoffset: 0; }
-  }
-
-  /* Fit section */
-  .fit-section{
-    padding: 88px 0;
-    background:#fff;
-    color:#0b0d12;
-    border-top: 0;
-  }
-  .fit-section h2{
-    font-size: clamp(30px, 3.2vw, 44px);
-    font-weight:900;
-    letter-spacing:-.02em;
-    margin:0 0 10px;
-  }
-  .fit-sub{
-    margin:0;
-    font-size:18px;
-    line-height:1.65;
-    color: rgba(11,13,18,.72);
-    max-width: 70ch;
-  }
-  .fit-grid{
-    display:grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap:16px;
-    margin-top:22px;
-  }
-  .fit-card{
-    padding: 22px;
-    border-radius: 26px;
-    border: 0;
-    background: rgba(255,255,255,.92);
-    box-shadow: var(--shadow1);
-  }
-  .fit-card h3{
-    font-size:18px;
-    font-weight:900;
-    margin:0 0 10px;
-  }
-  .fit-card ul{
-    margin:0;
-    padding-left:18px;
-    color: rgba(11,13,18,.70);
-    line-height:1.7;
-  }
-  @media (max-width:900px){
-    .fit-grid{ grid-template-columns:1fr; }
-  }
 
   /* =======================
      OUTCOME (TIME-WEIGHTED)
