@@ -323,131 +323,213 @@
   }
   .cardText{ margin:0; color: rgba(11,13,18,.70); line-height:1.65; }
 
-  /* Process */
-  .processGrid{ display:grid; gap:16px; margin-top:22px; }
-  .processCard{
-    background: rgba(255,255,255,.92);
-    border:0;
-    border-radius: 26px;
-    padding: 18px;
-    box-shadow: var(--shadow1);
-    overflow:hidden;
-    transition: transform .18s ease, box-shadow .18s ease;
-    cursor:pointer;
-  }
-  .processCard.is-active{ box-shadow: var(--shadow2); transform: translateY(-2px); }
-  .processTop{ display:flex; gap:14px; align-items:flex-start; }
-  .stepBadge{
-    width:54px;height:54px;border-radius:16px;
-    display:flex;align-items:center;justify-content:center;
-    font-weight:900;color:var(--ink);
-    background: rgba(109,59,210,.10);
-    border:0;
-    flex:0 0 auto;
-  }
-  .processTitle{ margin:0; font-size:20px; font-weight:900; letter-spacing:-.01em; }
-  .processSub{ margin-top:6px; color: rgba(11,13,18,.70); line-height:1.55; }
+/* ========= PROCESS — Apple-style pinned step switcher ========= */
+#process.section{
+  padding: 110px 0;
+}
 
-  .processViz{
-    margin-top:14px;
-    border-radius:18px;
-    border:0;
-    background: linear-gradient(180deg, rgba(109,59,210,.12), rgba(109,59,210,.05));
-    overflow:hidden;
-    position:relative;
-    height: 160px;
-  }
-  @media (min-width:900px){ .processViz{ height: 175px; } }
+/* scroll space: 3 steps + release */
+.processStage{
+  position: relative;
+  height: calc(4 * 100vh);
+}
 
-  .mergeLines{ position:absolute; inset:0; pointer-events:none; }
-  .mLine{
-    position:absolute;
-    left: calc(var(--x) * 1%);
-    top: calc(var(--y) * 1%);
-    width: calc(var(--w, 26) * 1%);
-    height: 3px;
-    border-radius: 999px;
-    background: rgba(109,59,210,.55);
-    box-shadow: 0 8px 20px rgba(109,59,210,.14);
-    transform: translate(-50%,-50%) rotate(calc(var(--r) * 1deg));
-    transform-origin: center;
-    opacity: .95;
-    transition:
-      left .75s cubic-bezier(.22,.61,.36,1),
-      top .75s cubic-bezier(.22,.61,.36,1),
-      width .75s cubic-bezier(.22,.61,.36,1),
-      transform .75s cubic-bezier(.22,.61,.36,1),
-      opacity .40s ease;
-    will-change: left, top, transform, width;
-  }
-  .mLine.is-faint{ opacity:.55; background: rgba(109,59,210,.35); }
-  .pStep1.is-active .mLine{
-    left: 50%;
-    top: 58%;
-    width: 70%;
-    transform: translate(-50%,-50%) rotate(0deg);
-    opacity: .95;
-    background: rgba(109,59,210,.70);
-  }
-  .pStep1.is-active .mLine.is-faint{ opacity: .40; width: 62%; }
+/* pinned container */
+.processPin{
+  position: sticky;
+  top: 74px;                 /* under topbar */
+  height: calc(100vh - 96px);
+  border-radius: var(--radiusXL);
+  background: rgba(255,255,255,.82);
+  box-shadow: var(--shadow1);
+  overflow: hidden;
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  align-items:stretch;
+}
 
-  .mergeDots{ position:absolute; inset:0; pointer-events:none; }
-  .mDot{
-    position:absolute;
-    left: calc(var(--x) * 1%);
-    top: calc(var(--y) * 1%);
-    width: 7px;
-    height: 7px;
-    border-radius: 999px;
-    background: rgba(109,59,210,.38);
-    transform: translate(-50%,-50%) scale(1);
-    opacity: .95;
-    transition:
-      left .85s cubic-bezier(.22,.61,.36,1),
-      top .85s cubic-bezier(.22,.61,.36,1),
-      transform .85s cubic-bezier(.22,.61,.36,1),
-      opacity .40s ease;
-    will-change:left,top,transform;
+/* mobile: no pin, just normal flow */
+@media (max-width:900px){
+  .processStage{ height:auto; }
+  .processPin{
+    position: relative;
+    top:auto;
+    height:auto;
+    grid-template-columns: 1fr;
   }
-  .pStep3.is-active .mDot{
-    left: 50%;
-    top: 58%;
-    transform: translate(-50%,-50%) scale(.20);
-    opacity: .35;
-  }
-  .pStep3.is-active .mDot:nth-child(1){
-    transform: translate(-50%,-50%) scale(1.25);
-    opacity: 1;
-    background: rgba(109,59,210,.85);
-    box-shadow: 0 0 0 10px rgba(109,59,210,.14);
-  }
+}
 
-  .processViz svg{
-    position:absolute; inset:0; width:100%; height:100%; display:block;
-    opacity:.95;
-    transform: translate3d(var(--px3,0px), var(--py3,0px), 0);
-    transition: transform .08s linear;
-  }
+/* left visual panel */
+.pLeft{
+  position:relative;
+  padding: 22px;
+  background:
+    radial-gradient(600px 320px at 30% 20%, rgba(109,59,210,.16), rgba(109,59,210,0) 70%),
+    radial-gradient(520px 280px at 80% 78%, rgba(15,18,24,.06), rgba(15,18,24,0) 70%),
+    linear-gradient(180deg, rgba(255,255,255,.80), rgba(255,255,255,.94));
+}
 
-  .processDetails{
-    margin-top:14px;
-    border-top:0;
-    padding-top:14px;
-    max-height:0;
-    opacity:0;
-    overflow:hidden;
-    transition: max-height .22s ease, opacity .18s ease;
-  }
-  .processCard.is-active .processDetails{ max-height: 280px; opacity:1; }
+.pViz{
+  height: 100%;
+  min-height: 360px;
+  border-radius: 22px;
+  background: linear-gradient(180deg, rgba(109,59,210,.12), rgba(109,59,210,.05));
+  position:relative;
+  overflow:hidden;
+}
+@media (max-width:900px){
+  .pViz{ min-height: 260px; }
+}
 
-  .bullets{
-    margin:0;
-    padding-left:18px;
-    color:rgba(11,13,18,.78);
-    font-size:14px;
-    line-height:1.7;
-  }
-  .bullets li{ margin:6px 0; }
+/* layers */
+.vizLayer{ position:absolute; inset:0; opacity:0; transition: opacity .22s ease; }
+.processPin[data-step="1"] .viz1{ opacity:1; }
+.processPin[data-step="2"] .viz2{ opacity:1; }
+.processPin[data-step="3"] .viz3{ opacity:1; }
+
+/* right text panel */
+.pRight{
+  padding: 26px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap: 16px;
+  background: rgba(255,255,255,.92);
+}
+
+.stepPills{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+.pill{
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  border: 1px solid rgba(15,18,24,.12);
+  background: rgba(255,255,255,.86);
+  box-shadow: 0 10px 24px rgba(15,18,24,.05);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:900;
+  color: rgba(11,13,18,.60);
+  transition: transform .14s ease, background .14s ease, color .14s ease, border-color .14s ease;
+}
+.pill.is-on{
+  background: rgba(109,59,210,.12);
+  border-color: rgba(109,59,210,.35);
+  color: rgba(11,13,18,.92);
+  transform: translateY(-1px);
+}
+
+.pTitle{
+  margin:0;
+  font-size: clamp(24px, 2.4vw, 34px);
+  line-height:1.1;
+  font-weight:900;
+  letter-spacing:-.02em;
+}
+.pBody{
+  margin:0;
+  color: rgba(11,13,18,.72);
+  line-height:1.65;
+  max-width: 62ch;
+  font-size: 16px;
+}
+
+/* scroll sentinels that trigger the step switches */
+.pStep{
+  position:absolute;
+  left:0; right:0;
+  height: 100vh;
+}
+.pStep.s1{ top: 0; }
+.pStep.s2{ top: 100vh; }
+.pStep.s3{ top: 200vh; }
+.pStep.sEnd{ top: 300vh; height: 60vh; }
+@media (max-width:900px){
+  .pStep{ display:none; }
+}
+
+/* ===== Step 1: lines -> one line ===== */
+.mergeLines{ position:absolute; inset:0; pointer-events:none; }
+.mLine{
+  position:absolute;
+  left: calc(var(--x) * 1%);
+  top: calc(var(--y) * 1%);
+  width: calc(var(--w, 26) * 1%);
+  height: 3px;
+  border-radius: 999px;
+  background: rgba(109,59,210,.55);
+  box-shadow: 0 8px 20px rgba(109,59,210,.14);
+  transform: translate(-50%,-50%) rotate(calc(var(--r) * 1deg));
+  transform-origin: center;
+  opacity: .95;
+  transition:
+    left .75s cubic-bezier(.22,.61,.36,1),
+    top .75s cubic-bezier(.22,.61,.36,1),
+    width .75s cubic-bezier(.22,.61,.36,1),
+    transform .75s cubic-bezier(.22,.61,.36,1),
+    opacity .40s ease;
+  will-change: left, top, transform, width;
+}
+.mLine.is-faint{ opacity:.55; background: rgba(109,59,210,.35); }
+
+.processPin[data-step="1"] .mLine{
+  left: 50%;
+  top: 58%;
+  width: 70%;
+  transform: translate(-50%,-50%) rotate(0deg);
+  opacity: .95;
+  background: rgba(109,59,210,.70);
+}
+.processPin[data-step="1"] .mLine.is-faint{ opacity:.40; width:62%; }
+
+/* ===== Step 3: dots -> one dot ===== */
+.mergeDots{ position:absolute; inset:0; pointer-events:none; }
+.mDot{
+  position:absolute;
+  left: calc(var(--x) * 1%);
+  top: calc(var(--y) * 1%);
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: rgba(109,59,210,.38);
+  transform: translate(-50%,-50%) scale(1);
+  opacity: .95;
+  transition:
+    left .85s cubic-bezier(.22,.61,.36,1),
+    top .85s cubic-bezier(.22,.61,.36,1),
+    transform .85s cubic-bezier(.22,.61,.36,1),
+    opacity .40s ease;
+  will-change:left,top,transform;
+}
+.processPin[data-step="3"] .mDot{
+  left: 50%;
+  top: 58%;
+  transform: translate(-50%,-50%) scale(.20);
+  opacity: .35;
+}
+.processPin[data-step="3"] .mDot:nth-child(1){
+  transform: translate(-50%,-50%) scale(1.25);
+  opacity: 1;
+  background: rgba(109,59,210,.85);
+  box-shadow: 0 0 0 10px rgba(109,59,210,.14);
+}
+
+/* ===== Step 2: placeholder wave (we’ll replace later if you want) ===== */
+.wave{
+  position:absolute; inset:0;
+  opacity:0;
+  transform: translateY(8px);
+  transition: opacity .28s ease, transform .28s ease;
+  pointer-events:none;
+}
+.processPin[data-step="2"] .wave{ opacity:1; transform: translateY(0); }
+.wave svg{ width:100%; height:100%; display:block; opacity:.95; }
+
 
   /* Fit section (clean, single definition — no duplicates) */
   .fit-section{
