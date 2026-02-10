@@ -1017,26 +1017,67 @@
   });
 
   // Process expand
-  const processCards = Array.from(document.querySelectorAll("[data-process]"));
-  if(processCards.length){
-    function activate(card){
-      processCards.forEach(c => c.classList.toggle("is-active", c === card));
-    }
-    processCards.forEach(card=>{
-      card.addEventListener("click", ()=>activate(card));
-      card.addEventListener("keydown", (e)=>{
-        if(e.key === "Enter" || e.key === " "){
-          e.preventDefault();
-          activate(card);
-        }
-      });
-    });
+(function initProcessSwitcher(){
+  const stage = document.getElementById("processStage");
+  const pin = document.getElementById("processPin");
+  const title = document.getElementById("pTitle");
+  const body = document.getElementById("pBody");
+  if(!stage || !pin || !title || !body) return;
 
-    const isFinePointer = matchMedia("(hover:hover) and (pointer:fine)").matches;
-    if(isFinePointer && !prefersReduced){
-      processCards.forEach(card => card.addEventListener("mouseenter", ()=>activate(card)));
+  const pills = Array.from(pin.querySelectorAll("[data-pill]"));
+  const sentinels = Array.from(stage.querySelectorAll("[data-step]"));
+
+  const steps = {
+    1: {
+      title: "Tighten nutrition",
+      body: "Reduce decision load first. Remove negotiation. Make eating automatic inside dense days."
+    },
+    2: {
+      title: "Short daily training",
+      body: "Repeatable sessions that fit real schedules. No long blocks. No all-or-nothing weeks."
+    },
+    3: {
+      title: "Lock the structure",
+      body: "So it holds when stress rises and time collapses. Missed days don’t create resets."
     }
+  };
+
+  function setStep(n){
+    const s = steps[n];
+    if(!s) return;
+    pin.setAttribute("data-step", String(n));
+    title.textContent = s.title;
+    body.textContent = s.body;
+    pills.forEach(p => p.classList.toggle("is-on", p.getAttribute("data-pill") === String(n)));
   }
+
+  // Mobile: no pin behavior. Keep step 1.
+  if (matchMedia("(max-width: 900px)").matches) {
+    setStep(1);
+    return;
+  }
+
+  let current = 1;
+  const obs = new IntersectionObserver((entries)=>{
+    const visible = entries
+      .filter(e=>e.isIntersecting)
+      .sort((a,b)=> (b.intersectionRatio - a.intersectionRatio));
+    if(!visible.length) return;
+
+    const n = parseInt(visible[0].target.getAttribute("data-step") || "1", 10);
+    if(n !== current){
+      current = n;
+      setStep(current);
+    }
+  }, {
+    threshold: [0.35, 0.55, 0.75],
+    rootMargin: "-25% 0px -45% 0px"
+  });
+
+  sentinels.forEach(s=>obs.observe(s));
+  setStep(1);
+})();
+
 
   // OUTCOME timeline (rail + fill + activation)
   (function initOutcome(){
