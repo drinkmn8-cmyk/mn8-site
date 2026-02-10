@@ -527,20 +527,8 @@
   transition: opacity .28s ease, transform .28s ease;
   pointer-events:none;
 }
-@media (max-width:900px){
-  .processStage{ height: calc(4 * 92vh); }
-  .processPin{
-    position: sticky;
-    top: 68px;
-    height: calc(92vh - 86px);
-    grid-template-columns: 1fr;
-  }
-}
-
-
-.processPin[data-step="2"] .wave svg{
-  animation: waveDrift 1.4s ease-in-out infinite alternate;
-}
+.processPin[data-step="2"] .wave{ opacity:1; transform: translateY(0); }
+.wave svg{ width:100%; height:100%; display:block; opacity:.95; }
 
 
   /* Fit section (clean, single definition — no duplicates) */
@@ -1037,6 +1025,7 @@
   if(!stage || !pin || !title || !body) return;
 
   const pills = Array.from(pin.querySelectorAll("[data-pill]"));
+  const sentinels = Array.from(stage.querySelectorAll("[data-step]"));
 
   const steps = {
     1: {
@@ -1053,8 +1042,6 @@
     }
   };
 
-  const clamp = (n,min,max)=>Math.max(min, Math.min(max, n));
-
   function setStep(n){
     const s = steps[n];
     if(!s) return;
@@ -1063,48 +1050,6 @@
     body.textContent = s.body;
     pills.forEach(p => p.classList.toggle("is-on", p.getAttribute("data-pill") === String(n)));
   }
-
-  // START IN NEUTRAL so step 1 actually animates in
-  pin.setAttribute("data-step", "0");
-  requestAnimationFrame(()=> setStep(1));
-
-  let current = 1;
-  let raf = null;
-
-  function update(){
-    raf = null;
-
-    const sr = stage.getBoundingClientRect();
-    const stageTop = sr.top + window.scrollY;
-    const stageH = stage.offsetHeight;
-
-    // how much scroll space is actually "active"
-    const travel = stageH - window.innerHeight;
-    if(travel <= 0) return;
-
-    const y = window.scrollY;
-    const p = clamp((y - stageTop) / travel, 0, 1);
-
-    // 0..1 split into 3 equal segments
-    const n = clamp(1 + Math.floor(p * 3 + 1e-6), 1, 3);
-
-    if(n !== current){
-      current = n;
-      setStep(current);
-    }
-  }
-
-  function tick(){
-    if(raf) return;
-    raf = requestAnimationFrame(update);
-  }
-
-  window.addEventListener("scroll", tick, { passive:true });
-  window.addEventListener("resize", ()=>{ update(); }, { passive:true });
-
-  // initial
-  update();
-})();
 
   // Mobile: no pin behavior. Keep step 1.
   if (matchMedia("(max-width: 900px)").matches) {
