@@ -355,13 +355,7 @@
   }
 
   /* left visual panel */
-  .pLeft{
-    position:relative;
-    padding: 22px;
-    background:
-      radial-gradient(600px 320px at 30% 20%, rgba(109,59,210,.16), rgba(109,59,210,0) 70%),
-      radial-gradient(520px 280px at 80% 78%, rgba(15,18,24,.06), rgba(15,18,24,0) 70%),
-      linear-gradient(180deg, rgba(255,255,255,.80), rgba(255,255,255,.94));
+
   }
 
   .pViz{
@@ -821,71 +815,64 @@ footer.final{
       <div class="pStep sEnd" aria-hidden="true"></div>
 
       <!-- pinned panel -->
-      <div class="processPin" id="processPin" data-step="1">
-        <div class="pLeft">
-<div class="pViz">
-  <svg class="mn8Glyph" viewBox="0 0 520 520" aria-hidden="true">
-    <!-- Frame -->
-    <rect class="gFrame" x="70" y="70" width="380" height="380" rx="64" ry="64"></rect>
+<div class="processPin anim1" id="processPin" data-step="1">
+  <div class="pLeft">
+    <div class="pViz">
+      <svg class="mn8Glyph" viewBox="0 0 520 520" aria-hidden="true">
+        <rect class="gFrame" x="70" y="70" width="380" height="380" rx="64" ry="64"></rect>
 
-    <!-- STEP 1: FLOATING LINES -> ONE LINE -->
-    <g class="gState gS1">
-      <g class="s1Lines">
-        <line class="s1Line" x1="130" y1="170" x2="240" y2="150" style="--tx:-26px;--ty:-14px;--r:-18deg;"></line>
-        <line class="s1Line isFaint" x1="160" y1="220" x2="250" y2="250" style="--tx:18px;--ty:-22px;--r:14deg;"></line>
-        <line class="s1Line" x1="280" y1="150" x2="400" y2="185" style="--tx:22px;--ty:16px;--r:10deg;"></line>
-        <line class="s1Line isFaint" x1="140" y1="300" x2="250" y2="320" style="--tx:-14px;--ty:22px;--r:-10deg;"></line>
-        <line class="s1Line" x1="285" y1="300" x2="410" y2="280" style="--tx:20px;--ty:-6px;--r:8deg;"></line>
-        <line class="s1Line isFaint" x1="200" y1="360" x2="330" y2="350" style="--tx:-10px;--ty:18px;--r:-6deg;"></line>
+        <!-- STEP 1 -->
+        <g class="gState gS1">
+          <g class="s1Lines">
+            <line class="s1Line" x1="130" y1="170" x2="240" y2="150" style="--tx:-26px;--ty:-14px;--r:-18deg;"></line>
+            <line class="s1Line isFaint" x1="160" y1="220" x2="250" y2="250" style="--tx:18px;--ty:-22px;--r:14deg;"></line>
+            <line class="s1Line" x1="280" y1="150" x2="400" y2="185" style="--tx:22px;--ty:16px;--r:10deg;"></line>
+            <line class="s1Line isFaint" x1="140" y1="300" x2="250" y2="320" style="--tx:-14px;--ty:22px;--r:-10deg;"></line>
+            <line class="s1Line" x1="285" y1="300" x2="410" y2="280" style="--tx:20px;--ty:-6px;--r:8deg;"></line>
+            <line class="s1Line isFaint" x1="200" y1="360" x2="330" y2="350" style="--tx:-10px;--ty:18px;--r:-6deg;"></line>
+            <line class="s1Final" x1="140" y1="285" x2="380" y2="285"></line>
+          </g>
+        </g>
 
-        <!-- the “final” single line that remains -->
-        <line class="s1Final" x1="140" y1="285" x2="380" y2="285"></line>
-      </g>
-    </g>
+        <!-- STEP 2 -->
+        <g class="gState gS2">
+          <path class="s2Wave" d="M120 270 C160 230 200 310 240 270 C280 230 320 310 360 270 C400 230 440 310 480 270"></path>
+          <path class="s2Wave isFaint" d="M120 305 C160 265 200 345 240 305 C280 265 320 345 360 305 C400 265 440 345 480 305"></path>
+          <line class="s2Axis" x1="150" y1="350" x2="370" y2="350"></line>
+          <circle class="s2Node" cx="260" cy="350" r="6"></circle>
+        </g>
 
-    <!-- STEP 2: STEADY WAVE -->
-    <g class="gState gS2">
-      <path class="s2Wave" d="M120 270 C160 230 200 310 240 270 C280 230 320 310 360 270 C400 230 440 310 480 270"></path>
-      <path class="s2Wave isFaint" d="M120 305 C160 265 200 345 240 305 C280 265 320 345 360 305 C400 265 440 345 480 305"></path>
+        <!-- STEP 3 -->
+        <g class="gState gS3">
+          <g class="s3Dots">
+            <circle class="s3Dot" cx="150" cy="180" r="6" style="--tx:-28px;--ty:-18px;"></circle>
+            <circle class="s3Dot isFaint" cx="210" cy="320" r="6" style="--tx:22px;--ty:10px;"></circle>
+            <circle class="s3Dot" cx="330" cy="200" r="6" style="--tx:16px;--ty:-12px;"></circle>
+            <circle class="s3Dot isFaint" cx="380" cy="320" r="6" style="--tx:-18px;--ty:16px;"></circle>
+            <circle class="s3Dot isFaint" cx="170" cy="250" r="6" style="--tx:-12px;--ty:20px;"></circle>
+            <circle class="s3Dot" cx="360" cy="260" r="6" style="--tx:20px;--ty:-14px;"></circle>
 
-      <!-- subtle baseline (no shadow) -->
-      <line class="s2Axis" x1="150" y1="350" x2="370" y2="350"></line>
-      <circle class="s2Node" cx="260" cy="350" r="6"></circle>
-    </g>
+            <circle class="s3Core" cx="260" cy="260" r="12"></circle>
+            <circle class="s3Halo" cx="260" cy="260" r="30"></circle>
+          </g>
+        </g>
+      </svg>
+    </div>
+  </div>
 
-    <!-- STEP 3: WAVE BREAKS -> DOTS -> ONE DOT -->
-    <g class="gState gS3">
-      <g class="s3Dots">
-        <circle class="s3Dot" cx="150" cy="180" r="6" style="--tx:-28px;--ty:-18px;"></circle>
-        <circle class="s3Dot isFaint" cx="210" cy="320" r="6" style="--tx:22px;--ty:10px;"></circle>
-        <circle class="s3Dot" cx="330" cy="200" r="6" style="--tx:16px;--ty:-12px;"></circle>
-        <circle class="s3Dot isFaint" cx="380" cy="320" r="6" style="--tx:-18px;--ty:16px;"></circle>
-        <circle class="s3Dot isFaint" cx="170" cy="250" r="6" style="--tx:-12px;--ty:20px;"></circle>
-        <circle class="s3Dot" cx="360" cy="260" r="6" style="--tx:20px;--ty:-14px;"></circle>
+  <div class="pRight">
+    <div class="stepPills" aria-hidden="true">
+      <div class="pill is-on" data-pill="1">1</div>
+      <div class="pill" data-pill="2">2</div>
+      <div class="pill" data-pill="3">3</div>
+    </div>
 
-        <!-- final “locked” dot -->
-        <circle class="s3Core" cx="260" cy="260" r="12"></circle>
-        <circle class="s3Halo" cx="260" cy="260" r="30"></circle>
-      </g>
-    </g>
-  </svg>
+    <h3 class="pTitle" id="pTitle">Remove food negotiation</h3>
+    <p class="pBody" id="pBody">
+      Simple rules eliminate daily decisions, so eating stays automatic — even on bad days.
+    </p>
+  </div>
 </div>
-          </div>
-        </div>
-
-        <div class="pRight">
-          <div class="stepPills" aria-hidden="true">
-            <div class="pill is-on" data-pill="1">1</div>
-            <div class="pill" data-pill="2">2</div>
-            <div class="pill" data-pill="3">3</div>
-          </div>
-
-          <h3 class="pTitle" id="pTitle">Remove food negotiation</h3>
-          <p class="pBody" id="pBody">
-            Simple rules eliminate daily decisions, so eating stays automatic — even on bad days.
-          </p>
-        </div>
-      </div>
     </div>
   </div>
 </section>
