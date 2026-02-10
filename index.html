@@ -867,7 +867,7 @@
 <section id="process" class="section">
   <div class="wrap">
     <h2 class="h2">Process</h2>
-    <p class="sub">Scroll. The step changes. No hover. No clicks.</p>
+    <p class="sub">A system designed to operate when life gets heavy.</p>
 
     <div class="processStage" id="processStage">
       <!-- scroll sentinels -->
@@ -880,39 +880,7 @@
       <div class="processPin" id="processPin" data-step="1">
         <div class="pLeft">
           <div class="pViz">
-            <svg class="mn8Glyph" viewBox="0 0 520 520" aria-hidden="true">
-              <!-- Frame -->
-              <rect class="gFrame" x="70" y="70" width="380" height="380" rx="64" ry="64"/>
-
-              <!-- STATE 1 -->
-              <g class="gState gS1">
-                <line class="gLine" x1="120" y1="170" x2="240" y2="150"/>
-                <line class="gLine gFaint" x1="150" y1="220" x2="250" y2="250"/>
-                <line class="gLine" x1="280" y1="150" x2="400" y2="185"/>
-                <line class="gLine gFaint" x1="140" y1="300" x2="250" y2="320"/>
-                <line class="gLine" x1="285" y1="300" x2="410" y2="280"/>
-                <line class="gLine gFaint" x1="200" y1="360" x2="330" y2="350"/>
-                <line class="gBand" x1="140" y1="285" x2="380" y2="285"/>
-              </g>
-
-              <!-- STATE 2 -->
-              <g class="gState gS2">
-                <path class="gWave" d="M120 260 C160 220 200 300 240 260 C280 220 320 300 360 260 C400 220 440 300 480 260"/>
-                <path class="gWave gFaint" d="M120 295 C160 255 200 335 240 295 C280 255 320 335 360 295 C400 255 440 335 480 295"/>
-                <line class="gAxis" x1="150" y1="340" x2="370" y2="340"/>
-                <circle class="gNode" cx="260" cy="340" r="6"/>
-              </g>
-
-              <!-- STATE 3 -->
-              <g class="gState gS3">
-                <circle class="gDot" cx="150" cy="180" r="6"/>
-                <circle class="gDot gFaint" cx="210" cy="320" r="6"/>
-                <circle class="gDot" cx="330" cy="200" r="6"/>
-                <circle class="gDot gFaint" cx="380" cy="320" r="6"/>
-                <circle class="gCore" cx="260" cy="260" r="10"/>
-                <circle class="gHalo" cx="260" cy="260" r="28"/>
-              </g>
-            </svg>
+            <!-- SVG stays unchanged -->
           </div>
         </div>
 
@@ -923,16 +891,16 @@
             <div class="pill" data-pill="3">3</div>
           </div>
 
-          <h3 class="pTitle" id="pTitle">Tighten nutrition</h3>
+          <h3 class="pTitle" id="pTitle">Remove food negotiation</h3>
           <p class="pBody" id="pBody">
-            Reduce decision load first. Remove negotiation. Make eating automatic inside dense days.
+            Simple rules eliminate daily decisions, so eating stays automatic — even on bad days.
           </p>
         </div>
       </div>
     </div>
   </div>
 </section>
-  
+
   <!-- OUTCOME (unchanged) -->
   <section id="outcome" class="section">
     <div class="wrap">
@@ -1031,20 +999,21 @@
 
       const pills = Array.from(pin.querySelectorAll("[data-pill]"));
 
-      const steps = {
-        1: {
-          title: "Tighten nutrition",
-          body: "Reduce decision load first. Remove negotiation. Make eating automatic inside dense days."
-        },
-        2: {
-          title: "Short daily training",
-          body: "Repeatable sessions that fit real schedules. No long blocks. No all-or-nothing weeks."
-        },
-        3: {
-          title: "Lock the structure",
-          body: "So it holds when stress rises and time collapses. Missed days don’t create resets."
-        }
-      };
+const steps = {
+  1: {
+    title: "Remove food negotiation",
+    body: "Simple rules eliminate daily decisions, so eating stays automatic — even on bad days."
+  },
+  2: {
+    title: "Minimal daily movement",
+    body: "Short, repeatable movement that fits any day. No scheduling. No intensity to manage."
+  },
+  3: {
+    title: "Stabilize the system",
+    body: "Missed days don’t trigger resets. The system absorbs pressure instead of breaking."
+  }
+};
+
 
       const clamp = (n,min,max)=> Math.max(min, Math.min(max, n));
 
