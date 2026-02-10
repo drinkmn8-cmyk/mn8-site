@@ -1025,25 +1025,26 @@ const steps = {
         }, 130);
       }
 
-      function applyStep(nextStep){
-        if(nextStep === current) return;
+function applyStep(nextStep){
+  if(nextStep === current) return;
 
-        current = nextStep;
-        pin.setAttribute("data-step", String(nextStep));
+  current = nextStep;
+  pin.setAttribute("data-step", String(nextStep));
 
-        // pills
-        pills.forEach(p => p.classList.toggle("is-on", p.getAttribute("data-pill") === String(nextStep)));
+  pin.classList.remove("anim1","anim2","anim3");
+  void pin.offsetWidth;
+  pin.classList.add("anim" + String(nextStep));
 
-        // text + wave
-        kickWaveIfNeeded(nextStep);
+  pills.forEach(p => p.classList.toggle("is-on", p.getAttribute("data-pill") === String(nextStep)));
 
-        if(prefersReduced){
-          title.textContent = steps[nextStep].title;
-          body.textContent = steps[nextStep].body;
-        } else {
-          animateTextSwap(nextStep);
-        }
-      }
+  if(prefersReduced){
+    title.textContent = steps[nextStep].title;
+    body.textContent = steps[nextStep].body;
+  } else {
+    animateTextSwap(nextStep);
+  }
+}
+
 
       function computeStep(){
         const rect = stage.getBoundingClientRect();
