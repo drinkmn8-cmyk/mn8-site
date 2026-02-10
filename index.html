@@ -323,215 +323,228 @@
   }
   .cardText{ margin:0; color: rgba(11,13,18,.70); line-height:1.65; }
 
-/* ========= PROCESS — Apple-style pinned step switcher ========= */
-#process.section{
-  padding: 110px 0;
-}
+  /* ========= PROCESS — Apple-style pinned step switcher ========= */
+  #process.section{ padding: 110px 0; }
 
-/* scroll space: 3 steps + release */
-.processStage{
-  position: relative;
-  height: calc(4 * 100vh);
-}
-
-/* pinned container */
-.processPin{
-  position: sticky;
-  top: 74px;                 /* under topbar */
-  height: calc(100vh - 96px);
-  border-radius: var(--radiusXL);
-  background: rgba(255,255,255,.82);
-  box-shadow: var(--shadow1);
-  overflow: hidden;
-  display:grid;
-  grid-template-columns: 1fr 1fr;
-  align-items:stretch;
-}
-
-/* mobile: no pin, just normal flow */
-@media (max-width:900px){
-  .processStage{ height:auto; }
-  .processPin{
+  /* scroll space: 3 steps + release */
+  .processStage{
     position: relative;
-    top:auto;
-    height:auto;
-    grid-template-columns: 1fr;
+    height: calc(4 * 100vh);
   }
-}
 
-/* left visual panel */
-.pLeft{
-  position:relative;
-  padding: 22px;
-  background:
-    radial-gradient(600px 320px at 30% 20%, rgba(109,59,210,.16), rgba(109,59,210,0) 70%),
-    radial-gradient(520px 280px at 80% 78%, rgba(15,18,24,.06), rgba(15,18,24,0) 70%),
-    linear-gradient(180deg, rgba(255,255,255,.80), rgba(255,255,255,.94));
-}
+  /* pinned container */
+  .processPin{
+    position: sticky;
+    top: 74px;
+    height: calc(100vh - 96px);
+    border-radius: var(--radiusXL);
+    background: rgba(255,255,255,.82);
+    box-shadow: var(--shadow1);
+    overflow: hidden;
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    align-items:stretch;
+  }
 
-.pViz{
-  height: 100%;
-  min-height: 360px;
-  border-radius: 22px;
-  background: linear-gradient(180deg, rgba(109,59,210,.12), rgba(109,59,210,.05));
-  position:relative;
-  overflow:hidden;
-}
-@media (max-width:900px){
-  .pViz{ min-height: 260px; }
-}
+  /* responsive: keep sticky, switch to 1 column */
+  @media (max-width:900px){
+    .processPin{
+      grid-template-columns: 1fr;
+      height: calc(100vh - 96px);
+    }
+  }
 
-/* layers */
-.vizLayer{ position:absolute; inset:0; opacity:0; transition: opacity .22s ease; }
-.processPin[data-step="1"] .viz1{ opacity:1; }
-.processPin[data-step="2"] .viz2{ opacity:1; }
-.processPin[data-step="3"] .viz3{ opacity:1; }
+  /* left visual panel */
+  .pLeft{
+    position:relative;
+    padding: 22px;
+    background:
+      radial-gradient(600px 320px at 30% 20%, rgba(109,59,210,.16), rgba(109,59,210,0) 70%),
+      radial-gradient(520px 280px at 80% 78%, rgba(15,18,24,.06), rgba(15,18,24,0) 70%),
+      linear-gradient(180deg, rgba(255,255,255,.80), rgba(255,255,255,.94));
+  }
 
-/* right text panel */
-.pRight{
-  padding: 26px;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  gap: 16px;
-  background: rgba(255,255,255,.92);
-}
+  .pViz{
+    height: 100%;
+    min-height: 360px;
+    border-radius: 22px;
+    background: linear-gradient(180deg, rgba(109,59,210,.12), rgba(109,59,210,.05));
+    position:relative;
+    overflow:hidden;
+    transform: translateZ(0);
+  }
+  @media (max-width:900px){
+    .pViz{ min-height: 260px; }
+  }
 
-.stepPills{
-  display:flex;
-  gap:10px;
-  align-items:center;
-  flex-wrap:wrap;
-}
-.pill{
-  width: 46px;
-  height: 46px;
-  border-radius: 14px;
-  border: 1px solid rgba(15,18,24,.12);
-  background: rgba(255,255,255,.86);
-  box-shadow: 0 10px 24px rgba(15,18,24,.05);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:900;
-  color: rgba(11,13,18,.60);
-  transition: transform .14s ease, background .14s ease, color .14s ease, border-color .14s ease;
-}
-.pill.is-on{
-  background: rgba(109,59,210,.12);
-  border-color: rgba(109,59,210,.35);
-  color: rgba(11,13,18,.92);
-  transform: translateY(-1px);
-}
+  /* layers */
+  .vizLayer{
+    position:absolute; inset:0;
+    opacity:0;
+    transform: translateY(10px) scale(.995);
+    filter: blur(0px);
+    transition:
+      opacity .32s cubic-bezier(.22,.61,.36,1),
+      transform .32s cubic-bezier(.22,.61,.36,1);
+    will-change: opacity, transform;
+  }
+  .processPin[data-step="1"] .viz1{ opacity:1; transform: translateY(0) scale(1); }
+  .processPin[data-step="2"] .viz2{ opacity:1; transform: translateY(0) scale(1); }
+  .processPin[data-step="3"] .viz3{ opacity:1; transform: translateY(0) scale(1); }
 
-.pTitle{
-  margin:0;
-  font-size: clamp(24px, 2.4vw, 34px);
-  line-height:1.1;
-  font-weight:900;
-  letter-spacing:-.02em;
-}
-.pBody{
-  margin:0;
-  color: rgba(11,13,18,.72);
-  line-height:1.65;
-  max-width: 62ch;
-  font-size: 16px;
-}
+  /* right text panel */
+  .pRight{
+    padding: 26px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    gap: 16px;
+    background: rgba(255,255,255,.92);
+  }
 
-/* scroll sentinels that trigger the step switches */
-.pStep{
-  position:absolute;
-  left:0; right:0;
-  height: 100vh;
-}
-.pStep.s1{ top: 0; }
-.pStep.s2{ top: 100vh; }
-.pStep.s3{ top: 200vh; }
-.pStep.sEnd{ top: 300vh; height: 60vh; }
-@media (max-width:900px){
-  .pStep{ display:none; }
-}
+  .stepPills{
+    display:flex;
+    gap:10px;
+    align-items:center;
+    flex-wrap:wrap;
+  }
+  .pill{
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+    border: 1px solid rgba(15,18,24,.12);
+    background: rgba(255,255,255,.86);
+    box-shadow: 0 10px 24px rgba(15,18,24,.05);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:900;
+    color: rgba(11,13,18,.60);
+    transition: transform .18s ease, background .18s ease, color .18s ease, border-color .18s ease;
+  }
+  .pill.is-on{
+    background: rgba(109,59,210,.12);
+    border-color: rgba(109,59,210,.35);
+    color: rgba(11,13,18,.92);
+    transform: translateY(-1px);
+  }
 
-/* ===== Step 1: lines -> one line ===== */
-.mergeLines{ position:absolute; inset:0; pointer-events:none; }
-.mLine{
-  position:absolute;
-  left: calc(var(--x) * 1%);
-  top: calc(var(--y) * 1%);
-  width: calc(var(--w, 26) * 1%);
-  height: 3px;
-  border-radius: 999px;
-  background: rgba(109,59,210,.55);
-  box-shadow: 0 8px 20px rgba(109,59,210,.14);
-  transform: translate(-50%,-50%) rotate(calc(var(--r) * 1deg));
-  transform-origin: center;
-  opacity: .95;
-  transition:
-    left .75s cubic-bezier(.22,.61,.36,1),
-    top .75s cubic-bezier(.22,.61,.36,1),
-    width .75s cubic-bezier(.22,.61,.36,1),
-    transform .75s cubic-bezier(.22,.61,.36,1),
-    opacity .40s ease;
-  will-change: left, top, transform, width;
-}
-.mLine.is-faint{ opacity:.55; background: rgba(109,59,210,.35); }
+  .pTitle{
+    margin:0;
+    font-size: clamp(24px, 2.4vw, 34px);
+    line-height:1.1;
+    font-weight:900;
+    letter-spacing:-.02em;
+    transition: opacity .18s ease, transform .18s ease, filter .18s ease;
+    will-change: opacity, transform;
+  }
+  .pBody{
+    margin:0;
+    color: rgba(11,13,18,.72);
+    line-height:1.65;
+    max-width: 62ch;
+    font-size: 16px;
+    transition: opacity .18s ease, transform .18s ease, filter .18s ease;
+    will-change: opacity, transform;
+  }
 
-.processPin[data-step="1"] .mLine{
-  left: 50%;
-  top: 58%;
-  width: 70%;
-  transform: translate(-50%,-50%) rotate(0deg);
-  opacity: .95;
-  background: rgba(109,59,210,.70);
-}
-.processPin[data-step="1"] .mLine.is-faint{ opacity:.40; width:62%; }
+  /* text swap animation hook */
+  .processPin.is-switching .pTitle,
+  .processPin.is-switching .pBody{
+    opacity:0;
+    transform: translateY(6px);
+    filter: blur(2px);
+  }
 
-/* ===== Step 3: dots -> one dot ===== */
-.mergeDots{ position:absolute; inset:0; pointer-events:none; }
-.mDot{
-  position:absolute;
-  left: calc(var(--x) * 1%);
-  top: calc(var(--y) * 1%);
-  width: 7px;
-  height: 7px;
-  border-radius: 999px;
-  background: rgba(109,59,210,.38);
-  transform: translate(-50%,-50%) scale(1);
-  opacity: .95;
-  transition:
-    left .85s cubic-bezier(.22,.61,.36,1),
-    top .85s cubic-bezier(.22,.61,.36,1),
-    transform .85s cubic-bezier(.22,.61,.36,1),
-    opacity .40s ease;
-  will-change:left,top,transform;
-}
-.processPin[data-step="3"] .mDot{
-  left: 50%;
-  top: 58%;
-  transform: translate(-50%,-50%) scale(.20);
-  opacity: .35;
-}
-.processPin[data-step="3"] .mDot:nth-child(1){
-  transform: translate(-50%,-50%) scale(1.25);
-  opacity: 1;
-  background: rgba(109,59,210,.85);
-  box-shadow: 0 0 0 10px rgba(109,59,210,.14);
-}
+  /* Step 1: lines -> one line */
+  .mergeLines{ position:absolute; inset:0; pointer-events:none; }
+  .mLine{
+    position:absolute;
+    left: calc(var(--x) * 1%);
+    top: calc(var(--y) * 1%);
+    width: calc(var(--w, 26) * 1%);
+    height: 3px;
+    border-radius: 999px;
+    background: rgba(109,59,210,.55);
+    box-shadow: 0 8px 20px rgba(109,59,210,.14);
+    transform: translate(-50%,-50%) rotate(calc(var(--r) * 1deg));
+    transform-origin: center;
+    opacity: .95;
+    transition:
+      left .75s cubic-bezier(.22,.61,.36,1),
+      top .75s cubic-bezier(.22,.61,.36,1),
+      width .75s cubic-bezier(.22,.61,.36,1),
+      transform .75s cubic-bezier(.22,.61,.36,1),
+      opacity .40s ease;
+    will-change: left, top, transform, width;
+  }
+  .mLine.is-faint{ opacity:.55; background: rgba(109,59,210,.35); }
 
-/* ===== Step 2: placeholder wave (we’ll replace later if you want) ===== */
-.wave{
-  position:absolute; inset:0;
-  opacity:0;
-  transform: translateY(8px);
-  transition: opacity .28s ease, transform .28s ease;
-  pointer-events:none;
-}
-.processPin[data-step="2"] .wave{ opacity:1; transform: translateY(0); }
-.wave svg{ width:100%; height:100%; display:block; opacity:.95; }
+  .processPin[data-step="1"] .mLine{
+    left: 50%;
+    top: 58%;
+    width: 70%;
+    transform: translate(-50%,-50%) rotate(0deg);
+    opacity: .95;
+    background: rgba(109,59,210,.70);
+  }
+  .processPin[data-step="1"] .mLine.is-faint{ opacity:.40; width:62%; }
 
+  /* Step 3: dots -> one dot */
+  .mergeDots{ position:absolute; inset:0; pointer-events:none; }
+  .mDot{
+    position:absolute;
+    left: calc(var(--x) * 1%);
+    top: calc(var(--y) * 1%);
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    background: rgba(109,59,210,.38);
+    transform: translate(-50%,-50%) scale(1);
+    opacity: .95;
+    transition:
+      left .85s cubic-bezier(.22,.61,.36,1),
+      top .85s cubic-bezier(.22,.61,.36,1),
+      transform .85s cubic-bezier(.22,.61,.36,1),
+      opacity .40s ease;
+    will-change:left,top,transform;
+  }
+  .processPin[data-step="3"] .mDot{
+    left: 50%;
+    top: 58%;
+    transform: translate(-50%,-50%) scale(.20);
+    opacity: .35;
+  }
+  .processPin[data-step="3"] .mDot:nth-child(1){
+    transform: translate(-50%,-50%) scale(1.25);
+    opacity: 1;
+    background: rgba(109,59,210,.85);
+    box-shadow: 0 0 0 10px rgba(109,59,210,.14);
+  }
 
-  /* Fit section (clean, single definition — no duplicates) */
+  /* Step 2: wave with real motion */
+  .wave{
+    position:absolute; inset:0;
+    opacity:0;
+    transform: translateY(10px);
+    transition: opacity .30s ease, transform .30s ease;
+    pointer-events:none;
+  }
+  .processPin[data-step="2"] .wave{ opacity:1; transform: translateY(0); }
+  .wave svg{ width:100%; height:100%; display:block; opacity:.95; }
+
+  .wave path{
+    stroke-dasharray: 2400;
+    stroke-dashoffset: 2400;
+  }
+  .processPin.kick[data-step="2"] .wave path{
+    animation: waveDraw 1.05s cubic-bezier(.22,.61,.36,1) forwards;
+  }
+  @keyframes waveDraw{
+    to{ stroke-dashoffset: 0; }
+  }
+
+  /* Fit section */
   .fit-section{
     padding: 88px 0;
     background:#fff;
@@ -587,13 +600,12 @@
     #outcome.section{ padding: 96px 0; }
   }
 
-  /* Track is a "stage" (absolute-positioned items) */
   .outcomeTrack{
     position:relative;
     margin-top: 26px;
-    padding-left: 86px;         /* space for rail + dot */
-    padding-top: 28px;          /* IMPORTANT: rail starts after subtext */
-    height: 780px;              /* BIG + forces scroll */
+    padding-left: 86px;
+    padding-top: 28px;
+    height: 780px;
   }
   @media (max-width:740px){
     .outcomeTrack{
@@ -603,7 +615,6 @@
     }
   }
 
-  /* Rail */
   .outcomeRail{
     position:absolute;
     left: 18px;
@@ -621,32 +632,26 @@
     background: rgba(109,59,210,.95);
   }
 
-  /* Items positioned by data-pos (0..1) */
-.oItem{
-  position:absolute;
-  left: 0;
-  right: 0;
-  top: calc(var(--pos, .1) * 100%);
-  transform: translateY(-50%);
-
-  /* THIS is the fix: move text to the right of the rail/dot */
-  padding-left: 54px;
-
-  display:grid;
-  grid-template-columns: 96px 1fr;
-  gap: 16px;
-  align-items:start;
-}
-@media (max-width:740px){
   .oItem{
-    padding-left: 52px;
-    grid-template-columns: 92px 1fr;
-    gap: 14px;
+    position:absolute;
+    left: 0;
+    right: 0;
+    top: calc(var(--pos, .1) * 100%);
+    transform: translateY(-50%);
+    padding-left: 54px;
+    display:grid;
+    grid-template-columns: 96px 1fr;
+    gap: 16px;
+    align-items:start;
   }
-}
+  @media (max-width:740px){
+    .oItem{
+      padding-left: 52px;
+      grid-template-columns: 92px 1fr;
+      gap: 14px;
+    }
+  }
 
-
-  /* Dot centered ON rail */
   .oDot{
     position:absolute;
     left: 18px;
@@ -659,13 +664,11 @@
     border: 2px solid rgba(15,18,24,.18);
   }
 
-  /* Default dim */
   .oTime, .oCopy{
     color: rgba(11,13,18,.38);
     transition: color .22s ease;
   }
 
-  /* Active */
   .oItem.is-on .oTime{ color: rgba(11,13,18,.92); }
   .oItem.is-on .oCopy{ color: rgba(11,13,18,.72); }
   .oItem.is-on .oDot{
@@ -673,12 +676,13 @@
     box-shadow: 0 0 0 10px rgba(109,59,210,.14);
   }
 
-  /* reduced motion */
   @media (prefers-reduced-motion: reduce){
     .particles{ animation:none; }
-    .heroViz svg, .processViz svg{ transition:none; }
-    .card, .processCard{ transition:none; }
+    .heroViz svg{ transition:none; }
+    .card{ transition:none; }
     .mLine, .mDot{ transition:none; }
+    .vizLayer, .pTitle, .pBody{ transition:none; }
+    .wave path{ animation:none !important; }
   }
 </style>
 </head>
@@ -828,100 +832,93 @@
     </div>
   </section>
 
-<section id="process" class="section">
-  <div class="wrap">
-    <h2 class="h2">Process</h2>
-    <p class="sub">Scroll. The step changes. No hover. No clicks.</p>
+  <!-- PROCESS (updated mechanism) -->
+  <section id="process" class="section">
+    <div class="wrap">
+      <h2 class="h2">Process</h2>
+      <p class="sub">Scroll. The step changes. No hover. No clicks.</p>
 
-    <div class="processStage" id="processStage">
-      <!-- scroll sentinels -->
-      <div class="pStep s1" data-step="1" aria-hidden="true"></div>
-      <div class="pStep s2" data-step="2" aria-hidden="true"></div>
-      <div class="pStep s3" data-step="3" aria-hidden="true"></div>
-      <div class="pStep sEnd" aria-hidden="true"></div>
-
-      <!-- pinned panel -->
-      <div class="processPin" id="processPin" data-step="1">
-        <div class="pLeft">
-          <div class="pViz">
-            <!-- STEP 1 -->
-            <div class="vizLayer viz1" aria-hidden="true">
-              <div class="mergeLines">
-                <span class="mLine" style="--x:18;--y:28;--w:22;--r:-14"></span>
-                <span class="mLine is-faint" style="--x:28;--y:44;--w:18;--r:10"></span>
-                <span class="mLine" style="--x:35;--y:62;--w:26;--r:-8"></span>
-                <span class="mLine is-faint" style="--x:42;--y:32;--w:20;--r:18"></span>
-                <span class="mLine" style="--x:50;--y:50;--w:28;--r:-6"></span>
-                <span class="mLine is-faint" style="--x:58;--y:30;--w:18;--r:14"></span>
-                <span class="mLine" style="--x:64;--y:58;--w:24;--r:-12"></span>
-                <span class="mLine is-faint" style="--x:72;--y:40;--w:20;--r:8"></span>
-                <span class="mLine" style="--x:80;--y:66;--w:24;--r:-10"></span>
-                <span class="mLine is-faint" style="--x:22;--y:74;--w:16;--r:12"></span>
-                <span class="mLine" style="--x:86;--y:46;--w:18;--r:-18"></span>
-                <span class="mLine is-faint" style="--x:12;--y:52;--w:14;--r:20"></span>
+      <div class="processStage" id="processStage">
+        <div class="processPin" id="processPin" data-step="1">
+          <div class="pLeft">
+            <div class="pViz">
+              <!-- STEP 1 -->
+              <div class="vizLayer viz1" aria-hidden="true">
+                <div class="mergeLines">
+                  <span class="mLine" style="--x:18;--y:28;--w:22;--r:-14"></span>
+                  <span class="mLine is-faint" style="--x:28;--y:44;--w:18;--r:10"></span>
+                  <span class="mLine" style="--x:35;--y:62;--w:26;--r:-8"></span>
+                  <span class="mLine is-faint" style="--x:42;--y:32;--w:20;--r:18"></span>
+                  <span class="mLine" style="--x:50;--y:50;--w:28;--r:-6"></span>
+                  <span class="mLine is-faint" style="--x:58;--y:30;--w:18;--r:14"></span>
+                  <span class="mLine" style="--x:64;--y:58;--w:24;--r:-12"></span>
+                  <span class="mLine is-faint" style="--x:72;--y:40;--w:20;--r:8"></span>
+                  <span class="mLine" style="--x:80;--y:66;--w:24;--r:-10"></span>
+                  <span class="mLine is-faint" style="--x:22;--y:74;--w:16;--r:12"></span>
+                  <span class="mLine" style="--x:86;--y:46;--w:18;--r:-18"></span>
+                  <span class="mLine is-faint" style="--x:12;--y:52;--w:14;--r:20"></span>
+                </div>
               </div>
-            </div>
 
-            <!-- STEP 2 -->
-            <div class="vizLayer viz2 wave" aria-hidden="true">
-              <svg viewBox="0 0 1200 520" preserveAspectRatio="none">
-                <path d="M0,320 C120,260 200,380 320,320 C440,260 520,380 640,320 C760,260 840,380 960,320 C1080,260 1140,330 1200,300"
-                      fill="none" stroke="rgba(109,59,210,.60)" stroke-width="10" stroke-linecap="round"/>
-                <path d="M0,360 C120,300 200,420 320,360 C440,300 520,420 640,360 C760,300 840,420 960,360 C1080,300 1140,370 1200,340"
-                      fill="none" stroke="rgba(109,59,210,.22)" stroke-width="10" stroke-linecap="round"/>
-                <path d="M80,430 H1120" stroke="rgba(15,18,24,.10)" stroke-width="2"/>
-              </svg>
-            </div>
+              <!-- STEP 2 -->
+              <div class="vizLayer viz2 wave" aria-hidden="true">
+                <svg viewBox="0 0 1200 520" preserveAspectRatio="none">
+                  <path d="M0,320 C120,260 200,380 320,320 C440,260 520,380 640,320 C760,260 840,380 960,320 C1080,260 1140,330 1200,300"
+                        fill="none" stroke="rgba(109,59,210,.60)" stroke-width="10" stroke-linecap="round"/>
+                  <path d="M0,360 C120,300 200,420 320,360 C440,300 520,420 640,360 C760,300 840,420 960,360 C1080,300 1140,370 1200,340"
+                        fill="none" stroke="rgba(109,59,210,.22)" stroke-width="10" stroke-linecap="round"/>
+                  <path d="M80,430 H1120" stroke="rgba(15,18,24,.10)" stroke-width="2"/>
+                </svg>
+              </div>
 
-            <!-- STEP 3 -->
-            <div class="vizLayer viz3" aria-hidden="true">
-              <div class="mergeDots">
-                <span class="mDot" style="--x:14;--y:26"></span>
-                <span class="mDot" style="--x:22;--y:48"></span>
-                <span class="mDot" style="--x:28;--y:72"></span>
-                <span class="mDot" style="--x:36;--y:34"></span>
-                <span class="mDot" style="--x:44;--y:58"></span>
-                <span class="mDot" style="--x:52;--y:28"></span>
-                <span class="mDot" style="--x:60;--y:44"></span>
-                <span class="mDot" style="--x:68;--y:66"></span>
-                <span class="mDot" style="--x:76;--y:36"></span>
-                <span class="mDot" style="--x:84;--y:54"></span>
-                <span class="mDot" style="--x:18;--y:62"></span>
-                <span class="mDot" style="--x:26;--y:40"></span>
-                <span class="mDot" style="--x:34;--y:22"></span>
-                <span class="mDot" style="--x:42;--y:78"></span>
-                <span class="mDot" style="--x:50;--y:50"></span>
-                <span class="mDot" style="--x:58;--y:74"></span>
-                <span class="mDot" style="--x:66;--y:28"></span>
-                <span class="mDot" style="--x:74;--y:48"></span>
-                <span class="mDot" style="--x:82;--y:70"></span>
-                <span class="mDot" style="--x:90;--y:40"></span>
-                <span class="mDot" style="--x:12;--y:52"></span>
-                <span class="mDot" style="--x:30;--y:60"></span>
-                <span class="mDot" style="--x:70;--y:30"></span>
-                <span class="mDot" style="--x:88;--y:62"></span>
+              <!-- STEP 3 -->
+              <div class="vizLayer viz3" aria-hidden="true">
+                <div class="mergeDots">
+                  <span class="mDot" style="--x:14;--y:26"></span>
+                  <span class="mDot" style="--x:22;--y:48"></span>
+                  <span class="mDot" style="--x:28;--y:72"></span>
+                  <span class="mDot" style="--x:36;--y:34"></span>
+                  <span class="mDot" style="--x:44;--y:58"></span>
+                  <span class="mDot" style="--x:52;--y:28"></span>
+                  <span class="mDot" style="--x:60;--y:44"></span>
+                  <span class="mDot" style="--x:68;--y:66"></span>
+                  <span class="mDot" style="--x:76;--y:36"></span>
+                  <span class="mDot" style="--x:84;--y:54"></span>
+                  <span class="mDot" style="--x:18;--y:62"></span>
+                  <span class="mDot" style="--x:26;--y:40"></span>
+                  <span class="mDot" style="--x:34;--y:22"></span>
+                  <span class="mDot" style="--x:42;--y:78"></span>
+                  <span class="mDot" style="--x:50;--y:50"></span>
+                  <span class="mDot" style="--x:58;--y:74"></span>
+                  <span class="mDot" style="--x:66;--y:28"></span>
+                  <span class="mDot" style="--x:74;--y:48"></span>
+                  <span class="mDot" style="--x:82;--y:70"></span>
+                  <span class="mDot" style="--x:90;--y:40"></span>
+                  <span class="mDot" style="--x:12;--y:52"></span>
+                  <span class="mDot" style="--x:30;--y:60"></span>
+                  <span class="mDot" style="--x:70;--y:30"></span>
+                  <span class="mDot" style="--x:88;--y:62"></span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <div class="pRight">
-          <div class="stepPills" aria-hidden="true">
-            <div class="pill is-on" data-pill="1">1</div>
-            <div class="pill" data-pill="2">2</div>
-            <div class="pill" data-pill="3">3</div>
+          <div class="pRight">
+            <div class="stepPills" aria-hidden="true">
+              <div class="pill is-on" data-pill="1">1</div>
+              <div class="pill" data-pill="2">2</div>
+              <div class="pill" data-pill="3">3</div>
+            </div>
+
+            <h3 class="pTitle" id="pTitle">Tighten nutrition</h3>
+            <p class="pBody" id="pBody">Reduce decision load first. Remove negotiation. Make eating automatic inside dense days.</p>
           </div>
-
-          <h3 class="pTitle" id="pTitle">Tighten nutrition</h3>
-          <p class="pBody" id="pBody">Reduce decision load first. Remove negotiation. Make eating automatic inside dense days.</p>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-
-  <!-- OUTCOME (fixed) -->
+  <!-- OUTCOME (unchanged) -->
   <section id="outcome" class="section">
     <div class="wrap">
       <h2 class="h2">Outcome over time</h2>
@@ -933,7 +930,6 @@
           <div class="outcomeRailFill" id="outcomeRailFill"></div>
         </div>
 
-        <!-- TIME-WEIGHTED POSITIONS (0..1) -->
         <div class="oItem" data-pos="0.08">
           <span class="oDot"></span>
           <div class="oTime">30 days</div>
@@ -1016,70 +1012,122 @@
     });
   });
 
-  // Process expand
-(function initProcessSwitcher(){
-  const stage = document.getElementById("processStage");
-  const pin = document.getElementById("processPin");
-  const title = document.getElementById("pTitle");
-  const body = document.getElementById("pBody");
-  if(!stage || !pin || !title || !body) return;
+  // =========================
+  // PROCESS (bulletproof scroll switcher)
+  // =========================
+  (function initProcessSwitcher(){
+    try{
+      const stage = document.getElementById("processStage");
+      const pin = document.getElementById("processPin");
+      const title = document.getElementById("pTitle");
+      const body = document.getElementById("pBody");
+      if(!stage || !pin || !title || !body) return;
 
-  const pills = Array.from(pin.querySelectorAll("[data-pill]"));
-  const sentinels = Array.from(stage.querySelectorAll("[data-step]"));
+      const pills = Array.from(pin.querySelectorAll("[data-pill]"));
 
-  const steps = {
-    1: {
-      title: "Tighten nutrition",
-      body: "Reduce decision load first. Remove negotiation. Make eating automatic inside dense days."
-    },
-    2: {
-      title: "Short daily training",
-      body: "Repeatable sessions that fit real schedules. No long blocks. No all-or-nothing weeks."
-    },
-    3: {
-      title: "Lock the structure",
-      body: "So it holds when stress rises and time collapses. Missed days don’t create resets."
+      const steps = {
+        1: {
+          title: "Tighten nutrition",
+          body: "Reduce decision load first. Remove negotiation. Make eating automatic inside dense days."
+        },
+        2: {
+          title: "Short daily training",
+          body: "Repeatable sessions that fit real schedules. No long blocks. No all-or-nothing weeks."
+        },
+        3: {
+          title: "Lock the structure",
+          body: "So it holds when stress rises and time collapses. Missed days don’t create resets."
+        }
+      };
+
+      const clamp = (n,min,max)=> Math.max(min, Math.min(max, n));
+
+      let current = 1;
+      let raf = null;
+
+      function kickWaveIfNeeded(nextStep){
+        // retrigger wave draw when step 2 becomes active
+        if(nextStep !== 2) return;
+        pin.classList.remove("kick");
+        // force reflow
+        void pin.offsetWidth;
+        pin.classList.add("kick");
+      }
+
+      function animateTextSwap(nextStep){
+        if(prefersReduced) return;
+
+        pin.classList.add("is-switching");
+        window.setTimeout(()=>{
+          const s = steps[nextStep];
+          title.textContent = s.title;
+          body.textContent = s.body;
+          pin.classList.remove("is-switching");
+        }, 130);
+      }
+
+      function applyStep(nextStep){
+        if(nextStep === current) return;
+
+        current = nextStep;
+        pin.setAttribute("data-step", String(nextStep));
+
+        // pills
+        pills.forEach(p => p.classList.toggle("is-on", p.getAttribute("data-pill") === String(nextStep)));
+
+        // text + wave
+        kickWaveIfNeeded(nextStep);
+
+        if(prefersReduced){
+          title.textContent = steps[nextStep].title;
+          body.textContent = steps[nextStep].body;
+        } else {
+          animateTextSwap(nextStep);
+        }
+      }
+
+      function computeStep(){
+        const rect = stage.getBoundingClientRect();
+        const vh = window.innerHeight || document.documentElement.clientHeight;
+
+        // progress through stage: 0..1
+        const total = Math.max(1, stage.offsetHeight - vh);
+        const p = clamp((-rect.top) / total, 0, 1);
+
+        // 0..1 mapped to steps across first 3 "pages" (release on the 4th)
+        // step bands: [0..0.333) = 1, [0.333..0.666) = 2, [0.666..1] = 3
+        const next =
+          (p < 0.333) ? 1 :
+          (p < 0.666) ? 2 :
+          3;
+
+        applyStep(next);
+      }
+
+      function onScroll(){
+        if(raf) return;
+        raf = requestAnimationFrame(()=>{
+          raf = null;
+          computeStep();
+        });
+      }
+
+      window.addEventListener("scroll", onScroll, {passive:true});
+      window.addEventListener("resize", ()=>{ computeStep(); }, {passive:true});
+
+      // init
+      computeStep();
+      // ensure wave animation is ready if you land mid-section
+      if(current === 2) kickWaveIfNeeded(2);
+    } catch(e){
+      // Never let process break the rest of the page.
+      console.warn("Process switcher failed:", e);
     }
-  };
+  })();
 
-  function setStep(n){
-    const s = steps[n];
-    if(!s) return;
-    pin.setAttribute("data-step", String(n));
-    title.textContent = s.title;
-    body.textContent = s.body;
-    pills.forEach(p => p.classList.toggle("is-on", p.getAttribute("data-pill") === String(n)));
-  }
-
-  // Mobile: no pin behavior. Keep step 1.
-  if (matchMedia("(max-width: 900px)").matches) {
-    setStep(1);
-    return;
-  }
-
-  let current = 1;
-  const obs = new IntersectionObserver((entries)=>{
-    const visible = entries
-      .filter(e=>e.isIntersecting)
-      .sort((a,b)=> (b.intersectionRatio - a.intersectionRatio));
-    if(!visible.length) return;
-
-    const n = parseInt(visible[0].target.getAttribute("data-step") || "1", 10);
-    if(n !== current){
-      current = n;
-      setStep(current);
-    }
-  }, {
-    threshold: [0.35, 0.55, 0.75],
-    rootMargin: "-25% 0px -45% 0px"
-  });
-
-  sentinels.forEach(s=>obs.observe(s));
-  setStep(1);
-})();
-
-
-  // OUTCOME timeline (rail + fill + activation)
+  // =========================
+  // OUTCOME timeline (unchanged)
+  // =========================
   (function initOutcome(){
     const section = document.getElementById("outcome");
     const track   = document.getElementById("outcomeTrack");
@@ -1089,15 +1137,13 @@
 
     const items = Array.from(track.querySelectorAll(".oItem"));
 
-    // Apply positions (time-weighted)
     items.forEach(it=>{
       const pos = Math.max(0, Math.min(1, parseFloat(it.getAttribute("data-pos") || "0")));
       it.style.setProperty("--pos", pos.toFixed(4));
     });
 
-    // Rail geometry in px, inside track
     function layoutRail(){
-      const topPad = 28;                 // matches .outcomeTrack padding-top
+      const topPad = 28;
       const bottomPad = 26;
       const H = track.clientHeight;
 
@@ -1114,7 +1160,6 @@
       const r = section.getBoundingClientRect();
       const vh = window.innerHeight || document.documentElement.clientHeight;
 
-      // Progress through the section
       const start = r.top - vh * 0.20;
       const end   = r.bottom - vh * 0.55;
       const p01 = clamp((0 - start) / (end - start), 0, 1);
@@ -1124,7 +1169,6 @@
 
       fill.style.height = (p01 * railH) + "px";
 
-      // Activate items based on pos
       items.forEach(it=>{
         const pos = parseFloat(it.getAttribute("data-pos") || "0");
         it.classList.toggle("is-on", p01 >= pos);
@@ -1145,7 +1189,6 @@
     window.addEventListener("scroll", onScroll, {passive:true});
     window.addEventListener("resize", refresh);
 
-    // initial
     setTimeout(refresh, 30);
     setTimeout(refresh, 250);
 
@@ -1159,7 +1202,6 @@
   // Pointer-follow background / parallax
   const bg = document.getElementById("bgStage");
   const heroPar = document.querySelector("[data-parallax]");
-  const par3 = Array.from(document.querySelectorAll("[data-parallax3]"));
 
   function setVars(mx, my){
     if(bg){
@@ -1175,10 +1217,6 @@
       heroPar.style.setProperty("--px", (ox*1.2).toFixed(2) + "px");
       heroPar.style.setProperty("--py", (oy*1.2).toFixed(2) + "px");
     }
-    par3.forEach(el=>{
-      el.style.setProperty("--px3", (ox*0.9).toFixed(2) + "px");
-      el.style.setProperty("--py3", (oy*0.9).toFixed(2) + "px");
-    });
   }
 
   if(!prefersReduced){
