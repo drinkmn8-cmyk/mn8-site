@@ -765,6 +765,34 @@
     .vizLayer, .pTitle, .pBody{ transition:none; }
     .wave path{ animation:none !important; }
   }
+  /* =======================
+   FOOTER (FINAL CTA)
+   ======================= */
+footer.final{
+  margin-top: 120px;         /* separation from section above */
+  padding: 120px 0 160px;    /* more space at bottom */
+  position: relative;
+  z-index: 1;
+}
+
+.finalCard{
+  border-radius: var(--radiusXL);
+  background: rgba(255,255,255,.86);
+  box-shadow: var(--shadow1);
+  padding: 34px;
+  overflow: hidden;
+}
+
+@media (max-width: 740px){
+  footer.final{
+    margin-top: 96px;
+    padding: 96px 0 120px;
+  }
+  .finalCard{
+    padding: 24px;
+  }
+}
+
 </style>
 </head>
 
