@@ -527,10 +527,16 @@
   transition: opacity .28s ease, transform .28s ease;
   pointer-events:none;
 }
-@keyframes waveDrift{
-  from { transform: translateX(-3%); }
-  to   { transform: translateX(3%); }
+@media (max-width:900px){
+  .processStage{ height: calc(4 * 92vh); }
+  .processPin{
+    position: sticky;
+    top: 68px;
+    height: calc(92vh - 86px);
+    grid-template-columns: 1fr;
+  }
 }
+
 
 .processPin[data-step="2"] .wave svg{
   animation: waveDrift 1.4s ease-in-out infinite alternate;
