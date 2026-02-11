@@ -730,40 +730,74 @@ footer.final{
 }
 
 /* =========================
-   PROCESS — Mobile: keep old layout
-   Only: free the SVG + make it bigger
+   PROCESS — Mobile stack layout
+   SVG → Pills → Title → Body
    ========================= */
 @media (max-width: 900px){
 
-  /* Keep the pinned card tall like before */
+  /* Keep the pinned container, but stack content */
   .processPin{
+    display: flex;
+    flex-direction: column;
     height: calc(100vh - 96px);
   }
 
-  /* Remove the "boxy" restraint feel inside the SVG area */
-  .pViz{
-    background: none;          /* kills the inner card look */
-    border-radius: 0;
-    overflow: visible;         /* let SVG breathe */
-    min-height: 300px;         /* bigger visual */
-    height: 300px;
-  }
-
-  /* Make SVG bigger but still inset from walls */
-  .mn8Glyph{
-    padding: 0;                /* remove inner padding */
-    width: 108%;               /* bigger, but not full bleed */
-    height: auto;
-    margin: 0 auto;
-    transform: translateX(-4%); /* re-center since width > 100 */
-  }
-
-  /* Optional: slightly reduce pLeft padding so SVG feels larger */
+  /* SVG area on top, takes space */
   .pLeft{
     padding: 18px;
+    flex: 1 1 auto;            /* takes space */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Remove the "box" feeling + let SVG breathe */
+  .pViz{
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    background: none;
+    border-radius: 0;
+    box-shadow: none;
+    overflow: visible;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Make SVG big and centered */
+  .mn8Glyph{
+    width: min(520px, 92vw);
+    height: auto;
+    padding: 0;
+    margin: 0 auto;
+    display: block;
+  }
+
+  /* Text area under SVG */
+  .pRight{
+    flex: 0 0 auto;
+    padding: 18px 18px 22px;
+    background: rgba(255,255,255,.92);
+  }
+
+  /* Pills directly under SVG, centered */
+  .stepPills{
+    justify-content: center;
+    margin-top: 6px;
+    margin-bottom: 10px;
+  }
+
+  /* Title then body */
+  .pTitle{
+    text-align: left;
+    margin-top: 2px;
+  }
+  .pBody{
+    text-align: left;
   }
 }
-
 
 
 </style>
