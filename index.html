@@ -801,6 +801,25 @@ footer.final{
     line-height: 1.6;
   }
 }
+/* =========================
+   HERO CHIPS — Mobile single-row
+   ========================= */
+@media (max-width: 900px){
+
+  .heroMini{
+    flex-wrap: nowrap;        /* force single line */
+    justify-content: center;
+    gap: 6px;
+    overflow: hidden;
+  }
+
+  .heroMini .chip{
+    font-size: 10.5px;
+    padding: 6px 9px;
+    white-space: nowrap;
+    box-shadow: none;         /* cleaner on mobile */
+  }
+}
 
 </style>
 </head>
