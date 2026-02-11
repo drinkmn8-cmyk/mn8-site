@@ -819,6 +819,18 @@ footer.final{
   }
 }
 
+  .brandLogo{
+  height: 30px;
+  width: auto;
+  display: block;
+}
+
+@media (max-width: 740px){
+  .brandLogo{
+    height: 24px;
+  }
+}
+
 
 
 </style>
@@ -829,24 +841,17 @@ footer.final{
     <div class="particles"></div>
   </div>
 
-  <header class="topbar">
-    <div class="wrap">
-      <div class="topbarInner">
-        <div class="brand">
-          <span class="mark"></span>
-          <span>MN8</span>
-        </div>
+<header class="topbar">
+  <div class="wrap topbarInner">
 
-        <nav class="nav">
-          <a href="#problem">Problem</a>
-          <a href="#definition">Definition</a>
-          <a href="#process">Process</a>
-          <a href="#outcome">Outcome</a>
-          <button class="navCTA" data-qualify>Begin Qualification</button>
-        </nav>
-      </div>
-    </div>
-  </header>
+    <a href="/" class="brand">
+      <img src="/mn8-logo.svg" alt="MN8" class="brandLogo">
+    </a>
+
+    <button class="navCTA">Begin Qualification</button>
+
+  </div>
+</header>
 
   <main class="hero">
     <div class="wrap">
