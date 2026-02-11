@@ -729,6 +729,79 @@ footer.final{
   }
 }
 
+    /* =========================
+   PROCESS — Mobile layout fix
+   SVG top → dots centered → title → body
+   ========================= */
+@media (max-width: 900px){
+
+  /* make the pinned panel a vertical stack */
+  .processPin{
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    height: auto;                 /* let content breathe on mobile */
+  }
+
+  /* visual first */
+  .pLeft{ order: 1; }
+  .pViz{
+    min-height: 240px;
+    height: 240px;                /* consistent hero-like visual block */
+  }
+
+  /* text block second */
+  .pRight{
+    order: 2;
+    padding: 18px 18px 26px;
+    align-items: center;          /* center the whole block */
+    text-align: center;
+    gap: 12px;
+  }
+
+  /* reorder inside pRight */
+  .stepPills{ order: 3; }         /* dots should sit between visual + title, but visually under */
+  .pTitle{ order: 4; }
+  .pBody{ order: 5; }
+
+  /* dots centered + on their own row */
+  .stepPills{
+    width: 100%;
+    justify-content: center;
+    margin-top: 10px;
+    margin-bottom: 6px;
+  }
+
+  /* make them look like dots (not chunky buttons) */
+  .pill{
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+    padding: 0;
+    font-size: 0;                 /* hide 1/2/3 */
+    line-height: 0;
+    border: 1px solid rgba(15,18,24,.18);
+    box-shadow: none;
+    background: rgba(255,255,255,.9);
+  }
+  .pill.is-on{
+    background: rgba(109,59,210,.90);
+    border-color: rgba(109,59,210,.90);
+    transform: none;
+  }
+
+  /* tighten title + body for mobile */
+  .pTitle{
+    margin-top: 4px;
+    font-size: 22px;
+    line-height: 1.15;
+  }
+  .pBody{
+    max-width: 34ch;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+}
+
 </style>
 </head>
 
