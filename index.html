@@ -950,16 +950,20 @@ footer.final{
   const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const QUALIFY_URL = "qualify.html";
 
+  // =========================
   // CTA routing
+  // =========================
   document.querySelectorAll("[data-qualify]").forEach(btn=>{
     btn.addEventListener("click", ()=>{ window.location.href = QUALIFY_URL; });
   });
 
+  // =========================
   // Smooth scroll
+  // =========================
   function scrollToId(id){
     const el = document.querySelector(id);
     if(!el) return;
-    el.scrollIntoView({behavior: prefersReduced ? "auto" : "smooth", block:"start"});
+    el.scrollIntoView({ behavior: prefersReduced ? "auto" : "smooth", block:"start" });
   }
   document.querySelectorAll("[data-scroll]").forEach(btn=>{
     btn.addEventListener("click", ()=>{
@@ -979,9 +983,9 @@ footer.final{
   });
 
   // =========================
-  // PROCESS (Observer-driven + visual engine)
+  // PROCESS (Scroll-progress switcher + Visual engine)
   // =========================
-  (function initProcessSwitcher(){
+  (function initProcess(){
     try{
       const stage = document.getElementById("processStage");
       const pin   = document.getElementById("processPin");
@@ -991,7 +995,7 @@ footer.final{
 
       const pills = Array.from(pin.querySelectorAll("[data-pill]"));
 
-      // ---------- COPY ----------
+      // COPY
       const steps = {
         1: { title: "Remove food negotiation", body: "Simple rules eliminate daily decisions, so eating stays automatic — even on bad days." },
         2: { title: "Minimal daily movement",  body: "Short, repeatable movement that fits any day. No scheduling. No intensity to manage." },
@@ -1006,20 +1010,19 @@ footer.final{
       const vS2 = svg.querySelector("#vS2");
       const vS3 = svg.querySelector("#vS3");
 
-      const tornado  = svg.querySelector("#tornado");
+      const tornado   = svg.querySelector("#tornado");
       const finalLine = svg.querySelector("#finalLine");
 
       const waveMain  = svg.querySelector("#waveMain");
       const waveFaint = svg.querySelector("#waveFaint");
 
-      const dust    = svg.querySelector("#dust");
-      const coreDot = svg.querySelector("#coreDot");
-      const coreHalo= svg.querySelector("#coreHalo");
+      const dust     = svg.querySelector("#dust");
+      const coreDot  = svg.querySelector("#coreDot");
+      const coreHalo = svg.querySelector("#coreHalo");
 
       let rafVisual = null;
       let mode = 1;
       let lastWavePoints = null;
-      let isActive = false;
 
       const C = { x: 260, y: 260 };
       const clamp01 = (x)=> Math.max(0, Math.min(1, x));
@@ -1044,11 +1047,11 @@ footer.final{
         if(!tornado) return;
         tornado.innerHTML = "";
 
-        const N = 10; // 8–12; pick 10
+        const N = 10; // 8–12
         for(let i=0;i<N;i++){
           const line = document.createElementNS("http://www.w3.org/2000/svg","line");
           line.setAttribute("stroke","rgba(109,59,210,.70)");
-          line.setAttribute("stroke-width","3");  // thin = premium
+          line.setAttribute("stroke-width","3"); // thin
           line.setAttribute("stroke-linecap","round");
           line.setAttribute("opacity", i%3===0 ? "0.35" : "0.85");
 
@@ -1090,7 +1093,6 @@ footer.final{
         stopVisual();
         mode = 1;
         showOnly(1);
-
         buildTornadoLines();
 
         const start = performance.now();
@@ -1099,12 +1101,12 @@ footer.final{
         const total = floatDur + convergeDur;
 
         function frame(now){
-          if(!isActive || mode !== 1) return;
+          if(mode !== 1) return;
 
           const t = now - start;
           const p = clamp01(t / total);
+          const pConv = clamp01((t - floatDur) / convergeDur);
 
-          const pConv  = clamp01((t - floatDur) / convergeDur);
           const spin = now * 0.0024;
 
           const yFinal = 260, xL = 140, xR = 380;
@@ -1151,9 +1153,7 @@ footer.final{
             finalLine.style.opacity = String(o);
           }
 
-          if(p < 1){
-            rafVisual = requestAnimationFrame(frame);
-          }
+          if(p < 1) rafVisual = requestAnimationFrame(frame);
         }
 
         rafVisual = requestAnimationFrame(frame);
@@ -1165,12 +1165,10 @@ footer.final{
         showOnly(2);
 
         const start = performance.now();
-
         function frame(now){
-          if(!isActive || mode !== 2) return;
+          if(mode !== 2) return;
 
           const t = (now - start) / 1000;
-
           const ptsMain  = makeWavePoints(t, 260, 18, 0.0);
           const ptsFaint = makeWavePoints(t, 292, 12, 0.35);
 
@@ -1196,6 +1194,7 @@ footer.final{
 
         const pts = lastWavePoints || makeWavePoints(0, 260, 18, 0.0);
         const N = 42;
+
         const samples = [];
         for(let i=0;i<N;i++){
           const p = pts[Math.floor((i/(N-1)) * (pts.length-1))];
@@ -1226,7 +1225,7 @@ footer.final{
 
         const start = performance.now();
         const scatterDur = 650;
-        const gatherDur = 750;
+        const gatherDur  = 750;
         const total = scatterDur + gatherDur;
 
         function easeOutCubic(x){ return 1 - Math.pow(1-x,3); }
@@ -1235,7 +1234,7 @@ footer.final{
         }
 
         function frame(now){
-          if(!isActive || mode !== 3) return;
+          if(mode !== 3) return;
 
           const t = now - start;
           const p = clamp01(t / total);
@@ -1271,9 +1270,7 @@ footer.final{
             coreHalo.style.opacity = String(o);
           }
 
-          if(p < 1){
-            rafVisual = requestAnimationFrame(frame);
-          }
+          if(p < 1) rafVisual = requestAnimationFrame(frame);
         }
 
         rafVisual = requestAnimationFrame(frame);
@@ -1284,9 +1281,8 @@ footer.final{
         if(prefersReduced) return;
         pin.classList.add("is-switching");
         window.setTimeout(()=>{
-          const s = steps[nextStep];
-          title.textContent = s.title;
-          body.textContent = s.body;
+          title.textContent = steps[nextStep].title;
+          body.textContent  = steps[nextStep].body;
           pin.classList.remove("is-switching");
         }, 130);
       }
@@ -1294,69 +1290,85 @@ footer.final{
       // ---------- STEP STATE ----------
       let current = 1;
 
-      function setStep(nextStep){
-        if(nextStep === current) return;
+      function setStep(nextStep, forcePlay=false){
+        if(nextStep !== 1 && nextStep !== 2 && nextStep !== 3) return;
 
+        const changed = nextStep !== current;
         current = nextStep;
+
         pin.setAttribute("data-step", String(nextStep));
         pills.forEach(p => p.classList.toggle("is-on", p.getAttribute("data-pill") === String(nextStep)));
 
         if(prefersReduced){
           title.textContent = steps[nextStep].title;
-          body.textContent = steps[nextStep].body;
+          body.textContent  = steps[nextStep].body;
         } else {
-          animateTextSwap(nextStep);
+          if(changed) animateTextSwap(nextStep);
         }
 
-        if(prefersReduced || !isActive) return;
-
-        if(nextStep === 1) playStep1();
-        if(nextStep === 2) playStep2();
-        if(nextStep === 3) playStep3();
+        if(prefersReduced) return;
+        if(forcePlay || changed){
+          if(nextStep === 1) playStep1();
+          if(nextStep === 2) playStep2();
+          if(nextStep === 3) playStep3();
+        }
       }
 
-      // ---------- OBSERVERS ----------
-      // 1) Only animate when pin is actually visible
-      const pinObserver = new IntersectionObserver((entries)=>{
-        const e = entries[0];
-        isActive = !!e?.isIntersecting;
+      // ---------- ONLY RUN WHEN STAGE IS VISIBLE ----------
+      let stageActive = false;
 
-        if(!isActive){
+      const stageObserver = new IntersectionObserver((entries)=>{
+        stageActive = !!entries[0]?.isIntersecting;
+
+        if(!stageActive){
           stopVisual();
           return;
         }
 
-        // on enter: play current step fresh
-        if(prefersReduced) return;
-        if(current === 1) playStep1();
-        if(current === 2) playStep2();
-        if(current === 3) playStep3();
-      }, { threshold: 0.35 });
+        // enter: sync + kick correct animation
+        computeStep(true);
+      }, { threshold: 0.12 });
 
-      pinObserver.observe(pin);
+      stageObserver.observe(stage);
 
-      // 2) Switch steps based on sentinel visibility
-      const sentinels = Array.from(stage.querySelectorAll('.pStep[data-step]'));
+      // ---------- SCROLL-PROGRESS SWITCHER (THE FIX) ----------
+      const clamp = (n,min,max)=> Math.max(min, Math.min(max, n));
 
-      const stepObserver = new IntersectionObserver((entries)=>{
-        const best = entries
-          .filter(en => en.isIntersecting)
-          .sort((a,b)=> (b.intersectionRatio - a.intersectionRatio))[0];
+      function computeStep(forcePlay=false){
+        if(!stageActive) return;
 
-        if(!best) return;
+        const rect = stage.getBoundingClientRect();
+        const vh = window.innerHeight || document.documentElement.clientHeight;
 
-        const step = parseInt(best.target.getAttribute("data-step"), 10);
-        if(step === 1 || step === 2 || step === 3){
-          setStep(step);
-        }
-      }, { threshold: [0.25, 0.35, 0.5, 0.65] });
+        const total = Math.max(1, stage.offsetHeight - vh);
+        const p = clamp((-rect.top) / total, 0, 1);
 
-      sentinels.forEach(s => stepObserver.observe(s));
+        const STEP_1_END = 1/3;
+        const STEP_2_END = 2/3;
 
-      // init state (NO auto animation here)
-      pin.setAttribute("data-step", "1");
-      title.textContent = steps[1].title;
-      body.textContent  = steps[1].body;
+        const next =
+          (p < STEP_1_END) ? 1 :
+          (p < STEP_2_END) ? 2 :
+          3;
+
+        setStep(next, forcePlay);
+      }
+
+      let raf = null;
+      function onScroll(){
+        if(!stageActive) return;
+        if(raf) return;
+        raf = requestAnimationFrame(()=>{
+          raf = null;
+          computeStep(false);
+        });
+      }
+
+      window.addEventListener("scroll", onScroll, { passive:true });
+      window.addEventListener("resize", ()=> computeStep(true), { passive:true });
+
+      // init (no autoplay)
+      setStep(1, false);
 
     } catch(e){
       console.warn("Process switcher failed:", e);
@@ -1374,7 +1386,6 @@ footer.final{
     if(!section || !track || !rail || !fill) return;
 
     const items = Array.from(track.querySelectorAll(".oItem"));
-
     items.forEach(it=>{
       const pos = Math.max(0, Math.min(1, parseFloat(it.getAttribute("data-pos") || "0")));
       it.style.setProperty("--pos", pos.toFixed(4));
@@ -1437,7 +1448,9 @@ footer.final{
     }
   })();
 
-  // Pointer-follow background / parallax
+  // =========================
+  // Pointer-follow background / parallax (unchanged)
+  // =========================
   const bg = document.getElementById("bgStage");
   const heroPar = document.querySelector("[data-parallax]");
 
@@ -1465,24 +1478,6 @@ footer.final{
     setVars(.6,.3);
   }
 
-  // Card tilt (optional)
-  const tiltCards = Array.from(document.querySelectorAll("[data-tilt]"));
-  const isFine = matchMedia("(hover:hover) and (pointer:fine)").matches;
-  if(isFine && !prefersReduced){
-    tiltCards.forEach(card=>{
-      card.addEventListener("mousemove", (e)=>{
-        const r = card.getBoundingClientRect();
-        const x = (e.clientX - r.left) / r.width;
-        const y = (e.clientY - r.top) / r.height;
-        const rx = (0.5 - y) * 6;
-        const ry = (x - 0.5) * 8;
-        card.style.transform = `perspective(900px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`;
-      });
-      card.addEventListener("mouseleave", ()=>{
-        card.style.transform = "perspective(900px) rotateX(0deg) rotateY(0deg)";
-      });
-    });
-  }
 })();
 </script>
 </body>
