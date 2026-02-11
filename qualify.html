@@ -87,123 +87,131 @@
       </div>
     </header>
 
-    <main>
-      <section class="section">
-        <div class="wrap">
-          <div class="form-card">
-            <h1 class="form-title">Qualification</h1>
-
-            <form id="qualifyForm" novalidate>
-              <!-- Optional client timestamp (Apps Script should still set the real timestamp) -->
-              <input type="hidden" id="clientTimestamp" name="clientTimestamp" value="" />
-
-              <div class="form-grid">
-                <div class="field">
-                  <label for="fullName">Full name</label>
-                  <input
-                    class="control"
-                    id="fullName"
-                    name="fullName"
-                    type="text"
-                    placeholder="Your name"
-                    autocomplete="name"
-                    required
-                  />
-                </div>
-
-                <div class="field">
-                  <label for="email">Email</label>
-                  <input
-                    class="control"
-                    id="email"
-                    name="email"
-                    type="email"
-                    placeholder="you@email.com"
-                    autocomplete="email"
-                    required
-                  />
-                </div>
-
-                <div class="field" style="grid-column: 1 / -1;">
-                  <label for="describe">Which best describes you?</label>
-                  <select class="control" id="describe" name="describe" required>
-                    <option value="" selected disabled>Select one</option>
-                    <option value="High-responsibility professional">High-responsibility professional</option>
-                    <option value="Entrepreneur / operator">Entrepreneur / operator</option>
-                    <option value="Busy parent with a full schedule">Busy parent with a full schedule</option>
-                    <option value="High performer rebuilding consistency">High performer rebuilding consistency</option>
-                  </select>
-                </div>
-
-                <div class="field" style="grid-column: 1 / -1;">
-                  <label for="breaks">What breaks consistency for you?</label>
-                  <select class="control" id="breaks" name="breaks" required>
-                    <option value="" selected disabled>Select one</option>
-                    <option value="Schedule overload / no time margin">Schedule overload / no time margin</option>
-                    <option value="Decision fatigue / mental load">Decision fatigue / mental load</option>
-                    <option value="Travel / unpredictability">Travel / unpredictability</option>
-                    <option value="Stress eating / low control at night">Stress eating / low control at night</option>
-                  </select>
-                </div>
-
-                <div class="field" style="grid-column: 1 / -1;">
-                  <label for="restarts">How often have you restarted?</label>
-                  <select class="control" id="restarts" name="restarts" required>
-                    <option value="" selected disabled>Select one</option>
-                    <option value="Rarely">Rarely</option>
-                    <option value="A few times a year">A few times a year</option>
-                    <option value="Every 1–2 months">Every 1–2 months</option>
-                    <option value="Constant cycle">Constant cycle</option>
-                  </select>
-                </div>
-
-                <div class="field" style="grid-column: 1 / -1;">
-                  <label for="result">What result would make this a win in 90 days?</label>
-                  <input
-                    class="control"
-                    id="result"
-                    name="result"
-                    type="text"
-                    placeholder="Example: -10 lbs while keeping my schedule"
-                    required
-                  />
-                </div>
-
-                <div class="field">
-                  <label for="ready">If accepted, ready to start immediately?</label>
-                  <select class="control" id="ready" name="ready" required>
-                    <option value="" selected disabled>Select one</option>
-                    <option value="Yes">Yes</option>
-                    <option value="Within 7 days">Within 7 days</option>
-                    <option value="Not yet">Not yet</option>
-                  </select>
-                </div>
-
-                <div class="field">
-                  <label for="structure">Can you follow a simple daily structure?</label>
-                  <select class="control" id="structure" name="structure" required>
-                    <option value="" selected disabled>Select one</option>
-                    <option value="Yes">Yes</option>
-                    <option value="Probably">Probably</option>
-                    <option value="No">No</option>
-                  </select>
-                </div>
-
-                <div class="field" style="grid-column: 1 / -1;">
-                  <label for="why">Why MN8 specifically?</label>
-                  <textarea class="control" id="why" name="why" placeholder="One sentence is enough." required></textarea>
-                </div>
-              </div>
-
-              <div class="form-actions">
-                <button class="btn btn-primary" id="submitBtn" type="submit">Submit Qualification</button>
-                <span class="form-note" id="formNote">You’ll receive next steps by email if approved.</span>
-              </div>
-            </form>
-          </div>
+<main>
+  <section class="section" id="qualification">
+    <div class="wrap">
+      <div class="card cardPad qualifyCard">
+        <div class="qualifyHead">
+          <h1 class="h2 qualifyTitle">Qualification</h1>
+          <p class="sub qualifySub">Short form. Clear signal. Fast review.</p>
         </div>
-      </section>
-    </main>
+
+        <form id="qualifyForm" class="qualifyForm" novalidate>
+          <input type="hidden" id="clientTimestamp" name="clientTimestamp" value="" />
+
+          <div class="qualifyGrid">
+            <div class="field">
+              <label for="fullName">Full name</label>
+              <input
+                class="control"
+                id="fullName"
+                name="fullName"
+                type="text"
+                placeholder="Your name"
+                autocomplete="name"
+                required
+              />
+            </div>
+
+            <div class="field">
+              <label for="email">Email</label>
+              <input
+                class="control"
+                id="email"
+                name="email"
+                type="email"
+                placeholder="you@email.com"
+                autocomplete="email"
+                required
+              />
+            </div>
+
+            <div class="field spanAll">
+              <label for="describe">Which best describes you?</label>
+              <select class="control" id="describe" name="describe" required>
+                <option value="" selected disabled>Select one</option>
+                <option value="High-responsibility professional">High-responsibility professional</option>
+                <option value="Entrepreneur / operator">Entrepreneur / operator</option>
+                <option value="Busy parent with a full schedule">Busy parent with a full schedule</option>
+                <option value="High performer rebuilding consistency">High performer rebuilding consistency</option>
+              </select>
+            </div>
+
+            <div class="field spanAll">
+              <label for="breaks">What breaks consistency for you?</label>
+              <select class="control" id="breaks" name="breaks" required>
+                <option value="" selected disabled>Select one</option>
+                <option value="Schedule overload / no time margin">Schedule overload / no time margin</option>
+                <option value="Decision fatigue / mental load">Decision fatigue / mental load</option>
+                <option value="Travel / unpredictability">Travel / unpredictability</option>
+                <option value="Stress eating / low control at night">Stress eating / low control at night</option>
+              </select>
+            </div>
+
+            <div class="field spanAll">
+              <label for="restarts">How often have you restarted?</label>
+              <select class="control" id="restarts" name="restarts" required>
+                <option value="" selected disabled>Select one</option>
+                <option value="Rarely">Rarely</option>
+                <option value="A few times a year">A few times a year</option>
+                <option value="Every 1–2 months">Every 1–2 months</option>
+                <option value="Constant cycle">Constant cycle</option>
+              </select>
+            </div>
+
+            <div class="field spanAll">
+              <label for="result">What result would make this a win in 90 days?</label>
+              <input
+                class="control"
+                id="result"
+                name="result"
+                type="text"
+                placeholder="Example: -10 lbs while keeping my schedule"
+                required
+              />
+            </div>
+
+            <div class="field">
+              <label for="ready">If accepted, ready to start immediately?</label>
+              <select class="control" id="ready" name="ready" required>
+                <option value="" selected disabled>Select one</option>
+                <option value="Yes">Yes</option>
+                <option value="Within 7 days">Within 7 days</option>
+                <option value="Not yet">Not yet</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="structure">Can you follow a simple daily structure?</label>
+              <select class="control" id="structure" name="structure" required>
+                <option value="" selected disabled>Select one</option>
+                <option value="Yes">Yes</option>
+                <option value="Probably">Probably</option>
+                <option value="No">No</option>
+              </select>
+            </div>
+
+            <div class="field spanAll">
+              <label for="why">Why MN8 specifically?</label>
+              <textarea
+                class="control"
+                id="why"
+                name="why"
+                placeholder="One sentence is enough."
+                required
+              ></textarea>
+            </div>
+          </div>
+
+          <div class="qualifyActions">
+            <button class="btnPrimary" id="submitBtn" type="submit">Submit Qualification</button>
+            <span class="qualifyNote" id="formNote">You’ll receive next steps by email if approved.</span>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
 
 <script>
   const ENDPOINT_URL = "https://qsrsfzebsncrvkqiabnu.supabase.co/functions/v1/qualify-submit";
