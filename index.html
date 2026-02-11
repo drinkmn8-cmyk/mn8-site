@@ -819,16 +819,17 @@ footer.final{
   }
 }
 
-  .brandLogo{
-  height: 300px;
-  width: auto;
-  display: block;
+.brand{
+  display:flex;
+  align-items:center;
 }
 
-@media (max-width: 740px){
-  .brandLogo{
-    height: 24px;
-  }
+.brandLogo{
+  height: 40px;     /* realistic header size */
+  width: auto;
+  display:block;
+  transform: scale(1.25);
+  transform-origin: left center;
 }
 
 
