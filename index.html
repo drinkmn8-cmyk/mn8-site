@@ -729,104 +729,39 @@ footer.final{
   }
 }
 
-/* =========================================
-   PROCESS — Desktop must stay 2 columns
-   ========================================= */
-@media (min-width: 901px){
+/* =========================
+   PROCESS — Mobile: keep old layout
+   Only: free the SVG + make it bigger
+   ========================= */
+@media (max-width: 900px){
+
+  /* Keep the pinned card tall like before */
   .processPin{
-    display:grid;
-    grid-template-columns: 1fr 1fr;
     height: calc(100vh - 96px);
   }
 
-  .pLeft{
-    padding: 22px;
-    display:block;
-  }
-
+  /* Remove the "boxy" restraint feel inside the SVG area */
   .pViz{
-    height: 100%;
-    min-height: 360px;
-    border-radius: 22px;
-    background: linear-gradient(180deg, rgba(109,59,210,.12), rgba(109,59,210,.05));
-    overflow:hidden;
-  }
-
-  .mn8Glyph{
-    width:100%;
-    height:100%;
-    padding:26px;
-    display:block;
-  }
-
-  .pRight{
-    padding: 26px;
-    background: rgba(255,255,255,.92);
-  }
-
-  .stepPills{
-    justify-content:flex-start; /* pills stay on one line, left-aligned */
-    flex-wrap:nowrap;
-    gap:10px;
-  }
-}
-
-/* =========================================
-   PROCESS — Mobile stack layout (real mobile)
-   SVG → Pills → Title → Body
-   ========================================= */
-@media (max-width: 740px){
-  .processPin{
-    display:flex;
-    flex-direction:column;
-    height: calc(100vh - 96px);
-  }
-
-  .pLeft{
-    padding: 18px 18px 8px;
-    flex: 1 1 auto;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-  }
-
-  /* remove “boxed” feel + let SVG fill */
-  .pViz{
-    width: 100%;
-    height: 100%;
-    min-height: 0;
-    background: none;
+    background: none;          /* kills the inner card look */
     border-radius: 0;
-    box-shadow: none;
-    overflow: visible;
-    display:flex;
-    align-items:center;
-    justify-content:center;
+    overflow: visible;         /* let SVG breathe */
+    min-height: 300px;         /* bigger visual */
+    height: 300px;
   }
 
-  /* make SVG big */
+  /* Make SVG bigger but still inset from walls */
   .mn8Glyph{
-    width: min(560px, 96vw);
+    padding: 0;                /* remove inner padding */
+    width: 108%;               /* bigger, but not full bleed */
     height: auto;
-    padding: 0;
     margin: 0 auto;
-    display:block;
+    transform: translateX(-4%); /* re-center since width > 100 */
   }
 
-  .pRight{
-    flex: 0 0 auto;
-    padding: 14px 18px 22px;
-    background: rgba(255,255,255,.92);
+  /* Optional: slightly reduce pLeft padding so SVG feels larger */
+  .pLeft{
+    padding: 18px;
   }
-
-  /* pills centered under svg */
-  .stepPills{
-    justify-content:center;
-    margin: 6px 0 12px;
-    gap: 10px;
-  }
-
-  .pTitle{ margin-top: 0; }
 }
 
 
