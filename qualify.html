@@ -1,91 +1,167 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Qualification</title>
+ <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Qualification</title>
 
-    <!-- IMPORTANT: bump v= number anytime you change CSS to break cache -->
-    <link rel="stylesheet" href="./style.css?v=6" />
+  <!-- Fonts (match main site) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
 
-    <!-- Fix native select dropdown (white-on-white) without changing your site style -->
-<style>
-  /* ===== MN8 Light Select System ===== */
+  <!-- IMPORTANT: bump v= number anytime you change CSS to break cache -->
+  <link rel="stylesheet" href="./style.css?v=7" />
 
-  select.control {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
+  <!-- Page-level fixes so qualify.html matches the landing page -->
+  <style>
+    :root{
+      --mn8:#6D3BD2;
+      --mn8Soft:rgba(109,59,210,.18);
+      --ink:#0B0D12;
+      --muted:rgba(11,13,18,.72);
+      --hair:rgba(15,18,24,.10);
+      --bg:#ffffff;
 
-    background-color: rgba(255,255,255,.78);
-    color: rgba(11,13,18,.92);
+      --radiusXL:28px;
+      --radiusLG:22px;
+      --radiusMD:16px;
 
-    border: 1px solid rgba(15,18,24,.10);
-    border-radius: 16px;
+      --shadow1: 0 10px 30px rgba(15,18,24,.06);
+      --shadow2: 0 18px 60px rgba(109,59,210,.14);
 
-    padding: 14px 40px 14px 14px;
-    font-size: 14px;
-    font-weight: 500;
+      --gutter: 64px;
+      --gutterMobile: 32px;
+    }
 
-    box-shadow: 0 10px 24px rgba(15,18,24,.04);
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:"Lato", system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      color:var(--ink);
+      background:var(--bg);
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
+      overflow-x:hidden;
+    }
 
-    transition: border-color .15s ease,
-                box-shadow .15s ease,
-                transform .12s ease;
+    /* Background stage like main site */
+    .bgStage{
+      position:fixed;
+      inset:-20vh -20vw;
+      z-index:0;
+      pointer-events:none;
+      background:
+        radial-gradient(1200px 600px at var(--mx, 60%) var(--my, 30%), rgba(109,59,210,.13), rgba(109,59,210,0) 60%),
+        radial-gradient(900px 500px at 20% 85%, rgba(109,59,210,.10), rgba(109,59,210,0) 60%),
+        radial-gradient(800px 420px at 85% 80%, rgba(15,18,24,.06), rgba(15,18,24,0) 60%);
+      filter:saturate(1.05);
+    }
+    .particles{
+      position:absolute;
+      inset:0;
+      opacity:.55;
+      background-image:
+        radial-gradient(circle, rgba(109,59,210,.22) 0 2px, transparent 3px),
+        radial-gradient(circle, rgba(109,59,210,.12) 0 1px, transparent 2px),
+        radial-gradient(circle, rgba(15,18,24,.08) 0 1px, transparent 2px);
+      background-size: 110px 110px, 160px 160px, 220px 220px;
+      background-position: 0 0, 40px 30px, 90px 60px;
+      animation: drift 16s linear infinite;
+      mask-image: radial-gradient(closest-side at 55% 35%, rgba(0,0,0,1), rgba(0,0,0,.55), rgba(0,0,0,0) 70%);
+    }
+    @keyframes drift{
+      from{ transform:translate3d(0,0,0); }
+      to{ transform:translate3d(-140px,-90px,0); }
+    }
 
-    cursor: pointer;
-  }
+    /* Wrap sizing must match the main site */
+    .wrap{
+      width:min(1180px, calc(100% - 24px));
+      margin:0 auto;
+    }
+    @media (max-width:740px){
+      .wrap{ width:min(1180px, calc(100% - 18px)); }
+    }
 
-  /* Focus ring = MN8 purple */
-  select.control:focus {
-    outline: none;
-    border-color: rgba(109,59,210,.35);
-    box-shadow:
-      0 0 0 6px rgba(109,59,210,.10),
-      0 10px 24px rgba(15,18,24,.04);
-  }
+    /* Topbar uses the “wide” wrap like #process/#outcome */
+    .topbar .wrap{
+      width: min(1360px, calc(100% - var(--gutter)));
+    }
+    @media (max-width: 900px){
+      .topbar .wrap{ width: calc(100% - var(--gutterMobile)); }
+    }
 
-  /* Dropdown arrow */
-  select.control {
-    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%236D3BD2' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 14px center;
-    background-size: 12px;
-  }
+    /* Topbar (same feel as main site) */
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:50;
+      backdrop-filter: blur(14px);
+      background: rgba(255,255,255,.78);
+    }
+    .topbarInner{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      padding: 18px 0; /* taller like you asked */
+    }
+    @media (max-width:740px){
+      .topbarInner{ padding: 14px 0; }
+    }
 
-  /* Option styling (browser-controlled but improves consistency) */
-  select.control option,
-  select.control optgroup {
-    background-color: #ffffff;
-    color: rgba(11,13,18,.92);
-  }
+    /* Logo sizing — do NOT fight the SVG export. Control size here. */
+    .brand{ display:flex; align-items:center; gap:10px; }
+    .brandLogo{
+      height: 34px;   /* premium header size */
+      width: auto;
+      display:block;
+    }
+    @media (max-width:740px){
+      .brandLogo{ height: 28px; }
+    }
 
-  /* Placeholder / disabled option */
-  select.control option[disabled] {
-    color: rgba(11,13,18,.45);
-  }
+    /* Your select styling stays */
+    select.control{
+      appearance:none;
+      -webkit-appearance:none;
+      -moz-appearance:none;
+      background-color: rgba(255,255,255,.78);
+      color: rgba(11,13,18,.92);
+      border: 1px solid rgba(15,18,24,.10);
+      border-radius: 16px;
+      padding: 14px 40px 14px 14px;
+      font-size: 14px;
+      font-weight: 500;
+      box-shadow: 0 10px 24px rgba(15,18,24,.04);
+      transition: border-color .15s ease, box-shadow .15s ease, transform .12s ease;
+      cursor:pointer;
+      background-image:url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%236D3BD2' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat:no-repeat;
+      background-position:right 14px center;
+      background-size:12px;
+    }
+    select.control:focus{
+      outline:none;
+      border-color: rgba(109,59,210,.35);
+      box-shadow: 0 0 0 6px rgba(109,59,210,.10), 0 10px 24px rgba(15,18,24,.04);
+    }
+    select.control option, select.control optgroup{
+      background-color:#fff;
+      color: rgba(11,13,18,.92);
+    }
+    select.control option[disabled]{ color: rgba(11,13,18,.45); }
+  </style>
 
-</style>
-  </head>
+   <header class="topbar">
+  <div class="wrap topbarInner">
+    <a class="brand" href="./index.html#top" aria-label="MN8 Home">
+      <img class="brandLogo" src="./mn8-logo.svg" alt="MN8" />
+    </div>
+</header>
+ </head>
 
-  <body id="top">
-    <!-- TOPBAR (same vibe as site) -->
-    <header class="topbar">
-      <div class="wrap topbar-inner">
-        <a class="brand" href="./index.html#top" aria-label="MN8 Home">
-          <img class="brand-logo" src="./logo.svg" alt="MN8" />
-        </a>
-
-<nav class="nav" aria-label="Primary">
-  <a href="./index.html#mn8">What it is</a>
-  <a href="./index.html#process">Process</a>
-  <a href="./index.html#faq">FAQ</a>
-</nav>
-
-
-        <a class="btn btn-ghost btn-sm" href="./index.html#top">Back</a>
-      </div>
-    </header>
 
 <main>
   <section class="section" id="qualification">
