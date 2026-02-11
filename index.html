@@ -358,18 +358,24 @@
 
   }
 
-  .pViz{
-    height: 100%;
-    min-height: 360px;
-    border-radius: 22px;
-    background: linear-gradient(180deg, rgba(109,59,210,.12), rgba(109,59,210,.05));
-    position:relative;
-    overflow:hidden;
-    transform: translateZ(0);
-  }
-  @media (max-width:900px){
-    .pViz{ min-height: 260px; }
-  }
+.pViz{
+  height: 100%;
+  min-height: 360px;
+  border-radius: 22px;
+
+  /* remove template gradient */
+  background: transparent;
+
+  position:relative;
+  overflow:hidden;
+  transform: translateZ(0);
+
+  /* optional: add a very subtle hairline frame (premium, not loud) */
+  border: 1px solid rgba(15,18,24,.10);
+}
+@media (max-width:900px){
+  .pViz{ min-height: 260px; }
+}
 
   /* layers */
   .vizLayer{
@@ -818,45 +824,42 @@ footer.final{
 <div class="processPin anim1" id="processPin" data-step="1">
   <div class="pLeft">
     <div class="pViz">
-      <svg class="mn8Glyph" viewBox="0 0 520 520" aria-hidden="true">
-        <rect class="gFrame" x="70" y="70" width="380" height="380" rx="64" ry="64"></rect>
+ <svg class="mn8Glyph" viewBox="0 0 520 520" aria-hidden="true">
+  <!-- Frame -->
+  <rect class="gFrame" x="70" y="70" width="380" height="380" rx="64" ry="64"></rect>
 
-        <!-- STEP 1 -->
-        <g class="gState gS1">
-          <g class="s1Lines">
-            <line class="s1Line" x1="130" y1="170" x2="240" y2="150" style="--tx:-26px;--ty:-14px;--r:-18deg;"></line>
-            <line class="s1Line isFaint" x1="160" y1="220" x2="250" y2="250" style="--tx:18px;--ty:-22px;--r:14deg;"></line>
-            <line class="s1Line" x1="280" y1="150" x2="400" y2="185" style="--tx:22px;--ty:16px;--r:10deg;"></line>
-            <line class="s1Line isFaint" x1="140" y1="300" x2="250" y2="320" style="--tx:-14px;--ty:22px;--r:-10deg;"></line>
-            <line class="s1Line" x1="285" y1="300" x2="410" y2="280" style="--tx:20px;--ty:-6px;--r:8deg;"></line>
-            <line class="s1Line isFaint" x1="200" y1="360" x2="330" y2="350" style="--tx:-10px;--ty:18px;--r:-6deg;"></line>
-            <line class="s1Final" x1="140" y1="285" x2="380" y2="285"></line>
-          </g>
-        </g>
+  <!-- STEP 1: Tornado lines -->
+  <g id="vS1" opacity="1">
+    <g id="tornado"></g>
 
-        <!-- STEP 2 -->
-        <g class="gState gS2">
-          <path class="s2Wave" d="M120 270 C160 230 200 310 240 270 C280 230 320 310 360 270 C400 230 440 310 480 270"></path>
-          <path class="s2Wave isFaint" d="M120 305 C160 265 200 345 240 305 C280 265 320 345 360 305 C400 265 440 345 480 305"></path>
-          <line class="s2Axis" x1="150" y1="350" x2="370" y2="350"></line>
-          <circle class="s2Node" cx="260" cy="350" r="6"></circle>
-        </g>
+    <!-- final locked line (revealed at converge end) -->
+    <path id="finalLine" d="M140 260 C200 260 320 260 380 260"
+      fill="none" stroke="rgba(109,59,210,.78)" stroke-width="6" stroke-linecap="round"
+      opacity="0"></path>
+  </g>
 
-        <!-- STEP 3 -->
-        <g class="gState gS3">
-          <g class="s3Dots">
-            <circle class="s3Dot" cx="150" cy="180" r="6" style="--tx:-28px;--ty:-18px;"></circle>
-            <circle class="s3Dot isFaint" cx="210" cy="320" r="6" style="--tx:22px;--ty:10px;"></circle>
-            <circle class="s3Dot" cx="330" cy="200" r="6" style="--tx:16px;--ty:-12px;"></circle>
-            <circle class="s3Dot isFaint" cx="380" cy="320" r="6" style="--tx:-18px;--ty:16px;"></circle>
-            <circle class="s3Dot isFaint" cx="170" cy="250" r="6" style="--tx:-12px;--ty:20px;"></circle>
-            <circle class="s3Dot" cx="360" cy="260" r="6" style="--tx:20px;--ty:-14px;"></circle>
+  <!-- STEP 2: Morph line -> wave -->
+  <g id="vS2" opacity="0">
+    <path id="waveMain" d="M140 260 C200 260 320 260 380 260"
+      fill="none" stroke="rgba(109,59,210,.62)" stroke-width="6" stroke-linecap="round"></path>
 
-            <circle class="s3Core" cx="260" cy="260" r="12"></circle>
-            <circle class="s3Halo" cx="260" cy="260" r="30"></circle>
-          </g>
-        </g>
-      </svg>
+    <path id="waveFaint" d="M140 292 C200 292 320 292 380 292"
+      fill="none" stroke="rgba(109,59,210,.22)" stroke-width="6" stroke-linecap="round"></path>
+
+    <line id="axis" x1="150" y1="350" x2="370" y2="350"
+      stroke="rgba(15,18,24,.12)" stroke-width="3" stroke-linecap="round"></line>
+    <circle id="node" cx="260" cy="350" r="5.5" fill="rgba(109,59,210,.85)"></circle>
+  </g>
+
+  <!-- STEP 3: Shatter dust -> core dot -->
+  <g id="vS3" opacity="0">
+    <g id="dust"></g>
+
+    <circle id="coreDot" cx="260" cy="260" r="11" fill="rgba(109,59,210,.92)" opacity="0"></circle>
+    <circle id="coreHalo" cx="260" cy="260" r="30"
+      fill="none" stroke="rgba(109,59,210,.18)" stroke-width="16" opacity="0"></circle>
+  </g>
+</svg>
     </div>
   </div>
 
