@@ -354,9 +354,13 @@
     }
   }
 
-  /* left visual panel */
 
-  }
+/* left visual panel */
+.pLeft{
+  position:relative;
+  padding: 22px;
+  background: transparent; /* no extra panel look */
+}
 
 .pViz{
   height: 100%;
@@ -368,14 +372,21 @@
 
   position:relative;
   overflow:hidden;
-  transform: translateZ(0);
 
-  /* optional: add a very subtle hairline frame (premium, not loud) */
-  border: 1px solid rgba(15,18,24,.10);
+  /* remove the “card inside card” look */
+  border: 0;
 }
+
 @media (max-width:900px){
   .pViz{ min-height: 260px; }
 }
+
+.pViz svg{
+  width:100%;
+  height:100%;
+  display:block;
+}
+
 
   /* layers */
   .vizLayer{
@@ -986,6 +997,317 @@ footer.final{
 
       const pills = Array.from(pin.querySelectorAll("[data-pill]"));
 
+      // =========================
+// VISUAL ENGINE (tornado -> wave -> dust -> core)
+// =========================
+const svg = pin.querySelector(".mn8Glyph");
+const vS1 = svg?.querySelector("#vS1");
+const vS2 = svg?.querySelector("#vS2");
+const vS3 = svg?.querySelector("#vS3");
+
+const tornado = svg?.querySelector("#tornado");
+const finalLine = svg?.querySelector("#finalLine");
+
+const waveMain = svg?.querySelector("#waveMain");
+const waveFaint = svg?.querySelector("#waveFaint");
+
+const dust = svg?.querySelector("#dust");
+const coreDot = svg?.querySelector("#coreDot");
+const coreHalo = svg?.querySelector("#coreHalo");
+
+let rafVisual = null;
+let mode = 1;
+let lastWavePoints = null;
+
+const C = { x: 260, y: 260 };
+const clamp01 = (x)=> Math.max(0, Math.min(1, x));
+
+function stopVisual(){
+  if(rafVisual) cancelAnimationFrame(rafVisual);
+  rafVisual = null;
+}
+
+function showOnly(step){
+  if(vS1) vS1.style.opacity = (step===1) ? "1" : "0";
+  if(vS2) vS2.style.opacity = (step===2) ? "1" : "0";
+  if(vS3) vS3.style.opacity = (step===3) ? "1" : "0";
+}
+
+function setOpacity(el, v){
+  if(!el) return;
+  el.style.opacity = String(v);
+}
+
+function setAttr(el, k, v){
+  if(!el) return;
+  el.setAttribute(k, v);
+}
+
+function buildTornadoLines(){
+  if(!tornado) return;
+  tornado.innerHTML = "";
+
+  // thin lines = premium (your ask)
+  const N = 10; // 8–12, pick 10
+  for(let i=0;i<N;i++){
+    const line = document.createElementNS("http://www.w3.org/2000/svg","line");
+    line.setAttribute("stroke","rgba(109,59,210,.70)");
+    line.setAttribute("stroke-width","3");       // thinner
+    line.setAttribute("stroke-linecap","round");
+    line.setAttribute("opacity", i%3===0 ? "0.35" : "0.85");
+
+    // seed
+    const a = (i / N) * Math.PI * 2;
+    const r = 70 + (i%5)*10;
+    line.dataset.a = String(a);
+    line.dataset.r = String(r);
+    line.dataset.w = String(28 + (i%4)*10);
+
+    tornado.appendChild(line);
+  }
+
+  if(finalLine) finalLine.style.opacity = "0";
+}
+
+function writeWavePath(points){
+  // build a smooth-ish path using cubic segments
+  // points: [{x,y},...]
+  if(points.length < 2) return "M0 0";
+  let d = `M ${points[0].x.toFixed(2)} ${points[0].y.toFixed(2)}`;
+  for(let i=1;i<points.length;i++){
+    const p = points[i];
+    d += ` L ${p.x.toFixed(2)} ${p.y.toFixed(2)}`;
+  }
+  return d;
+}
+
+function makeWavePoints(t, yBase, amp, phase){
+  const x0 = 140, x1 = 380;
+  const steps = 44; // more points = smoother, more premium
+  const pts = [];
+  for(let i=0;i<=steps;i++){
+    const u = i/steps;
+    const x = x0 + (x1-x0)*u;
+    const y = yBase + Math.sin((u*6.0 + t*1.35 + phase) * Math.PI) * amp;
+    pts.push({x,y});
+  }
+  return pts;
+}
+
+function playStep1(){
+  stopVisual();
+  mode = 1;
+
+  showOnly(1);
+  if(finalLine) finalLine.style.opacity = "0";
+  buildTornadoLines();
+
+  const start = performance.now();
+  const floatDur = 800;    // tornado motion
+  const convergeDur = 700; // converge into one line
+  const total = floatDur + convergeDur;
+
+  function frame(now){
+    const t = now - start;
+    const p = clamp01(t / total);
+
+    // phases
+    const pFloat = clamp01(t / floatDur);
+    const pConv  = clamp01((t - floatDur) / convergeDur);
+
+    // tornado rotation speed
+    const spin = now * 0.0024;
+
+    // target final line endpoints
+    const yFinal = 260;
+    const xL = 140;
+    const xR = 380;
+
+    const lines = tornado ? Array.from(tornado.querySelectorAll("line")) : [];
+    lines.forEach((ln, idx)=>{
+      const a0 = parseFloat(ln.dataset.a || "0");
+      const r0 = parseFloat(ln.dataset.r || "70");
+      const w  = parseFloat(ln.dataset.w || "40");
+
+      // tornado motion
+      const a = a0 + spin + idx*0.22;
+      const r = r0 + Math.sin(spin + idx)*10;
+
+      // current tornado endpoints
+      const cx = C.x + Math.cos(a)*r;
+      const cy = C.y + Math.sin(a)*r;
+
+      const dx = Math.cos(a+Math.PI/2) * (w/2);
+      const dy = Math.sin(a+Math.PI/2) * (w/2);
+
+      let x1 = cx - dx, y1 = cy - dy;
+      let x2 = cx + dx, y2 = cy + dy;
+
+      // converge: lerp into the final straight line
+      if(pConv > 0){
+        const u = pConv;
+        const tx1 = xL + (xR-xL) * (idx / Math.max(1, lines.length-1));
+        const tx2 = tx1 + 38;
+        x1 = x1 + (tx1 - x1)*u;
+        y1 = y1 + (yFinal - y1)*u;
+        x2 = x2 + (tx2 - x2)*u;
+        y2 = y2 + (yFinal - y2)*u;
+
+        // fade out as it locks
+        ln.setAttribute("opacity", String((1-u) * (idx%3===0 ? 0.35 : 0.85)));
+      }
+
+      ln.setAttribute("x1", x1.toFixed(2));
+      ln.setAttribute("y1", y1.toFixed(2));
+      ln.setAttribute("x2", x2.toFixed(2));
+      ln.setAttribute("y2", y2.toFixed(2));
+    });
+
+    // reveal final line near the end
+    if(finalLine){
+      const o = clamp01((t - (floatDur + 250)) / 350);
+      finalLine.style.opacity = String(o);
+    }
+
+    if(p < 1 && mode === 1){
+      rafVisual = requestAnimationFrame(frame);
+    }
+  }
+
+  rafVisual = requestAnimationFrame(frame);
+}
+
+function playStep2(){
+  stopVisual();
+  mode = 2;
+
+  // Crossfade “line becomes wave”
+  showOnly(2);
+
+  let start = performance.now();
+
+  function frame(now){
+    const t = (now - start) / 1000;
+
+    // live wave
+    const ptsMain = makeWavePoints(t, 260, 18, 0.0);
+    const ptsFaint = makeWavePoints(t, 292, 12, 0.35);
+
+    lastWavePoints = ptsMain;
+
+    const d1 = writeWavePath(ptsMain);
+    const d2 = writeWavePath(ptsFaint);
+
+    setAttr(waveMain, "d", d1);
+    setAttr(waveFaint, "d", d2);
+
+    if(mode === 2){
+      rafVisual = requestAnimationFrame(frame);
+    }
+  }
+
+  rafVisual = requestAnimationFrame(frame);
+}
+
+function playStep3(){
+  stopVisual();
+  mode = 3;
+
+  showOnly(3);
+
+  if(dust) dust.innerHTML = "";
+  if(coreDot) coreDot.style.opacity = "0";
+  if(coreHalo) coreHalo.style.opacity = "0";
+
+  // seed dust from the last wave points
+  const pts = lastWavePoints || makeWavePoints(0, 260, 18, 0.0);
+  const N = 42; // enough to feel rich, not messy
+  const samples = [];
+  for(let i=0;i<N;i++){
+    const p = pts[Math.floor((i/(N-1)) * (pts.length-1))];
+    samples.push(p);
+  }
+
+  const dots = [];
+  for(let i=0;i<samples.length;i++){
+    const c = document.createElementNS("http://www.w3.org/2000/svg","circle");
+    const r = (i%7===0) ? 1.6 : 1.2;
+    c.setAttribute("r", String(r));
+    c.setAttribute("cx", samples[i].x.toFixed(2));
+    c.setAttribute("cy", samples[i].y.toFixed(2));
+    c.setAttribute("fill", i%6===0 ? "rgba(109,59,210,.28)" : "rgba(109,59,210,.55)");
+    dust.appendChild(c);
+
+    // random scatter vectors
+    const ang = Math.random()*Math.PI*2;
+    const mag = 18 + Math.random()*26;
+    dots.push({
+      el: c,
+      x0: samples[i].x,
+      y0: samples[i].y,
+      sx: Math.cos(ang)*mag,
+      sy: Math.sin(ang)*mag
+    });
+  }
+
+  const start = performance.now();
+  const scatterDur = 650;   // “shatter”
+  const gatherDur = 750;    // “pull back”
+  const total = scatterDur + gatherDur;
+
+  function easeOutCubic(x){ return 1 - Math.pow(1-x,3); }
+  function easeInOut(x){
+    return x < 0.5 ? 4*x*x*x : 1 - Math.pow(-2*x+2,3)/2;
+  }
+
+  function frame(now){
+    const t = now - start;
+    const p = clamp01(t / total);
+
+    const pScatter = clamp01(t / scatterDur);
+    const pGather  = clamp01((t - scatterDur) / gatherDur);
+
+    dots.forEach((d)=>{
+      let x = d.x0;
+      let y = d.y0;
+
+      if(pScatter < 1){
+        const u = easeOutCubic(pScatter);
+        x = d.x0 + d.sx*u;
+        y = d.y0 + d.sy*u;
+      } else {
+        const u = easeInOut(pGather);
+        x = (d.x0 + d.sx) + (C.x - (d.x0 + d.sx))*u;
+        y = (d.y0 + d.sy) + (C.y - (d.y0 + d.sy))*u;
+        d.el.setAttribute("opacity", String(1 - 0.55*u));
+      }
+
+      d.el.setAttribute("cx", x.toFixed(2));
+      d.el.setAttribute("cy", y.toFixed(2));
+    });
+
+    // bring in core + halo near end
+    if(coreDot){
+      const o = clamp01((t - (scatterDur + 220)) / 380);
+      coreDot.style.opacity = String(o);
+    }
+    if(coreHalo){
+      const o = clamp01((t - (scatterDur + 320)) / 420);
+      coreHalo.style.opacity = String(o);
+    }
+
+    if(p < 1 && mode === 3){
+      rafVisual = requestAnimationFrame(frame);
+    }
+  }
+
+  rafVisual = requestAnimationFrame(frame);
+}
+
+// start visuals for initial state
+playStep1();
+
+
 const steps = {
   1: {
     title: "Remove food negotiation",
@@ -1034,40 +1356,24 @@ function applyStep(nextStep){
   current = nextStep;
   pin.setAttribute("data-step", String(nextStep));
 
-  pin.classList.remove("anim1","anim2","anim3");
-  void pin.offsetWidth;
-  pin.classList.add("anim" + String(nextStep));
-
   pills.forEach(p => p.classList.toggle("is-on", p.getAttribute("data-pill") === String(nextStep)));
 
+  // text
   if(prefersReduced){
     title.textContent = steps[nextStep].title;
     body.textContent = steps[nextStep].body;
   } else {
     animateTextSwap(nextStep);
   }
+
+  // visuals
+  if(prefersReduced) return;
+
+  if(nextStep === 1) playStep1();
+  if(nextStep === 2) playStep2();
+  if(nextStep === 3) playStep3();
 }
 
-
-      function computeStep(){
-        const rect = stage.getBoundingClientRect();
-        const vh = window.innerHeight || document.documentElement.clientHeight;
-
-        // progress through stage: 0..1
-        const total = Math.max(1, stage.offsetHeight - vh);
-        const p = clamp((-rect.top) / total, 0, 1);
-
-
-const STEP_1_END = 1 / 3;
-const STEP_2_END = 2 / 3;
-
-const next =
-  (p < STEP_1_END) ? 1 :
-  (p < STEP_2_END) ? 2 :
-  3;
-
-        applyStep(next);
-      }
 
       function onScroll(){
         if(raf) return;
