@@ -756,6 +756,84 @@
     .vizLayer, .pTitle, .pBody{ transition:none; }
     .wave path{ animation:none !important; }
   }
+
+  /* =========================
+   PROOF — Intellectual Proof
+   ========================= */
+.proof .wrap{
+  width: min(1360px, calc(100% - var(--gutter)));
+}
+@media (max-width:900px){
+  .proof .wrap{ width: calc(100% - var(--gutterMobile)); }
+}
+
+.proof .sub{
+  max-width: 78ch;
+}
+
+.proofCard{
+  margin-top: 22px;
+  border-radius: var(--radiusXL);
+  background: rgba(255,255,255,.86);
+  box-shadow: var(--shadow1);
+  overflow: hidden;
+  position: relative;
+}
+
+.proofCard:before{
+  content:"";
+  position:absolute;
+  inset:-40%;
+  background:
+    radial-gradient(600px 300px at 30% 25%, rgba(109,59,210,.16), rgba(109,59,210,0) 70%),
+    radial-gradient(520px 280px at 80% 80%, rgba(109,59,210,.10), rgba(109,59,210,0) 70%);
+  pointer-events:none;
+  filter:saturate(1.05);
+}
+
+.proofGrid{
+  position:relative;
+  z-index:1;
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  padding: 18px;
+}
+
+.proofItem{
+  border-radius: 18px;
+  background: rgba(255,255,255,.80);
+  box-shadow: 0 10px 24px rgba(15,18,24,.04);
+  padding: 14px 14px 12px;
+  border: 1px solid rgba(15,18,24,.08);
+}
+
+.proofLabel{
+  font-size: 12px;
+  font-weight: 900;
+  color: rgba(11,13,18,.52);
+  letter-spacing: .02em;
+  margin-bottom: 6px;
+}
+
+.proofValue{
+  font-size: 16px;
+  line-height: 1.2;
+  font-weight: 900;
+  color: rgba(11,13,18,.92);
+  letter-spacing: -.01em;
+}
+
+@media (max-width:740px){
+  .proofGrid{
+    grid-template-columns: 1fr;
+    padding: 16px;
+  }
+  .proofItem{
+    padding: 14px;
+  }
+}
+
   /* =======================
    FOOTER (FINAL CTA)
    ======================= */
@@ -950,6 +1028,35 @@ footer.final{
   </main>
 
 
+<section id="proof" class="section proof">
+  <div class="wrap">
+    <p class="kicker">Proof</p>
+    <h2 class="h2">Any system that needs daily focus will fail in a busy life.</h2>
+    <p class="sub">
+      When your day is full, your mind is full. You focus on work, family, and problems that need to be solved now.
+      Anything that asks for extra thinking gets pushed aside. Most health plans need tracking, planning, and constant
+      attention. Busy people don’t have extra attention. So the plan slips — not because you don’t care, but because
+      it asks too much. If a system needs daily focus, it won’t survive in a dense schedule.
+    </p>
+
+    <div class="proofCard" aria-hidden="true">
+      <div class="proofGrid">
+        <div class="proofItem">
+          <div class="proofLabel">Most plans require</div>
+          <div class="proofValue">Daily attention</div>
+        </div>
+        <div class="proofItem">
+          <div class="proofLabel">Busy life has</div>
+          <div class="proofValue">No extra attention</div>
+        </div>
+        <div class="proofItem">
+          <div class="proofLabel">Result</div>
+          <div class="proofValue">The plan breaks</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
   <!-- PROCESS (updated mechanism) -->
 <section id="process" class="section">
