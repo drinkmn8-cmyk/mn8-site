@@ -1,379 +1,397 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MN8 — Private Access</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MN8</title>
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap"
+      rel="stylesheet"
+    />
 
-  <style>
-    :root{
-      --mn8:#6D3BD2;
-      --ink:#0B0D12;
-      --muted:rgba(11,13,18,.72);
-      --hair:rgba(15,18,24,.10);
-      --bg:#ffffff;
+    <style>
+      :root{
+        --mn8:#6D3BD2;
+        --mn8Soft:rgba(109,59,210,.16);
+        --ink:#0B0D12;
+        --muted:rgba(11,13,18,.72);
+        --hair:rgba(15,18,24,.10);
+        --bg:#ffffff;
 
-      --radiusXL:22px;
-      --radiusLG:18px;
-      --radiusMD:14px;
+        --radiusXL:28px;
+        --radiusLG:22px;
+        --radiusMD:16px;
 
-      --shadow1: 0 10px 30px rgba(15,18,24,.06);
-      --shadow2: 0 18px 60px rgba(109,59,210,.14);
+        --shadow1: 0 10px 30px rgba(15,18,24,.06);
 
-      --gutter: 64px;
-      --gutterMobile: 28px;
-    }
+        --gutter: 64px;
+        --gutterMobile: 22px;
+      }
 
-    *{ box-sizing:border-box; }
-    html,body{ height:100%; }
-    body{
-      margin:0;
-      font-family:"Lato", system-ui, -apple-system, Segoe UI, Roboto, Arial;
-      color:var(--ink);
-      background:var(--bg);
-      -webkit-font-smoothing:antialiased;
-      text-rendering:optimizeLegibility;
-      overflow-x:hidden;
-    }
+      *{box-sizing:border-box}
+      html,body{height:100%}
+      body{
+        margin:0;
+        font-family:"Lato", system-ui, -apple-system, Segoe UI, Roboto, Arial;
+        color:var(--ink);
+        background:var(--bg);
+        -webkit-font-smoothing:antialiased;
+        text-rendering:optimizeLegibility;
+        overflow-x:hidden;
+      }
 
-    .wrap{
-      width: min(980px, calc(100% - var(--gutter)));
-      margin:0 auto;
-    }
-    @media (max-width:900px){
-      .wrap{ width: calc(100% - var(--gutterMobile)); }
-    }
+      /* Background */
+      .bgStage{
+        position:fixed;
+        inset:-20vh -20vw;
+        z-index:0;
+        pointer-events:none;
+        background:
+          radial-gradient(1200px 600px at var(--mx, 60%) var(--my, 30%), rgba(109,59,210,.12), rgba(109,59,210,0) 60%),
+          radial-gradient(900px 500px at 20% 85%, rgba(109,59,210,.08), rgba(109,59,210,0) 60%),
+          radial-gradient(800px 420px at 85% 80%, rgba(15,18,24,.05), rgba(15,18,24,0) 60%);
+        filter:saturate(1.05);
+      }
+      .particles{
+        position:absolute;
+        inset:0;
+        opacity:.50;
+        background-image:
+          radial-gradient(circle, rgba(109,59,210,.20) 0 2px, transparent 3px),
+          radial-gradient(circle, rgba(109,59,210,.10) 0 1px, transparent 2px),
+          radial-gradient(circle, rgba(15,18,24,.08) 0 1px, transparent 2px);
+        background-size: 110px 110px, 160px 160px, 220px 220px;
+        background-position: 0 0, 40px 30px, 90px 60px;
+        animation: drift 16s linear infinite;
+        mask-image: radial-gradient(closest-side at 55% 30%, rgba(0,0,0,1), rgba(0,0,0,.55), rgba(0,0,0,0) 70%);
+      }
+      @keyframes drift{
+        from{ transform:translate3d(0,0,0); }
+        to{ transform:translate3d(-140px,-90px,0); }
+      }
 
-    /* Topbar */
-    .topbar{
-      position:sticky;
-      top:0;
-      z-index:50;
-      background: rgba(255,255,255,.92);
-      border-bottom: 1px solid rgba(15,18,24,.08);
-      backdrop-filter: blur(10px);
-    }
-    .topbarInner{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:14px;
-      padding: 18px 0;
-    }
-    .brand{
-      display:flex;
-      align-items:center;
-      text-decoration:none;
-    }
-    .brandLogo{
-      height: 46px;
-      width: auto;
-      display:block;
-    }
-    @media (max-width:740px){
-      .brandLogo{ height: 40px; }
-      .topbarInner{ padding: 14px 0; }
-    }
+      /* Layout */
+      .wrap{
+        width: min(1360px, calc(100% - var(--gutter)));
+        margin:0 auto;
+      }
+      @media (max-width:900px){
+        .wrap{ width: calc(100% - var(--gutterMobile)); }
+      }
 
-    .nav{
-      display:flex;
-      align-items:center;
-      gap:10px;
-    }
-    .nav a{
-      color: rgba(11,13,18,.70);
-      text-decoration:none;
-      font-weight:900;
-      font-size:13px;
-      padding:8px 10px;
-      border-radius:999px;
-      transition: background .15s ease, color .15s ease;
-      white-space:nowrap;
-    }
-    .nav a:hover{
-      background: rgba(109,59,210,.08);
-      color: rgba(11,13,18,.90);
-    }
-    @media (max-width:740px){
-      .nav a{ display:none; }
-    }
+      /* Topbar */
+      .topbar{
+        position:sticky;
+        top:0;
+        z-index:50;
+        backdrop-filter: blur(14px);
+        background: rgba(255,255,255,.78);
+        border-bottom: 0;
+      }
+      .topbarInner{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:14px;
+        padding: 18px 0;
+      }
+      @media (max-width:740px){
+        .topbarInner{ padding: 14px 0; }
+      }
 
-    /* Type */
-    .kicker{
-      margin:0 0 10px;
-      font-size:13px;
-      font-weight:900;
-      color: rgba(11,13,18,.55);
-      letter-spacing:.02em;
-    }
-    .h1{
-      margin:0;
-      font-size: clamp(34px, 4.2vw, 52px);
-      line-height:1.06;
-      font-weight:900;
-      letter-spacing:-.03em;
-    }
-    .h2{
-      margin:0 0 10px;
-      font-size: clamp(24px, 3vw, 36px);
-      line-height:1.10;
-      font-weight:900;
-      letter-spacing:-.02em;
-    }
-    .sub{
-      margin:0;
-      font-size:16px;
-      line-height:1.65;
-      color:var(--muted);
-      max-width: 72ch;
-    }
+      .brand{
+        display:flex;
+        align-items:center;
+        gap:10px;
+        text-decoration:none;
+      }
+      .brandLogo{
+        height: 52px;
+        width:auto;
+        display:block;
+      }
+      @media (max-width:740px){
+        .brandLogo{ height: 46px; }
+      }
 
-    /* Sections */
-    .section{
-      padding: 64px 0;
-      position:relative;
-      z-index:1;
-    }
-    @media (max-width:740px){
-      .section{ padding: 48px 0; }
-    }
+      .nav{
+        display:flex;
+        gap:18px;
+        align-items:center;
+      }
+      .nav a{
+        color: rgba(11,13,18,.70);
+        text-decoration:none;
+        font-weight:900;
+        font-size:13px;
+        padding:8px 10px;
+        border-radius:999px;
+        transition: background .15s ease, color .15s ease;
+        white-space:nowrap;
+      }
+      .nav a:hover{ background: rgba(109,59,210,.08); color: rgba(11,13,18,.92); }
+      @media (max-width:740px){
+        .nav{ display:none; }
+      }
 
-    /* Card */
-    .card{
-      border-radius: var(--radiusXL);
-      border: 1px solid rgba(15,18,24,.08);
-      background: #fff;
-      box-shadow: var(--shadow1);
-      overflow:hidden;
-    }
-    .cardPad{ padding: 18px; }
+      .btnGhost{
+        appearance:none;
+        background: rgba(255,255,255,.70);
+        border: 1px solid rgba(15,18,24,.10);
+        color: rgba(11,13,18,.86);
+        padding: 12px 16px;
+        border-radius:999px;
+        font-weight:900;
+        font-size:14px;
+        cursor:pointer;
+        transition: background .15s ease, transform .12s ease;
+        box-shadow: 0 10px 30px rgba(15,18,24,.04);
+        text-decoration:none;
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+      }
+      .btnGhost:hover{ background: rgba(109,59,210,.08); }
+      .btnGhost:active{ transform: translateY(1px); }
 
-    /* Buttons */
-    .btnPrimary{
-      appearance:none;
-      border:0;
-      background: var(--mn8);
-      color:#fff;
-      padding: 14px 16px;
-      border-radius: 14px;
-      font-weight:900;
-      font-size:14px;
-      cursor:pointer;
-      transition: transform .12s ease, filter .12s ease;
-      box-shadow: 0 10px 30px rgba(109,59,210,.18);
-    }
-    .btnPrimary:hover{ filter:brightness(1.05); }
-    .btnPrimary:active{ transform: translateY(1px); }
-    .btnPrimary:disabled{
-      opacity:.55;
-      cursor:not-allowed;
-      box-shadow:none;
-    }
+      /* Type */
+      .h2{
+        margin:0 0 10px;
+        font-size: clamp(30px, 3.2vw, 44px);
+        line-height:1.08;
+        font-weight:900;
+        letter-spacing:-.02em;
+      }
+      .sub{
+        margin:0;
+        font-size:18px;
+        line-height:1.65;
+        color:var(--muted);
+        max-width: 74ch;
+      }
 
-    .btnGhost{
-      appearance:none;
-      background: rgba(255,255,255,.92);
-      border: 1px solid rgba(15,18,24,.10);
-      color: rgba(11,13,18,.86);
-      padding: 12px 14px;
-      border-radius: 14px;
-      font-weight:900;
-      font-size:14px;
-      cursor:pointer;
-      transition: background .15s ease, transform .12s ease;
-    }
-    .btnGhost:hover{ background: rgba(109,59,210,.06); }
+      /* Sections */
+      main{ position:relative; z-index:1; }
+      .section{
+        padding: 92px 0;
+        position:relative;
+      }
+      @media (max-width:740px){
+        .section{ padding: 72px 0; }
+      }
 
-    /* Simple list */
-    .mn8List{
-      margin: 0;
-      padding: 0;
-      list-style: none;
-      display:grid;
-      gap:10px;
-    }
-    .mn8List li{
-      padding-left: 18px;
-      position:relative;
-      font-weight:700;
-      color: rgba(11,13,18,.88);
-      line-height:1.35;
-    }
-    .mn8List li:before{
-      content:"";
-      position:absolute;
-      left:0;
-      top:.55em;
-      width:7px;
-      height:7px;
-      border-radius:99px;
-      background: rgba(109,59,210,.85);
-      transform: translateY(-50%);
-    }
+      .card{
+        border-radius: var(--radiusXL);
+        background: rgba(255,255,255,.92);
+        box-shadow: var(--shadow1);
+        overflow:hidden;
+        border: 1px solid rgba(15,18,24,.08);
+      }
+      .cardPad{ padding: 22px; }
+      @media (max-width:740px){
+        .cardPad{ padding: 18px; }
+      }
 
-    /* Offer */
-    .offerCard{
-      cursor:pointer;
-      outline:none;
-      transition: transform .12s ease, border-color .12s ease, box-shadow .12s ease;
-    }
-    .offerCard:hover{
-      transform: translateY(-1px);
-      border-color: rgba(109,59,210,.25);
-      box-shadow: 0 16px 50px rgba(15,18,24,.08);
-    }
-    .offerCard[aria-selected="true"]{
-      border-color: rgba(109,59,210,.45);
-      box-shadow: 0 18px 60px rgba(109,59,210,.14);
-    }
+      /* Bullets */
+      .bullets{
+        margin: 0;
+        padding-left: 18px;
+      }
+      .bullets li{
+        margin: 10px 0;
+        font-size: 16px;
+        line-height: 1.55;
+        font-weight: 700;
+        color: rgba(11,13,18,.90);
+      }
+      .bullets li::marker{
+        color: rgba(109,59,210,.90);
+      }
 
-    .divider{
-      height:1px;
-      background: rgba(15,18,24,.08);
-      margin: 14px 0;
-    }
+      /* Checkout gate row */
+      #gate{ margin-top: 18px; }
+      .gateRow{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap: 16px;
+        flex-wrap:wrap;
+      }
 
-    /* Gate */
-    .gateRow{
-      display:flex;
-      gap:12px;
-      align-items:flex-start;
-      margin-top: 14px;
-    }
-    .gateRow input{
-      margin-top:4px;
-      accent-color: var(--mn8);
-    }
-    .hint{
-      margin: 10px 0 0;
-      font-weight: 900;
-      color: rgba(11,13,18,.80);
-    }
+      .agreeRow{
+        display:flex;
+        gap: 12px;
+        align-items:flex-start;
+        color: rgba(11,13,18,.88);
+        font-weight: 800;
+        line-height: 1.35;
+        max-width: 78ch;
+      }
+      .agreeRow input{
+        width: 18px;
+        height: 18px;
+        margin-top: 2px;
+        accent-color: var(--mn8);
+      }
 
-    /* Footer spacing */
-    .endPad{ padding-bottom: 90px; }
-  </style>
-</head>
+      .pillRow{
+        display:flex;
+        gap: 8px;
+        align-items:center;
+        flex-wrap:wrap;
+      }
+      .pill{
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        padding: 8px 12px;
+        border-radius:999px;
+        background: rgba(255,255,255,.78);
+        border: 1px solid rgba(15,18,24,.10);
+        box-shadow: 0 10px 24px rgba(15,18,24,.04);
+        color: rgba(11,13,18,.86);
+        font-weight: 900;
+        font-size: 13px;
+        text-decoration:none;
+        transition: background .15s ease, transform .12s ease;
+        white-space:nowrap;
+      }
+      .pill:hover{ background: rgba(109,59,210,.08); }
+      .pill:active{ transform: translateY(1px); }
 
-<body>
-  <header class="topbar">
-    <div class="wrap topbarInner">
-      <a class="brand" href="./index.html#top" aria-label="MN8 Home">
-        <img class="brandLogo" src="./logo.svg" alt="MN8" />
-      </a>
+      .btnPrimary{
+        appearance:none;
+        border:0;
+        background: var(--mn8);
+        color:#fff;
+        padding: 14px 18px;
+        border-radius:999px;
+        font-weight:900;
+        font-size:14px;
+        cursor:pointer;
+        transition: transform .12s ease, filter .12s ease, box-shadow .12s ease;
+        box-shadow: 0 10px 30px rgba(109,59,210,.18);
+      }
+      .btnPrimary:hover{ filter:brightness(1.05); }
+      .btnPrimary:active{ transform: translateY(1px); }
+      .btnPrimary:disabled{
+        opacity:.55;
+        cursor:not-allowed;
+        box-shadow:none;
+      }
 
-      <nav class="nav" aria-label="Primary">
-        <a href="#what">What you get</a>
-        <a href="#guarantee">Guarantee</a>
-        <a href="#offer">Checkout</a>
-      </nav>
+      /* Hide hint (script expects it) */
+      #selectedPlanHint{ display:none; }
 
-      <a class="btnGhost" href="./index.html#top">Back</a>
+      /* Gate wrapper (script controls this) */
+      #privateGate{ display:none; }
+
+      @media (prefers-reduced-motion: reduce){
+        .particles{ animation:none; }
+      }
+    </style>
+  </head>
+
+  <body id="top">
+    <div class="bgStage" id="bgStage" aria-hidden="true">
+      <div class="particles"></div>
     </div>
-  </header>
 
-  <main class="endPad">
+    <header class="topbar">
+      <div class="wrap topbarInner">
+        <a class="brand" href="./index.html#top" aria-label="MN8 Home">
+          <img class="brandLogo" src="./logo.svg" alt="MN8" />
+        </a>
 
-    <!-- What you get -->
-    <section class="section" id="what">
-      <div class="wrap">
-        <p class="kicker">Private Access</p>
-        <h1 class="h1">MN8 is built to run while you’re busy.</h1>
-        <p class="sub" style="margin-top:14px;">
-          You don’t need more tracking. You need a structure you can follow without thinking.
-        </p>
+        <nav class="nav" aria-label="Primary">
+          <a href="#what">What you get</a>
+          <a href="#guarantee">Guarantee</a>
+        </nav>
 
-        <div class="card cardPad" style="margin-top:18px;">
-          <ul class="mn8List">
-            <li>Daily system (done / not done)</li>
-            <li>Eating window rules</li>
-            <li>Training minimum</li>
-            <li>Weekly signal check</li>
-            <li>System holds under travel, stress, workload</li>
-            <li>One plan. One execution path.</li>
-          </ul>
-        </div>
+        <a class="btnGhost" href="./index.html#top">Back</a>
       </div>
-    </section>
+    </header>
 
-    <!-- Guarantee -->
-    <section class="section" id="guarantee">
-      <div class="wrap">
-        <h2 class="h2">90-Day Guarantee</h2>
-        <p class="sub">
-          If you follow the MN8 structure for 90 days and your system doesn’t move in the right direction, you’ll be covered.
-        </p>
+    <!-- LOCKED/UNLOCKED BY YOUR SCRIPT -->
+    <div id="privateGate">
+      <main>
+        <section class="section" id="what">
+          <div class="wrap">
+            <h2 class="h2">What you get</h2>
+            <p class="sub">Simple. Direct. Built for busy lives.</p>
 
-        <div class="card cardPad" style="margin-top:18px;">
-          <ul class="mn8List">
-            <li>90 days on the system</li>
-            <li>Daily check-ins completed (done / not done)</li>
-            <li>Weekly signal logged</li>
-            <li>We review the system data</li>
-          </ul>
-        </div>
-      </div>
-    </section>
+            <div class="card cardPad" style="margin-top:18px;">
+              <ul class="bullets">
+                <li>Daily system (done / not done)</li>
+                <li>Eating window rules</li>
+                <li>Training minimum</li>
+                <li>Weekly signal check</li>
+                <li>System holds under travel, stress, workload</li>
+                <li>One plan. One execution path.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
 
-    <!-- Offer / Checkout -->
-    <section class="section" id="offer">
-      <div class="wrap">
-        <h2 class="h2">Checkout</h2>
-        <p class="sub">One commitment. One path. No choices.</p>
+        <section class="section" id="guarantee">
+          <div class="wrap">
+            <h2 class="h2">90-Day Guarantee</h2>
+            <p class="sub">
+              Follow the MN8 structure for 90 days. If your system doesn’t move in the right direction, you’ll be covered.
+            </p>
 
-        <!-- REQUIRED by your script -->
-        <div id="privateGate" style="margin-top:18px;">
-
-          <!-- Single plan (script expects .offerCard + data-plan) -->
-          <div class="card cardPad offerCard"
-               role="button"
-               tabindex="0"
-               data-plan="private"
-               aria-selected="false">
-
-            <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:12px;">
-              <div style="font-weight:900; font-size:18px; letter-spacing:-.01em;">MN8</div>
-              <div style="font-weight:900; color:rgba(11,13,18,.85);">$2,500</div>
+            <div class="card cardPad" style="margin-top:18px;">
+              <ul class="bullets">
+                <li>90 days on the system</li>
+                <li>Daily check-ins completed (done / not done)</li>
+                <li>Weekly signal logged</li>
+                <li>We review the system data</li>
+              </ul>
             </div>
 
-            <div class="divider"></div>
+            <!-- Checkout gate lives here. Page ends here. -->
+            <div id="gate">
+              <!-- Hidden single-plan anchor so your script works with one offer -->
+              <div class="offerCard" data-plan="private" aria-selected="true" style="display:none;"></div>
+              <div id="selectedPlanHint">Selected: MN8 — hidden</div>
 
-            <ul class="mn8List">
-              <li>Private access to the MN8 system</li>
-              <li>Full app access</li>
-              <li>Activation structure + weekly signal</li>
-            </ul>
-          </div>
+              <div class="gateRow">
+                <div class="agreeRow">
+                  <input id="agree" type="checkbox" />
+                  <div>
+                    I understand the 90-day rules and I agree to
+                    <span class="pillRow" style="display:inline-flex; gap:8px; margin-left:8px; vertical-align:middle;">
+                      <a class="pill" href="./terms.html" target="_blank" rel="noopener">Terms</a>
+                      <a class="pill" href="./policies.html" target="_blank" rel="noopener">Policies</a>
+                      <a class="pill" href="./services.html" target="_blank" rel="noopener">Services</a>
+                    </span>
+                  </div>
+                </div>
 
-          <!-- Gate (script expects these IDs) -->
-          <div id="gate" hidden style="margin-top:16px;">
-            <div class="gateRow">
-              <input type="checkbox" id="agree">
-              <div style="font-weight:800; color:rgba(11,13,18,.82); line-height:1.4;">
-                I understand the 90-day guarantee rules and I’m ready to start immediately.
+                <button class="btnPrimary" id="checkoutBtn" type="button" disabled>
+                  Go to checkout
+                </button>
               </div>
             </div>
-
-            <p id="selectedPlanHint" class="hint"></p>
-
-            <button class="btnPrimary" id="checkoutBtn" disabled style="margin-top:14px; width:100%;">
-              Checkout Securely
-            </button>
           </div>
+        </section>
+      </main>
+    </div>
 
-        </div>
-      </div>
-    </section>
+    <!-- Auto-select the only plan (triggers your existing initOffer logic) -->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const only = document.querySelector('.offerCard[data-plan="private"]');
+        if (only) only.click();
+      });
+    </script>
 
-  </main>
-
-  <!-- YOUR SCRIPT — UNCHANGED -->
-  <script>
+    <!-- YOUR SCRIPT — UNCHANGED -->
+    <script>
   (function(){
     const params = new URLSearchParams(window.location.search);
 
@@ -395,6 +413,7 @@
     // CHANGE THESE LINKS
     const CHECKOUT_LINKS = {
       private: "https://your-checkout-link.com/mn8-private",
+      core: "https://your-checkout-link.com/mn8-core"
     };
 
     // ---- BASIC MODAL ----
@@ -565,9 +584,10 @@
         agree.checked = false;
         checkoutBtn.disabled = true;
 
-hint.textContent =
-  "Selected: MN8 — $9,500 (one-time)";
-;
+        hint.textContent =
+          plan === "private"
+            ? "Selected: MN8 Private — $9,500 (one-time)"
+            : "Selected: MN8 Core — $6,000 (one-time)";
       }
 
       cards.forEach((card) => {
@@ -594,6 +614,5 @@ hint.textContent =
     });
   })();
   </script>
-
-</body>
+  </body>
 </html>
