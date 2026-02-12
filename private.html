@@ -104,8 +104,13 @@
       }
 
       .brand{ display:flex; align-items:center; }
-      .brandLogo{ height: 38px; width:auto; display:block; }
-
+      .brandLogo{
+  height: 60px;     /* realistic header size */
+  width: auto;
+  display:block;
+  transform: scale(1.25);
+  transform-origin: left center;
+}
       .nav{
         display:flex;
         align-items:center;
@@ -311,6 +316,8 @@
   font-weight:900;
   opacity:.95;
 }
+
+
 
 
       /* Gate wrapper controlled by your auth script */
