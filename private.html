@@ -282,6 +282,37 @@
         transform:none;
       }
 
+      .checkoutBtn{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:18px 22px;
+  border-radius:999px;
+  border:0;
+  background: linear-gradient(90deg, #7b57d1, #a48bdc);
+  color:#fff;
+  font-weight:800;
+  font-size:16px;
+  cursor:pointer;
+  transition: all .15s ease;
+}
+
+.checkoutBtn:disabled{
+  opacity:.55;
+  cursor:not-allowed;
+}
+
+.checkoutBtn:hover:not(:disabled){
+  transform: translateY(-1px);
+}
+
+.checkoutPrice{
+  font-weight:900;
+  opacity:.95;
+}
+
+
       /* Gate wrapper controlled by your auth script */
       #privateGate{ display:none; }
 
@@ -354,9 +385,10 @@
                   <a class="chipLink" href="./services.html" target="_blank" rel="noopener">Services</a>
                 </div>
 
-                <button id="checkoutBtn" class="btnPrimary" type="button" disabled>
-                  Go to checkout
-                </button>
+<button id="checkoutBtn" class="checkoutBtn" disabled>
+  <span>Go to checkout</span>
+  <span class="checkoutPrice">$2,500 / year</span>
+</button>
               </div>
             </div>
           </div>
