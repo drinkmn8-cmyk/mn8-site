@@ -480,11 +480,11 @@
 
   const ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzcnNmemVic25jcnZrcWlhYm51Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4MjAwMDYsImV4cCI6MjA4NTM5NjAwNn0._PjCnlHKDomrUscaaqJ2esB31tcdR0OnuR6bgC1-5HE";
 
-  // ONE checkout url only (update this)
-  const CHECKOUT_URL = "https://buy.stripe.com/00w00kf341i079U85lbII07";
+  // ✅ Put your real checkout link here
+  const CHECKOUT_URL = "YOUR_STRIPE_CHECKOUT_LINK";
 
   // =========================
-  // ROUTING (route.js driven)
+  // ROUTING
   // =========================
   function goQualify(){
     try{
@@ -495,32 +495,52 @@
       if (typeof window.routeToApply === "function") return window.routeToApply();
       if (typeof window.routeToQualify === "function") return window.routeToQualify();
     } catch(e){}
-    // fallback: send them home or to /apply depending on your setup
+    // fallback
     window.location.href = "/";
   }
 
-  // ---- MODAL (premium glass) ----
+  // =========================
+  // SOFT GATE (FIXES YOUR “HIDDEN PAGE” BUG)
+  // =========================
+  function setGate(locked){
+    const gate = document.getElementById("privateGate");
+    if (!gate) return;
+
+    // NEVER hide content. Only soften + block interaction.
+    gate.style.opacity = locked ? "0.55" : "1";
+    gate.style.pointerEvents = locked ? "none" : "auto";
+    gate.style.filter = locked ? "blur(0.6px)" : "none";
+    gate.style.transition = "opacity .2s ease, filter .2s ease";
+  }
+
+  // =========================
+  // MODAL (premium glass)
+  // =========================
   function showModal(title, message, buttonText, onClick) {
     const modal = document.createElement("div");
     modal.style.cssText = `
-      position:fixed; inset:0;
-      display:flex; align-items:center; justify-content:center;
+      position:fixed;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
       background:rgba(15,18,24,.55);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      z-index:9999; padding:20px;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      z-index:9999;
+      padding:20px;
     `;
 
     modal.innerHTML = `
       <div style="
-        width:min(540px,100%);
+        width:min(520px,100%);
         background:rgba(255,255,255,.86);
         backdrop-filter: blur(14px);
         -webkit-backdrop-filter: blur(14px);
-        border:1px solid rgba(15,18,24,.10);
-        border-radius:22px;
-        padding:32px;
-        box-shadow:0 45px 120px rgba(0,0,0,.28);
+        border:1px solid rgba(0,0,0,.08);
+        border-radius:20px;
+        padding:30px;
+        box-shadow:0 40px 100px rgba(0,0,0,.25);
         font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
         color:#0B0D12;
       ">
@@ -528,19 +548,16 @@
           font-size:22px;
           font-weight:900;
           margin-bottom:12px;
-          letter-spacing:-.01em;
-        ">
-          ${title}
-        </div>
+          letter-spacing:-0.01em;
+          color:#0B0D12;
+        ">${title}</div>
 
         <div style="
           font-size:15px;
           line-height:1.6;
           color:rgba(11,13,18,.72);
           margin-bottom:22px;
-        ">
-          ${message}
-        </div>
+        ">${message}</div>
 
         <button id="mn8ModalBtn" style="
           width:100%;
@@ -563,16 +580,9 @@
     };
   }
 
-  function lockPage() {
-    const gate = document.getElementById("privateGate");
-    if (gate) gate.style.display = "none";
-  }
-
-  function unlockPage() {
-    const gate = document.getElementById("privateGate");
-    if (gate) gate.style.display = "block";
-  }
-
+  // =========================
+  // TOKEN VERIFY
+  // =========================
   async function verifyToken(tok) {
     const res = await fetch(VERIFY_URL, {
       method: "POST",
@@ -586,18 +596,12 @@
 
     const out = await res.json().catch(() => ({}));
     if (!res.ok || !out.ok) throw new Error(out.error || out.message || "Invalid token");
+    return out;
   }
 
-  function getToken(){
-    const p = new URLSearchParams(window.location.search);
-    return (
-      (p.get("token") || "").trim() ||
-      (p.get("access_token") || "").trim() ||
-      (p.get("t") || "").trim() ||
-      (localStorage.getItem(LS_KEY) || "").trim()
-    );
-  }
-
+  // =========================
+  // LEGAL ACCEPTANCE LOG
+  // =========================
   async function recordLegalAcceptance(tok) {
     const cleanTok = (tok || "").trim();
     if (!cleanTok) throw new Error("Missing token");
@@ -619,10 +623,6 @@
         user_agent: navigator.userAgent,
         agreed_at: new Date().toISOString(),
       }),
-      function sync(){
-  checkoutBtn.disabled = !agree.checked;
-  checkoutBtn.setAttribute("aria-disabled", checkoutBtn.disabled);
-}
     });
 
     const out = await res.json().catch(() => ({}));
@@ -630,12 +630,67 @@
     return out;
   }
 
-  async function authFlow() {
-    lockPage();
+  // =========================
+  // CHECKOUT ENABLE + REDIRECT
+  // =========================
+  function initCheckout(isVerified){
+    const agree = document.getElementById("agree");
+    const checkoutBtn = document.getElementById("checkoutBtn");
 
+    if (!agree || !checkoutBtn) return;
+
+    // Always start locked
+    checkoutBtn.disabled = true;
+
+    function getToken(){
+      const p = new URLSearchParams(window.location.search);
+      return (
+        (p.get("token") || "").trim() ||
+        (p.get("access_token") || "").trim() ||
+        (p.get("t") || "").trim() ||
+        (localStorage.getItem(LS_KEY) || "").trim()
+      );
+    }
+
+    function sync(){
+      // ✅ enable only if verified AND checkbox checked
+      checkoutBtn.disabled = !(isVerified && agree.checked);
+    }
+
+    agree.addEventListener("change", sync);
+    sync();
+
+    checkoutBtn.addEventListener("click", async (e) => {
+      e.preventDefault();
+
+      if (checkoutBtn.disabled) return;
+
+      checkoutBtn.disabled = true;
+
+      try{
+        const tok = getToken();
+        await recordLegalAcceptance(tok);
+        window.location.href = CHECKOUT_URL;
+      } catch(err){
+        checkoutBtn.disabled = false;
+        alert(err?.message || "Could not save agreement. Please try again.");
+      }
+    });
+  }
+
+  // =========================
+  // AUTH FLOW
+  // =========================
+  async function authFlow(){
+    // Soft-lock while verifying (content still visible)
+    setGate(true);
+
+    // Use saved token if missing
     if (!token) token = (localStorage.getItem(LS_KEY) || "").trim();
 
-    if (status === "reject") {
+    // If rejected
+    if (status === "reject"){
+      initCheckout(false);
       showModal(
         "Not approved",
         reason ? `Reason: ${reason}` : "You’re not a fit right now.",
@@ -645,7 +700,9 @@
       return;
     }
 
-    if (status === "accept" && !token) {
+    // Accepted but no token
+    if (status === "accept" && !token){
+      initCheckout(false);
       showModal(
         "Link issue",
         "Your access link is missing a token. Submit again so we can generate one.",
@@ -655,31 +712,42 @@
       return;
     }
 
-    if (token) {
-      try {
+    // Verify token
+    if (token){
+      try{
         await verifyToken(token);
         localStorage.setItem(LS_KEY, token);
-        unlockPage();
 
-        if (status === "accept") {
+        // Unlock the page content area (still visible either way, this enables interaction)
+        setGate(false);
+
+        // Now checkout logic can work
+        initCheckout(true);
+
+        if (status === "accept"){
           showModal(
             "You’re in.",
             "Read what you get, confirm the guarantee rules, then continue to checkout.",
             "Continue"
           );
         }
-      } catch {
+        return;
+
+      } catch(err){
         localStorage.removeItem(LS_KEY);
+        initCheckout(false);
         showModal(
           "Access denied",
           "Your access link is invalid or expired.",
           "Return to qualification",
           () => goQualify()
         );
+        return;
       }
-      return;
     }
 
+    // Default: no token at all
+    initCheckout(false);
     showModal(
       "Private access",
       "Submit the qualification to unlock this page.",
@@ -688,51 +756,7 @@
     );
   }
 
-  // =========================
-  // ONE OFFER CHECKOUT ENABLE + LOG
-  // =========================
-  function initCheckout(){
-    const agree = document.getElementById("agree");
-    const checkoutBtn = document.getElementById("checkoutBtn");
-    if (!agree || !checkoutBtn) return;
-
-    function sync(){
-      checkoutBtn.disabled = !agree.checked;
-    }
-
-    agree.addEventListener("change", sync);
-    sync();
-
-    checkoutBtn.addEventListener("click", async (e) => {
-      e.preventDefault();
-      if (!agree.checked) return;
-
-      const tok = getToken();
-      if (!tok){
-        alert("Missing access token. Re-open your private link.");
-        return;
-      }
-
-      checkoutBtn.disabled = true;
-      const originalText = checkoutBtn.textContent;
-      checkoutBtn.textContent = "Processing...";
-
-      try{
-        await recordLegalAcceptance(tok);
-        window.location.href = CHECKOUT_URL;
-      } catch(err){
-        console.error(err);
-        checkoutBtn.textContent = originalText || "Go to checkout";
-        sync();
-        alert(err?.message || "Could not save agreement. Please try again.");
-      }
-    });
-  }
-
-  document.addEventListener("DOMContentLoaded", () => {
-    authFlow();
-    initCheckout();
-  });
+  document.addEventListener("DOMContentLoaded", authFlow);
 })();
 </script>
   </body>
