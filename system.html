@@ -1243,13 +1243,33 @@ footer.final{
 <script>
 (function(){
   const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const QUALIFY_URL = "apply.html";
 
   // =========================
-  // CTA routing
+  // ROUTING (route.js driven)
   // =========================
+  // If route.js exposes a function, we use it.
+  // Otherwise we fall back to a sane default (apply.html).
+  function goApply(){
+    try{
+      if (window.MN8_ROUTE && typeof window.MN8_ROUTE.apply === "function"){
+        window.MN8_ROUTE.apply();
+        return;
+      }
+      if (typeof window.routeToApply === "function"){
+        window.routeToApply();
+        return;
+      }
+    } catch(e){}
+
+    // fallback if route.js isn't loaded / doesn't expose functions
+    window.location.href = "./apply.html";
+  }
+
   document.querySelectorAll("[data-apply]").forEach(btn=>{
-    btn.addEventListener("click", ()=>{ window.location.href = QUALIFY_URL; });
+    btn.addEventListener("click", (e)=>{
+      e.preventDefault();
+      goApply();
+    });
   });
 
   // =========================
@@ -1260,12 +1280,15 @@ footer.final{
     if(!el) return;
     el.scrollIntoView({ behavior: prefersReduced ? "auto" : "smooth", block:"start" });
   }
+
   document.querySelectorAll("[data-scroll]").forEach(btn=>{
-    btn.addEventListener("click", ()=>{
+    btn.addEventListener("click", (e)=>{
+      e.preventDefault();
       const target = btn.getAttribute("data-scroll");
       if(target) scrollToId(target);
     });
   });
+
   document.querySelectorAll('a[href^="#"]').forEach(a=>{
     a.addEventListener("click", (e)=>{
       const href = a.getAttribute("href");
@@ -1278,7 +1301,7 @@ footer.final{
   });
 
   // =========================
-  // PROCESS (Scroll-progress switcher + Visual engine)
+  // PROCESS (unchanged)
   // =========================
   (function initProcess(){
     try{
@@ -1290,14 +1313,12 @@ footer.final{
 
       const pills = Array.from(pin.querySelectorAll("[data-pill]"));
 
-      // COPY
       const steps = {
         1: { title: "Remove food negotiation", body: "Simple rules eliminate daily decisions, so eating stays automatic — even on bad days." },
         2: { title: "Minimal daily movement",  body: "Short, repeatable movement that fits any day. No scheduling. No intensity to manage." },
         3: { title: "Stabilize the system",    body: "Missed days don’t trigger resets. The system absorbs pressure instead of breaking." }
       };
 
-      // ---------- VISUAL ENGINE ----------
       const svg = pin.querySelector(".mn8Glyph");
       if(!svg) return;
 
@@ -1342,11 +1363,11 @@ footer.final{
         if(!tornado) return;
         tornado.innerHTML = "";
 
-        const N = 10; // 8–12
+        const N = 10;
         for(let i=0;i<N;i++){
           const line = document.createElementNS("http://www.w3.org/2000/svg","line");
           line.setAttribute("stroke","rgba(109,59,210,.70)");
-          line.setAttribute("stroke-width","3"); // thin
+          line.setAttribute("stroke-width","3");
           line.setAttribute("stroke-linecap","round");
           line.setAttribute("opacity", i%3===0 ? "0.35" : "0.85");
 
@@ -1571,7 +1592,6 @@ footer.final{
         rafVisual = requestAnimationFrame(frame);
       }
 
-      // ---------- TEXT SWAP ----------
       function animateTextSwap(nextStep){
         if(prefersReduced) return;
         pin.classList.add("is-switching");
@@ -1582,7 +1602,6 @@ footer.final{
         }, 130);
       }
 
-      // ---------- STEP STATE ----------
       let current = 1;
 
       function setStep(nextStep, forcePlay=false){
@@ -1609,24 +1628,19 @@ footer.final{
         }
       }
 
-      // ---------- ONLY RUN WHEN STAGE IS VISIBLE ----------
       let stageActive = false;
 
       const stageObserver = new IntersectionObserver((entries)=>{
         stageActive = !!entries[0]?.isIntersecting;
-
         if(!stageActive){
           stopVisual();
           return;
         }
-
-        // enter: sync + kick correct animation
         computeStep(true);
       }, { threshold: 0.12 });
 
       stageObserver.observe(stage);
 
-      // ---------- SCROLL-PROGRESS SWITCHER (THE FIX) ----------
       const clamp = (n,min,max)=> Math.max(min, Math.min(max, n));
 
       function computeStep(forcePlay=false){
@@ -1662,7 +1676,6 @@ footer.final{
       window.addEventListener("scroll", onScroll, { passive:true });
       window.addEventListener("resize", ()=> computeStep(true), { passive:true });
 
-      // init (no autoplay)
       setStep(1, false);
 
     } catch(e){
@@ -1775,5 +1788,7 @@ footer.final{
 
 })();
 </script>
+</body>
+</html>
 </body>
 </html>
