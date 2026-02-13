@@ -454,86 +454,7 @@
 </footer>
 
     <!-- Checkout enable + redirect (replaces the broken pointer-events approach) -->
-    <script>
-      (function(){
-        // PUT YOUR STRIPE CHECKOUT URL HERE:
-        const CHECKOUT_URL = "https://your-real-stripe-checkout-link.com";
-
-        const agree = document.getElementById("agree");
-        const btn = document.getElementById("checkoutBtn");
-        if(!agree || !btn) return;
-
-        function sync(){
-          btn.disabled = !agree.checked;
-        }
-        agree.addEventListener("change", sync);
-        sync();
-
-        btn.addEventListener("click", () => {
-          if (btn.disabled) return;
-          window.location.href = CHECKOUT_URL;
-        });
-      })();
-    </script>
-
-    <!-- Make YOUR modal match the site (without editing your script) -->
-    <script>
-      (function(){
-        const applyTheme = (modalRoot) => {
-          try{
-            // overlay
-            modalRoot.style.background = "rgba(11,13,18,.40)";
-
-            const panel = modalRoot.querySelector("div");
-            const btn = modalRoot.querySelector("#mn8ModalBtn");
-            if(panel){
-              panel.style.background = "rgba(255,255,255,.92)";
-              panel.style.border = "1px solid rgba(15,18,24,.10)";
-              panel.style.borderRadius = "28px";
-              panel.style.boxShadow = "0 18px 60px rgba(15,18,24,.14)";
-              panel.style.color = "rgba(11,13,18,.92)";
-              panel.style.fontFamily = '"Lato", system-ui, -apple-system, Segoe UI, Roboto, Arial';
-
-              // title text
-              const title = panel.firstElementChild;
-              if(title){
-                title.style.color = "rgba(11,13,18,.92)";
-                title.style.fontWeight = "900";
-                title.style.letterSpacing = "-.01em";
-              }
-
-              // body text
-              const body = title?.nextElementSibling;
-              if(body){
-                body.style.color = "rgba(11,13,18,.72)";
-              }
-            }
-            if(btn){
-              btn.style.background = "var(--mn8)";
-              btn.style.borderRadius = "999px";
-              btn.style.fontWeight = "900";
-              btn.style.boxShadow = "0 10px 30px rgba(109,59,210,.18)";
-            }
-          }catch(e){}
-        };
-
-        const obs = new MutationObserver(() => {
-          // your modal overlay is a fixed full-screen div appended to body.
-          const candidates = Array.from(document.body.children).filter(el => {
-            return el instanceof HTMLElement
-              && el.style.position === "fixed"
-              && el.style.inset === "0px"
-              && el.querySelector("#mn8ModalBtn");
-          });
-          candidates.forEach(applyTheme);
-        });
-
-        obs.observe(document.body, { childList:true, subtree:false });
-      })();
-    </script>
-
-    <!-- YOUR AUTH SCRIPT (UNCHANGED) -->
-    <script>
+<script>
   (function(){
     const params = new URLSearchParams(window.location.search);
 
@@ -557,6 +478,24 @@
       private: "https://your-checkout-link.com/mn8-private",
       core: "https://your-checkout-link.com/mn8-core"
     };
+
+    // =========================
+    // ROUTING (ONLY CHANGE)
+    // =========================
+    function goQualify(){
+      try{
+        // Preferred: MN8_ROUTE object from route.js
+        if (window.MN8_ROUTE){
+          if (typeof window.MN8_ROUTE.apply === "function") return window.MN8_ROUTE.apply();
+          if (typeof window.MN8_ROUTE.qualify === "function") return window.MN8_ROUTE.qualify();
+        }
+        // Alternate: standalone helpers from route.js
+        if (typeof window.routeToApply === "function") return window.routeToApply();
+        if (typeof window.routeToQualify === "function") return window.routeToQualify();
+      } catch(e){}
+      // Fallback (update ONLY this if your page name is different)
+      window.location.href = "./apply.html";
+    }
 
     // ---- BASIC MODAL ----
     function showModal(title, message, buttonText, onClick) {
@@ -636,7 +575,7 @@
           "Not approved",
           reason ? `Reason: ${reason}` : "You’re not a fit right now.",
           "Return to Qualification",
-          () => (window.location.href = "./qualify.html")
+          () => goQualify()
         );
         return;
       }
@@ -647,7 +586,7 @@
           "Access token missing",
           "Your access link didn’t include a token. Submit again so we can generate one.",
           "Return to Qualification",
-          () => (window.location.href = "./qualify.html")
+          () => goQualify()
         );
         return;
       }
@@ -672,7 +611,7 @@
             "Access denied",
             "Your access link is invalid or expired.",
             "Return to Qualification",
-            () => (window.location.href = "./qualify.html")
+            () => goQualify()
           );
         }
         return;
@@ -683,7 +622,7 @@
         "Private access",
         "Submit the qualification to unlock this page.",
         "Go to Qualification",
-        () => (window.location.href = "./qualify.html")
+        () => goQualify()
       );
     }
 
@@ -755,7 +694,7 @@
       initOffer();
     });
   })();
-  </script>
+</script>
 
     <script>
       // subtle background pointer parallax (optional)
