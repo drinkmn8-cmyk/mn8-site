@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MN8 — Payment Confirmed</title>
+  <meta name="robots" content="noindex,nofollow" />
+  <style>
+    :root{
+      --bg:#0b0d12;
+      --card:rgba(255,255,255,.88);
+      --cardBorder:rgba(255,255,255,.22);
+      --text:#0b0d12;
+      --muted:rgba(11,13,18,.72);
+      --brand1: rgb(99,47,150);
+      --brand2: rgb(140,95,210);
+    }
+    body{
+      margin:0;
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      background:
+        radial-gradient(900px 600px at 20% 10%, rgba(99,47,150,.35), transparent 60%),
+        radial-gradient(900px 600px at 80% 90%, rgba(140,95,210,.28), transparent 60%),
+        var(--bg);
+      font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial;
+    }
+    .wrap{ width:min(880px,92vw); }
+    .card{
+      background: var(--card);
+      border: 1px solid var(--cardBorder);
+      border-radius: 22px;
+      padding: 28px;
+      box-shadow: 0 40px 120px rgba(0,0,0,.45);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      color: var(--text);
+    }
+    h1{
+      margin:0 0 8px;
+      font-size: 28px;
+      letter-spacing: -.02em;
+    }
+    p{
+      margin:0 0 18px;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 15px;
+      max-width: 70ch;
+    }
+    .row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-top: 16px;
+    }
+    .btn{
+      appearance:none;
+      border:0;
+      border-radius: 999px;
+      padding: 14px 16px;
+      font-weight: 850;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      text-decoration:none;
+      user-select:none;
+    }
+    .btnPrimary{
+      background: linear-gradient(135deg, var(--brand1), var(--brand2));
+      color: #fff;
+      box-shadow: 0 14px 34px rgba(99,47,150,.32);
+    }
+    .btnGhost{
+      background: rgba(11,13,18,.06);
+      color: #121421;
+      border: 1px solid rgba(11,13,18,.10);
+    }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(11,13,18,.12);
+      background: rgba(255,255,255,.6);
+      color: rgba(11,13,18,.72);
+      font-size: 13px;
+      margin-top: 10px;
+      width: fit-content;
+    }
+    .small{
+      font-size: 12px;
+      color: rgba(11,13,18,.55);
+      margin-top: 14px;
+      line-height: 1.5;
+    }
+    .danger{
+      color: #b00020;
+      font-weight: 750;
+      margin-top: 10px;
+      display:none;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Payment confirmed.</h1>
+      <p>
+        Your access is now active. Download the MN8 app using the buttons below.
+      </p>
+
+      <div class="pill" id="sessionPill" style="display:none;"></div>
+
+      <div class="row">
+        <!-- Replace these with your real store URLs -->
+        <a class="btn btnPrimary" id="iosBtn" href="https://apps.apple.com/" target="_blank" rel="noopener">
+          Download on App Store
+        </a>
+        <a class="btn btnGhost" id="androidBtn" href="https://play.google.com/" target="_blank" rel="noopener">
+          Get it on Google Play
+        </a>
+
+        <!-- Optional: deep link to open app if installed -->
+        <button class="btn btnGhost" id="openBtn" type="button">
+          Open the app
+        </button>
+      </div>
+
+      <div class="danger" id="warn">Payment not found. If this is a mistake, contact support.</div>
+
+      <div class="small">
+        Tip: Save this page. If you switch devices, use the same store account you purchased with.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function(){
+      const params = new URLSearchParams(location.search);
+      const sessionId = (params.get("session_id") || "").trim();
+
+      // Show the session id (optional)
+      const pill = document.getElementById("sessionPill");
+      if (sessionId) {
+        pill.style.display = "inline-flex";
+        pill.textContent = "Receipt ID: " + sessionId.slice(0, 14) + "…";
+      }
+
+      // OPTIONAL: if you have a deep link scheme:
+      // iOS: "mn8://"
+      // Android: you can also use intent:// (later)
+      const OPEN_DEEP_LINK = "mn8://open";
+
+      document.getElementById("openBtn").addEventListener("click", () => {
+        window.location.href = OPEN_DEEP_LINK;
+        // fallback after 900ms if not installed
+        setTimeout(() => {
+          // You can choose iOS store as fallback
+          window.location.href = document.getElementById("iosBtn").href;
+        }, 900);
+      });
+
+      // HARD TRUTH:
+      // On GitHub Pages you cannot securely verify Stripe session_id without a backend.
+      // If you want verification, do it via a Supabase Edge Function:
+      // - Create /functions/v1/verify-stripe-session
+      // - Call it here, and only then show buttons
+      //
+      // For now, this page is a clean post-purchase landing page.
+    })();
+  </script>
+</body>
+</html>
