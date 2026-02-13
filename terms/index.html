@@ -325,5 +325,22 @@
       }, {passive:true});
     })();
   </script>
+
+  <script>
+  (function(){
+    const btn = document.getElementById("backBtn");
+    if(!btn) return;
+
+    btn.addEventListener("click", () => {
+      // If there is browsing history, go back
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        // Fallback if opened directly
+        window.location.href = "/";
+      }
+    });
+  })();
+</script>
 </body>
 </html>
