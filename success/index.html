@@ -23,6 +23,29 @@
       background:var(--bg);
       color:var(--ink);
     }
+    /* Topbar */
+  .topbar{
+    position:sticky;
+    top:0;
+    z-index:50;
+    backdrop-filter: blur(14px);
+    background: rgba(255,255,255,.78);
+    border-bottom: 0;
+  }
+  .topbarInner{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+    padding: 14px 0;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-weight:900;
+    letter-spacing:.02em;
+  }
 
     .wrap{
       width:min(920px, 100%);
@@ -104,6 +127,38 @@
       .btnRow{ flex-direction:column; align-items:stretch; }
       .btn{ width:100%; }
     }
+    .brandLogo{
+  height: 60px;     /* realistic header size */
+  width: auto;
+  display:block;
+  transform: scale(1.25);
+  transform-origin: left center;
+}
+/* =========================================
+   TOPBAR — match site container width
+   (same width as #process/#outcome .wrap)
+   ========================================= */
+
+/* Make the header use the same wrap sizing rules */
+.topbar .wrap{
+  width: min(1360px, calc(100% - var(--gutter)));
+}
+
+@media (max-width: 900px){
+  .topbar .wrap{
+    width: calc(100% - var(--gutterMobile));
+  }
+}
+
+/* Optional: make the bar feel “taller/premium” */
+.topbarInner{
+  padding: 18px 0;   /* was 14px */
+}
+@media (max-width: 740px){
+  .topbarInner{
+    padding: 14px 0;
+  }
+}
   </style>
 </head>
 <script src="/route.js?v=1"></script>
