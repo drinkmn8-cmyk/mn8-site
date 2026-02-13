@@ -74,23 +74,13 @@
       gap:14px;
     }
     .brand{ display:flex; align-items:center; text-decoration:none; }
-    .brandLogo{ height: 54px; width:auto; display:block; }
-
-    .btnPrimary{
-      appearance:none;
-      border:0;
-      background: var(--mn8);
-      color:#fff;
-      padding: 12px 16px;
-      border-radius:999px;
-      font-weight:900;
-      font-size:14px;
-      cursor:pointer;
-      box-shadow: 0 10px 30px rgba(109,59,210,.18);
-      transition: transform .12s ease, filter .12s ease;
-    }
-    .btnPrimary:hover{ filter:brightness(1.05); }
-    .btnPrimary:active{ transform: translateY(1px); }
+.brandLogo{
+  height: 60px;     /* realistic header size */
+  width: auto;
+  display:block;
+  transform: scale(1.25);
+  transform-origin: left center;
+}
 
     main{ padding: 56px 0 24px; }
     .kicker{
