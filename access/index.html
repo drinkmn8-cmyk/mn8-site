@@ -471,7 +471,6 @@
   // ---- CONFIG ----
   const VERIFY_URL = "https://qsrsfzebsncrvkqiabnu.supabase.co/functions/v1/validate-token";
   const RECORD_LEGAL_URL = "https://qsrsfzebsncrvkqiabnu.supabase.co/functions/v1/record-legal";
-
   const ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzcnNmemVic25jcnZrcWlhYm51Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4MjAwMDYsImV4cCI6MjA4NTM5NjAwNn0._PjCnlHKDomrUscaaqJ2esB31tcdR0OnuR6bgC1-5HE";
 
   // ✅ Put your real checkout link here
@@ -489,26 +488,11 @@
       if (typeof window.routeToApply === "function") return window.routeToApply();
       if (typeof window.routeToQualify === "function") return window.routeToQualify();
     } catch(e){}
-    // fallback
     window.location.href = "/";
   }
 
   // =========================
-  // SOFT GATE (FIXES YOUR “HIDDEN PAGE” BUG)
-  // =========================
-  function setGate(locked){
-    const gate = document.getElementById("privateGate");
-    if (!gate) return;
-
-    // NEVER hide content. Only soften + block interaction.
-    gate.style.opacity = locked ? "0.55" : "1";
-    gate.style.pointerEvents = locked ? "none" : "auto";
-    gate.style.filter = locked ? "blur(0.6px)" : "none";
-    gate.style.transition = "opacity .2s ease, filter .2s ease";
-  }
-
-  // =========================
-  // MODAL (premium glass)
+  // MODAL (keep your premium style)
   // =========================
   function showModal(title, message, buttonText, onClick) {
     const modal = document.createElement("div");
@@ -528,30 +512,33 @@
     modal.innerHTML = `
       <div style="
         width:min(520px,100%);
-        background:rgba(255,255,255,.86);
+        background:rgba(255,255,255,.85);
         backdrop-filter: blur(14px);
         -webkit-backdrop-filter: blur(14px);
         border:1px solid rgba(0,0,0,.08);
         border-radius:20px;
-        padding:30px;
+        padding:32px;
         box-shadow:0 40px 100px rgba(0,0,0,.25);
         font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
-        color:#0B0D12;
+        color:#111;
       ">
         <div style="
           font-size:22px;
           font-weight:900;
           margin-bottom:12px;
           letter-spacing:-0.01em;
-          color:#0B0D12;
-        ">${title}</div>
+        ">
+          ${title}
+        </div>
 
         <div style="
           font-size:15px;
           line-height:1.6;
-          color:rgba(11,13,18,.72);
-          margin-bottom:22px;
-        ">${message}</div>
+          color:#333;
+          margin-bottom:24px;
+        ">
+          ${message}
+        </div>
 
         <button id="mn8ModalBtn" style="
           width:100%;
@@ -560,10 +547,12 @@
           border:0;
           background:linear-gradient(135deg, rgb(99,47,150), rgb(140,95,210));
           color:#fff;
-          font-weight:900;
+          font-weight:800;
           font-size:15px;
           cursor:pointer;
-        ">${buttonText}</button>
+        ">
+          ${buttonText}
+        </button>
       </div>
     `;
 
@@ -575,7 +564,38 @@
   }
 
   // =========================
-  // TOKEN VERIFY
+  // IMPORTANT FIX:
+  // Do NOT hide content. Only lock interactions.
+  // =========================
+function lockPage(){
+  const gate = document.getElementById("privateGate");
+  if(!gate) return;
+
+  // IMPORTANT: make sure it exists visually, just "locked"
+  gate.style.display = "block";
+  gate.hidden = false;
+
+  gate.style.pointerEvents = "none";
+  gate.style.opacity = "0.55";
+  gate.style.filter = "blur(0.6px)";
+}
+
+function unlockPage(){
+  const gate = document.getElementById("privateGate");
+  if(!gate) return;
+
+  // IMPORTANT: actually show it
+  gate.style.display = "block";
+  gate.hidden = false;
+
+  gate.style.pointerEvents = "auto";
+  gate.style.opacity = "1";
+  gate.style.filter = "none";
+}
+  
+
+  // =========================
+  // VERIFY TOKEN
   // =========================
   async function verifyToken(tok) {
     const res = await fetch(VERIFY_URL, {
@@ -594,7 +614,7 @@
   }
 
   // =========================
-  // LEGAL ACCEPTANCE LOG
+  // LOG LEGAL ACCEPTANCE
   // =========================
   async function recordLegalAcceptance(tok) {
     const cleanTok = (tok || "").trim();
@@ -625,16 +645,12 @@
   }
 
   // =========================
-  // CHECKOUT ENABLE + REDIRECT
+  // CHECKBOX -> ENABLE BUTTON + LOG -> REDIRECT
   // =========================
-  function initCheckout(isVerified){
+  function initOffer(isVerified){
     const agree = document.getElementById("agree");
     const checkoutBtn = document.getElementById("checkoutBtn");
-
     if (!agree || !checkoutBtn) return;
-
-    // Always start locked
-    checkoutBtn.disabled = true;
 
     function getToken(){
       const p = new URLSearchParams(window.location.search);
@@ -647,7 +663,7 @@
     }
 
     function sync(){
-      // ✅ enable only if verified AND checkbox checked
+      // ✅ Only enable if verified + checked
       checkoutBtn.disabled = !(isVerified && agree.checked);
     }
 
@@ -656,7 +672,6 @@
 
     checkoutBtn.addEventListener("click", async (e) => {
       e.preventDefault();
-
       if (checkoutBtn.disabled) return;
 
       checkoutBtn.disabled = true;
@@ -676,81 +691,71 @@
   // AUTH FLOW
   // =========================
   async function authFlow(){
-    // Soft-lock while verifying (content still visible)
-    setGate(true);
+    lockPage(); // soften while verifying
 
-    // Use saved token if missing
     if (!token) token = (localStorage.getItem(LS_KEY) || "").trim();
 
-    // If rejected
     if (status === "reject"){
-      initCheckout(false);
+      initOffer(false);
       showModal(
         "Not approved",
         reason ? `Reason: ${reason}` : "You’re not a fit right now.",
-        "Return to qualification",
+        "Return to Qualification",
         () => goQualify()
       );
       return;
     }
 
-    // Accepted but no token
     if (status === "accept" && !token){
-      initCheckout(false);
+      initOffer(false);
       showModal(
-        "Link issue",
-        "Your access link is missing a token. Submit again so we can generate one.",
-        "Return to qualification",
+        "Access token missing",
+        "Your access link didn’t include a token. Submit again so we can generate one.",
+        "Return to Qualification",
         () => goQualify()
       );
       return;
     }
 
-    // Verify token
     if (token){
       try{
         await verifyToken(token);
         localStorage.setItem(LS_KEY, token);
 
-        // Unlock the page content area (still visible either way, this enables interaction)
-        setGate(false);
-
-        // Now checkout logic can work
-        initCheckout(true);
+        unlockPage();
+        initOffer(true);
 
         if (status === "accept"){
-          showModal(
-            "You’re in.",
-            "Read what you get, confirm the guarantee rules, then continue to checkout.",
-            "Continue"
-          );
+          showModal("You qualified.", "Confirm the terms, then continue to checkout.", "Continue");
         }
-        return;
-
-      } catch(err){
+      } catch {
         localStorage.removeItem(LS_KEY);
-        initCheckout(false);
+        initOffer(false);
         showModal(
           "Access denied",
           "Your access link is invalid or expired.",
-          "Return to qualification",
+          "Return to Qualification",
           () => goQualify()
         );
-        return;
       }
+      return;
     }
 
-    // Default: no token at all
-    initCheckout(false);
+    initOffer(false);
     showModal(
       "Private access",
       "Submit the qualification to unlock this page.",
-      "Go to qualification",
+      "Go to Qualification",
       () => goQualify()
     );
   }
 
-  document.addEventListener("DOMContentLoaded", authFlow);
+  document.addEventListener("DOMContentLoaded", () => {
+    authFlow();
+    // keep your sticky logic if you want:
+    // initSticky();
+  });
+
 })();
 </script>
   </body>
