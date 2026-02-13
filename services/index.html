@@ -89,7 +89,7 @@
       <a class="brand" href="/" aria-label="MN8 Home">
         <img src="/mn8-logo.svg" alt="MN8" class="brandLogo">
       </a>
-      <button class="btnPrimary" data-apply>Begin Qualification</button>
+<button class="btnBack" id="backBtn" type="button">Back</button>
     </div>
   </header>
 
@@ -187,5 +187,22 @@
       }, {passive:true});
     })();
   </script>
+
+  <script>
+  (function(){
+    const btn = document.getElementById("backBtn");
+    if(!btn) return;
+
+    btn.addEventListener("click", () => {
+      // If there is browsing history, go back
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        // Fallback if opened directly
+        window.location.href = "/";
+      }
+    });
+  })();
+</script>
 </body>
 </html>
