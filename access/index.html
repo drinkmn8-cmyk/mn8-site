@@ -454,296 +454,276 @@
 
     <!-- Checkout enable + redirect (replaces the broken pointer-events approach) -->
 <script>
-  (function(){
-    const params = new URLSearchParams(window.location.search);
+(function(){
+  const params = new URLSearchParams(window.location.search);
 
-    // token can come under multiple names
-    let token =
-      (params.get("token") || "").trim() ||
-      (params.get("access_token") || "").trim() ||
-      (params.get("t") || "").trim();
+  // token can come under multiple names
+  let token =
+    (params.get("token") || "").trim() ||
+    (params.get("access_token") || "").trim() ||
+    (params.get("t") || "").trim();
 
-    const status = (params.get("status") || "").trim();
-    const reason = (params.get("reason") || "").trim();
+  const status = (params.get("status") || "").trim();
+  const reason = (params.get("reason") || "").trim();
 
-    const LS_KEY = "mn8_token";
+  const LS_KEY = "mn8_token";
 
-    // ---- CONFIG ----
-    const VERIFY_URL = "https://qsrsfzebsncrvkqiabnu.supabase.co/functions/v1/validate-token";
-    const ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzcnNmemVic25jcnZrcWlhYm51Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4MjAwMDYsImV4cCI6MjA4NTM5NjAwNn0._PjCnlHKDomrUscaaqJ2esB31tcdR0OnuR6bgC1-5HE";
+  // ---- CONFIG ----
+  const VERIFY_URL = "https://qsrsfzebsncrvkqiabnu.supabase.co/functions/v1/validate-token";
+  const ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzcnNmemVic25jcnZrcWlhYm51Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4MjAwMDYsImV4cCI6MjA4NTM5NjAwNn0._PjCnlHKDomrUscaaqJ2esB31tcdR0OnuR6bgC1-5HE";
 
-    async function recordLegalAcceptance(token) {
-  const res = await fetch("https://qsrsfzebsncrvkqiabnu.supabase.co/functions/v1/record-legal", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      apikey: ANON_KEY,
-      Authorization: `Bearer ${ANON_KEY}`,
-    },
-    body: JSON.stringify({
-      token,
-      terms_version: "v1",
-      privacy_version: "v1",
-      services_version: "v1",
-      page_url: location.href,
-      user_agent: navigator.userAgent,
-    }),
-  });
+  async function recordLegalAcceptance(tok) {
+    const res = await fetch("https://qsrsfzebsncrvkqiabnu.supabase.co/functions/v1/record-legal", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: ANON_KEY,
+        Authorization: `Bearer ${ANON_KEY}`,
+      },
+      body: JSON.stringify({
+        token: tok,
+        terms_version: "v1",
+        privacy_version: "v1",
+        services_version: "v1",
+        page_url: location.href,
+        user_agent: navigator.userAgent,
+        agreed_at: new Date().toISOString()
+      }),
+    });
 
-  const out = await res.json().catch(() => ({}));
-  if (!res.ok || !out.ok) throw new Error(out.error || "record-legal failed");
-}
-
-    // CHANGE THESE LINKS
-    const CHECKOUT_LINKS = {
-      private: "https://your-checkout-link.com/mn8-private",
-      core: "https://your-checkout-link.com/mn8-core"
-    };
-
-    checkoutBtn.addEventListener("click", async () => {
-  if (!agree.checked) return;
-
-  checkoutBtn.disabled = true;
-
-  try {
-    await recordLegalAcceptance(token); // token from URL or localStorage
-    window.location.href = "YOUR_STRIPE_CHECKOUT_LINK";
-  } catch (e) {
-    checkoutBtn.disabled = false;
-    alert("Could not save agreement. Please try again.");
+    const out = await res.json().catch(() => ({}));
+    if (!res.ok || !out.ok) throw new Error(out.error || "record-legal failed");
+    return out;
   }
-});
 
-    // =========================
-    // ROUTING (ONLY CHANGE)
-    // =========================
-    function goQualify(){
-      try{
-        // Preferred: MN8_ROUTE object from route.js
-        if (window.MN8_ROUTE){
-          if (typeof window.MN8_ROUTE.apply === "function") return window.MN8_ROUTE.apply();
-          if (typeof window.MN8_ROUTE.qualify === "function") return window.MN8_ROUTE.qualify();
-        }
-        // Alternate: standalone helpers from route.js
-        if (typeof window.routeToApply === "function") return window.routeToApply();
-        if (typeof window.routeToQualify === "function") return window.routeToQualify();
-      } catch(e){}
-      // Fallback (update ONLY this if your page name is different)
-      window.location.href="/";
-    }
+  // =========================
+  // ROUTING
+  // =========================
+  function goQualify(){
+    try{
+      if (window.MN8_ROUTE){
+        if (typeof window.MN8_ROUTE.apply === "function") return window.MN8_ROUTE.apply();
+        if (typeof window.MN8_ROUTE.qualify === "function") return window.MN8_ROUTE.qualify();
+      }
+      if (typeof window.routeToApply === "function") return window.routeToApply();
+      if (typeof window.routeToQualify === "function") return window.routeToQualify();
+    } catch(e){}
+    window.location.href = "/";
+  }
 
-    // ---- BASIC MODAL ----
-function showModal(title, message, buttonText, onClick) {
-  const modal = document.createElement("div");
-  modal.style.cssText = `
-    position:fixed;
-    inset:0;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:rgba(15,18,24,.55);
-    backdrop-filter: blur(6px);
-    z-index:9999;
-    padding:20px;
-  `;
+  // ---- BASIC MODAL ----
+  function showModal(title, message, buttonText, onClick) {
+    const modal = document.createElement("div");
+    modal.style.cssText = `
+      position:fixed;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:rgba(15,18,24,.55);
+      backdrop-filter: blur(6px);
+      z-index:9999;
+      padding:20px;
+    `;
 
-  modal.innerHTML = `
-    <div style="
-      width:min(520px,100%);
-      background:rgba(255,255,255,.85);
-      backdrop-filter: blur(14px);
-      border:1px solid rgba(0,0,0,.08);
-      border-radius:20px;
-      padding:32px;
-      box-shadow:0 40px 100px rgba(0,0,0,.25);
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
-      color:#111;
-    ">
-
+    modal.innerHTML = `
       <div style="
-        font-size:22px;
-        font-weight:900;
-        margin-bottom:12px;
-        letter-spacing:-0.01em;
+        width:min(520px,100%);
+        background:rgba(255,255,255,.85);
+        backdrop-filter: blur(14px);
+        border:1px solid rgba(0,0,0,.08);
+        border-radius:20px;
+        padding:32px;
+        box-shadow:0 40px 100px rgba(0,0,0,.25);
+        font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
+        color:#111;
       ">
-        ${title}
+        <div style="
+          font-size:22px;
+          font-weight:900;
+          margin-bottom:12px;
+          letter-spacing:-0.01em;
+        ">
+          ${title}
+        </div>
+
+        <div style="
+          font-size:15px;
+          line-height:1.6;
+          color:#333;
+          margin-bottom:24px;
+        ">
+          ${message}
+        </div>
+
+        <button id="mn8ModalBtn" style="
+          width:100%;
+          padding:16px;
+          border-radius:999px;
+          border:0;
+          background:linear-gradient(135deg, rgb(99,47,150), rgb(140,95,210));
+          color:#fff;
+          font-weight:800;
+          font-size:15px;
+          cursor:pointer;
+          transition:all .2s ease;
+        ">
+          ${buttonText}
+        </button>
       </div>
+    `;
 
-      <div style="
-        font-size:15px;
-        line-height:1.6;
-        color:#333;
-        margin-bottom:24px;
-      ">
-        ${message}
-      </div>
+    document.body.appendChild(modal);
+    document.getElementById("mn8ModalBtn").onclick = () => {
+      modal.remove();
+      onClick && onClick();
+    };
+  }
 
-      <button id="mn8ModalBtn" style="
-        width:100%;
-        padding:16px;
-        border-radius:999px;
-        border:0;
-        background:linear-gradient(135deg, rgb(99,47,150), rgb(140,95,210));
-        color:#fff;
-        font-weight:800;
-        font-size:15px;
-        cursor:pointer;
-        transition:all .2s ease;
-      ">
-        ${buttonText}
-      </button>
-    </div>
-  `;
+  function lockPage() {
+    const gate = document.getElementById("privateGate");
+    if (gate) gate.style.display = "none";
+  }
 
-  document.body.appendChild(modal);
+  function unlockPage() {
+    const gate = document.getElementById("privateGate");
+    if (gate) gate.style.display = "block";
+  }
 
-  document.getElementById("mn8ModalBtn").onclick = () => {
-    modal.remove();
-    onClick && onClick();
-  };
-}
+  async function verifyToken(tok) {
+    const res = await fetch(VERIFY_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: ANON_KEY,
+        Authorization: `Bearer ${ANON_KEY}`,
+      },
+      body: JSON.stringify({ token: tok }),
+    });
 
+    const out = await res.json().catch(() => ({}));
+    if (!res.ok || !out.ok) throw new Error(out.error || out.message || "Invalid token");
+  }
 
-    function lockPage() {
-      const gate = document.getElementById("privateGate");
-      if (gate) gate.style.display = "none";
-    }
+  async function authFlow() {
+    lockPage();
 
-    function unlockPage() {
-      const gate = document.getElementById("privateGate");
-      if (gate) gate.style.display = "block";
-    }
+    if (!token) token = (localStorage.getItem(LS_KEY) || "").trim();
 
-    async function verifyToken(tok) {
-      const res = await fetch(VERIFY_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          apikey: ANON_KEY,
-          Authorization: `Bearer ${ANON_KEY}`,
-        },
-        body: JSON.stringify({ token: tok }),
-      });
-
-      const out = await res.json().catch(() => ({}));
-      if (!res.ok || !out.ok) throw new Error(out.error || out.message || "Invalid token");
-    }
-
-    async function authFlow() {
-      lockPage();
-
-      // fallback to local storage token
-      if (!token) token = (localStorage.getItem(LS_KEY) || "").trim();
-
-      // Rejected
-      if (status === "reject") {
-        showModal(
-          "Not approved",
-          reason ? `Reason: ${reason}` : "You’re not a fit right now.",
-          "Return to Qualification",
-          () => goQualify()
-        );
-        return;
-      }
-
-      // Accepted but no token
-      if (status === "accept" && !token) {
-        showModal(
-          "Access token missing",
-          "Your access link didn’t include a token. Submit again so we can generate one.",
-          "Return to Qualification",
-          () => goQualify()
-        );
-        return;
-      }
-
-      // Verify and unlock
-      if (token) {
-        try {
-          await verifyToken(token);
-          localStorage.setItem(LS_KEY, token);
-          unlockPage();
-
-          if (status === "accept") {
-            showModal(
-              "You qualified.",
-              "This is your structure now.",
-              "Continue"
-            );
-          }
-        } catch {
-          localStorage.removeItem(LS_KEY);
-          showModal(
-            "Access denied",
-            "Your access link is invalid or expired.",
-            "Return to Qualification",
-            () => goQualify()
-          );
-        }
-        return;
-      }
-
-      // Default
+    if (status === "reject") {
       showModal(
-        "Private access",
-        "Submit the qualification to unlock this page.",
-        "Go to Qualification",
+        "Not approved",
+        reason ? `Reason: ${reason}` : "You’re not a fit right now.",
+        "Return to Qualification",
         () => goQualify()
       );
+      return;
     }
 
-    function initSticky() {
-      const offerSection = document.getElementById("offer");
-      const sticky = document.getElementById("stickyJump");
-      const jumpBtn = document.getElementById("jumpToOffer");
-
-      if (!offerSection || !sticky || !jumpBtn) return;
-
-      const io = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) sticky.classList.add("hidden");
-          else sticky.classList.remove("hidden");
-        });
-      }, { threshold: 0.15 });
-
-      io.observe(offerSection);
-
-      jumpBtn.addEventListener("click", () => {
-        offerSection.scrollIntoView({ behavior: "smooth", block: "start" });
-      });
+    if (status === "accept" && !token) {
+      showModal(
+        "Access token missing",
+        "Your access link didn’t include a token. Submit again so we can generate one.",
+        "Return to Qualification",
+        () => goQualify()
+      );
+      return;
     }
 
-function initOffer() {
-  const agree = document.getElementById("agree");
-  const checkoutBtn = document.getElementById("checkoutBtn");
+    if (token) {
+      try {
+        await verifyToken(token);
+        localStorage.setItem(LS_KEY, token);
+        unlockPage();
 
-  if (!agree || !checkoutBtn) return;
+        if (status === "accept") {
+          showModal("You qualified.", "This is your structure now.", "Continue");
+        }
+      } catch {
+        localStorage.removeItem(LS_KEY);
+        showModal(
+          "Access denied",
+          "Your access link is invalid or expired.",
+          "Return to Qualification",
+          () => goQualify()
+        );
+      }
+      return;
+    }
 
-  // 🔥 CHANGE THIS TO YOUR REAL CHECKOUT LINK
-  const CHECKOUT_URL = "https://your-checkout-link.com/mn8";
-
-  function sync() {
-    checkoutBtn.disabled = !agree.checked;
+    showModal(
+      "Private access",
+      "Submit the qualification to unlock this page.",
+      "Go to Qualification",
+      () => goQualify()
+    );
   }
 
-  agree.addEventListener("change", sync);
-  sync();
+  function initSticky() {
+    const offerSection = document.getElementById("offer");
+    const sticky = document.getElementById("stickyJump");
+    const jumpBtn = document.getElementById("jumpToOffer");
+    if (!offerSection || !sticky || !jumpBtn) return;
 
-  checkoutBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    if (!agree.checked) return;
-    window.location.href = CHECKOUT_URL;
-  });
-}
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) sticky.classList.add("hidden");
+        else sticky.classList.remove("hidden");
+      });
+    }, { threshold: 0.15 });
 
-    document.addEventListener("DOMContentLoaded", () => {
-      authFlow();
-      initSticky();
-      initOffer();
+    io.observe(offerSection);
+
+    jumpBtn.addEventListener("click", () => {
+      offerSection.scrollIntoView({ behavior: "smooth", block: "start" });
     });
-  })();
-</script>
+  }
 
+  function initOffer() {
+    const agree = document.getElementById("agree");
+    const checkoutBtn = document.getElementById("checkoutBtn");
+    if (!agree || !checkoutBtn) return;
+
+    // ✅ PUT YOUR REAL CHECKOUT LINK HERE
+    const CHECKOUT_URL = "YOUR_STRIPE_CHECKOUT_LINK";
+
+    function sync() {
+      checkoutBtn.disabled = !agree.checked;
+    }
+
+    agree.addEventListener("change", sync);
+    sync();
+
+    checkoutBtn.addEventListener("click", async (e) => {
+      e.preventDefault();
+      if (!agree.checked) return;
+
+      // token from URL or LS
+      const tok = (token || localStorage.getItem(LS_KEY) || "").trim();
+      if (!tok) {
+        alert("Missing token. Please re-qualify.");
+        return goQualify();
+      }
+
+      checkoutBtn.disabled = true;
+
+      try {
+        await recordLegalAcceptance(tok);
+        window.location.href = CHECKOUT_URL;
+      } catch (err) {
+        checkoutBtn.disabled = false;
+        alert("Could not save agreement. Please try again.");
+      }
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    authFlow();
+    initSticky();
+    initOffer();
+  });
+})();
+</script>
     <script>
       // subtle background pointer parallax (optional)
       (function(){
