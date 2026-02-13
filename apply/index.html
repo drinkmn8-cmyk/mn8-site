@@ -325,38 +325,39 @@ label{
   // =========================
   // ROUTING HELPERS (route.js driven)
   // =========================
-  function goNotAccepted() {
+  function goNotAccepted(reason = "") {
     try {
       if (window.MN8_ROUTE && typeof window.MN8_ROUTE.notAccepted === "function") {
-        window.MN8_ROUTE.notAccepted();
+        window.MN8_ROUTE.notAccepted({ reason });
         return;
       }
       if (typeof window.routeToNotAccepted === "function") {
-        window.routeToNotAccepted();
+        window.routeToNotAccepted({ reason });
         return;
       }
     } catch (e) {}
-    window.location.href = "./not-accepted.html";
+
+    // fallback (folder-style + then html)
+    const qs = reason ? `?reason=${encodeURIComponent(reason)}` : "";
+    window.location.href = `/not-accepted/${qs}`;
   }
 
-  function goPrivateAccepted(token) {
-    const url = `./private.html?status=accept&token=${encodeURIComponent(token)}`;
-
+  function goAccessAccepted(token) {
     try {
-      if (window.MN8_ROUTE && typeof window.MN8_ROUTE.private === "function") {
-        // preferred: router decides filename; we pass params
-        window.MN8_ROUTE.private({ status: "accept", token });
+      if (window.MN8_ROUTE && typeof window.MN8_ROUTE.access === "function") {
+        window.MN8_ROUTE.access({ status: "accept", token });
         return;
       }
-      if (typeof window.routeToPrivate === "function") {
-        window.routeToPrivate({ status: "accept", token });
+      if (typeof window.routeToAccess === "function") {
+        window.routeToAccess({ status: "accept", token });
         return;
       }
     } catch (e) {}
 
-    // fallback
-    window.location.href = url;
+    // fallback (folder-style)
+    window.location.href = `/access/?status=accept&token=${encodeURIComponent(token)}`;
   }
+
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
