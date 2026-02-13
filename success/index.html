@@ -7,187 +7,163 @@
   <meta name="robots" content="noindex,nofollow" />
 
   <style>
-:root{
-  --ink:#0b0d12;
-  --muted:rgba(11,13,18,.62);
-  --line:rgba(11,13,18,.10);
-  --bg:#ffffff;
-  --mn8:#632f96;
-  --mn8b:#8c5fd2;
-}
+    :root{
+      --ink:#0b0d12;
+      --muted:rgba(11,13,18,.62);
+      --line:rgba(11,13,18,.10);
+      --bg:#ffffff;
+      --mn8:#632f96;
+      --mn8b:#8c5fd2;
+    }
 
-*{ box-sizing:border-box; }
+    *{ box-sizing:border-box; }
 
-body{
-  margin:0;
-  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-  background:var(--bg);
-  color:var(--ink);
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background:var(--bg);
+      color:var(--ink);
 
-  /* TRUE CENTER LAYOUT */
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
-}
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+    }
 
-/* =========================
-   HEADER
-========================= */
-.header{
-  padding:28px 20px 0 20px;
-  display:flex;
-  justify-content:center; /* CENTER LOGO */
-}
+    /* HEADER */
+    .header{
+      padding:28px 20px 0;
+      display:flex;
+      justify-content:center;
+    }
 
-.header img{
-  height:28px;
-}
+    .header img{
+      height:28px;
+    }
 
-/* =========================
-   MAIN WRAP
-========================= */
-.wrap{
-  flex:1;
-  display:flex;
-  align-items:center;      /* vertical center */
-  justify-content:center;  /* horizontal center */
-  padding:40px 20px;
-}
+    /* CENTER WRAP */
+    .wrap{
+      flex:1;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:40px 20px;
+    }
 
-/* =========================
-   CARD
-========================= */
-.card{
-  width:min(760px, 100%);
-  border:1px solid var(--line);
-  border-radius:20px;
-  padding:32px;
-  background:#fff;
-}
+    /* CARD */
+    .card{
+      width:min(640px,100%);
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding:36px;
+      background:#fff;
+      text-align:left;
+    }
 
-/* =========================
-   TEXT
-========================= */
-h1{
-  margin:0 0 10px 0;
-  font-size:28px;
-  letter-spacing:-.02em;
-  line-height:1.12;
-  font-weight:900;
-}
+    h1{
+      margin:0 0 12px 0;
+      font-size:28px;
+      font-weight:900;
+      letter-spacing:-.02em;
+    }
 
-.sub{
-  margin:0 0 22px 0;
-  font-size:15px;
-  line-height:1.5;
-  color:var(--muted);
-  max-width:62ch;
-}
+    .sub{
+      margin:0 0 26px 0;
+      font-size:15px;
+      line-height:1.6;
+      color:var(--muted);
+    }
 
-/* =========================
-   BUTTONS
-========================= */
-.btnRow{
-  display:flex;
-  gap:14px;
-  align-items:center;
-  flex-wrap:wrap;
-  margin-top:12px;
-}
+    /* BUTTONS */
+    .btnRow{
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+    }
 
-.btn{
-  appearance:none;
-  border:1px solid var(--line);
-  background:#fff;
-  color:var(--ink);
-  padding:13px 16px;
-  border-radius:999px;
-  font-weight:850;
-  cursor:pointer;
-  text-decoration:none;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  min-height:46px;
-  transition:transform .12s ease, box-shadow .12s ease;
-  user-select:none;
-  white-space:nowrap;
-}
+    .btn{
+      appearance:none;
+      border:1px solid var(--line);
+      background:#fff;
+      color:var(--ink);
+      padding:14px 18px;
+      border-radius:999px;
+      font-weight:800;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:48px;
+      transition:transform .12s ease, box-shadow .12s ease;
+      white-space:nowrap;
+    }
 
-.btnPrimary{
-  border:0;
-  background:linear-gradient(135deg, var(--mn8), var(--mn8b));
-  color:#fff;
-  box-shadow:0 12px 28px rgba(99,47,150,.18);
-}
+    .btnPrimary{
+      border:0;
+      background:linear-gradient(135deg,var(--mn8),var(--mn8b));
+      color:#fff;
+      box-shadow:0 14px 30px rgba(99,47,150,.18);
+    }
 
-.btn:hover{ transform:translateY(-2px); }
-.btn:active{ transform:translateY(0px); }
+    .btn:hover{ transform:translateY(-2px); }
+    .btn:active{ transform:translateY(0); }
 
-/* =========================
-   TIP
-========================= */
-.tip{
-  margin-top:18px;
-  font-size:12.5px;
-  color:rgba(11,13,18,.55);
-}
+    .tip{
+      margin-top:22px;
+      font-size:12.5px;
+      color:rgba(11,13,18,.55);
+    }
 
-/* =========================
-   MOBILE
-========================= */
-@media (max-width: 520px){
+    /* MOBILE */
+    @media (max-width:520px){
 
-  .wrap{
-    align-items:flex-start;
-    padding-top:40px;
-  }
+      .wrap{
+        align-items:flex-start;
+        padding-top:50px;
+      }
 
-  .card{
-    padding:22px;
-  }
+      .card{
+        padding:26px;
+      }
 
-  h1{
-    font-size:24px;
-  }
+      h1{
+        font-size:24px;
+      }
 
-  .btnRow{
-    flex-direction:column;
-    align-items:stretch;
-  }
+      .btnRow{
+        flex-direction:column;
+      }
 
-  .btn{
-    width:100%;
-  }
-}
+      .btn{
+        width:100%;
+      }
+    }
   </style>
 </head>
-<script src="/route.js?v=1"></script>
+
 <body>
-  <div class="bgStage" id="bgStage" aria-hidden="true">
-    <div class="particles"></div>
-  </div>
 
-<header class="topbar">
-  <div class="wrap topbarInner">
-
-    <a href="/" class="brand">
-      <img src="/mn8-logo.svg" alt="MN8" class="brandLogo">
+  <header class="header">
+    <a href="/">
+      <img src="/mn8-logo.svg" alt="MN8">
     </a>
+  </header>
 
-
-  </div>
-</header>
-<body>
   <main class="wrap">
     <section class="card">
       <h1>Payment confirmed.</h1>
-      <p class="sub">Download the MN8 app using the buttons below.</p>
+      <p class="sub">
+        Download the MN8 app using the buttons below.
+      </p>
 
       <div class="btnRow">
-        <!-- Replace these 3 links with your real URLs -->
-        <a class="btn btnPrimary" href="https://apple.com" target="_blank" rel="noopener">Download on App Store</a>
-        <a class="btn" href="https://play.google.com" target="_blank" rel="noopener">Get it on Google Play</a>
+        <!-- Replace with your real store URLs -->
+        <a class="btn btnPrimary" href="https://apple.com" target="_blank" rel="noopener">
+          Download on App Store
+        </a>
+
+        <a class="btn" href="https://play.google.com" target="_blank" rel="noopener">
+          Get it on Google Play
+        </a>
       </div>
 
       <div class="tip">
@@ -195,5 +171,6 @@ h1{
       </div>
     </section>
   </main>
+
 </body>
 </html>
