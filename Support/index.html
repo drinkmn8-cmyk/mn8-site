@@ -1,1 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Support</title>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --mn8:#632f96;
+      --ink:#0B0D12;
+      --muted:rgba(11,13,18,.68);
+      --hair:rgba(15,18,24,.10);
+      --bg:#ffffff;
+      --radius:22px;
+      --shadow: 0 14px 50px rgba(15,18,24,.08);
+      --gutter: 32px;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:"Lato", system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      color:var(--ink);
+      background:var(--bg);
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
+    }
+    .wrap{ width:min(960px, calc(100% - 24px)); margin:0 auto; }
+
+    .topbar{
+      position:sticky; top:0; z-index:10;
+      background: rgba(255,255,255,.82);
+      backdrop-filter: blur(12px);
+    }
+    .topbarInner{
+      display:flex; align-items:center; justify-content:space-between;
+      padding: 16px 0;
+    }
+    .brand img{ height:44px; width:auto; display:block; }
+    .btn{
+      appearance:none; border:0; cursor:pointer;
+      padding:12px 16px; border-radius:999px;
+      font-weight:900; font-size:14px;
+      background: var(--mn8); color:#fff;
+      box-shadow: 0 10px 28px rgba(99,47,150,.20);
+    }
+
+    main{ padding: 64px 0 90px; }
+    .card{
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.86);
+      border: 1px solid rgba(15,18,24,.08);
+      box-shadow: var(--shadow);
+      padding: 22px;
+      overflow:hidden;
+      position:relative;
+    }
+    .card:before{
+      content:"";
+      position:absolute; inset:-40%;
+      background:
+        radial-gradient(600px 320px at 30% 20%, rgba(99,47,150,.14), rgba(99,47,150,0) 70%),
+        radial-gradient(520px 280px at 80% 80%, rgba(15,18,24,.05), rgba(15,18,24,0) 70%);
+      pointer-events:none;
+    }
+    .card > *{ position:relative; z-index:1; }
+
+    h1{ margin:0 0 8px; font-size:36px; letter-spacing:-.02em; }
+    p{ margin:0 0 18px; color:var(--muted); line-height:1.6; }
+
+    form{ display:grid; gap:12px; margin-top: 12px; }
+    .row2{ display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
+    @media (max-width:720px){ .row2{ grid-template-columns:1fr; } }
+
+    label{ font-weight:900; font-size:13px; color: rgba(11,13,18,.78); }
+    input, textarea{
+      width:100%;
+      border-radius: 16px;
+      border: 1px solid rgba(15,18,24,.12);
+      padding: 12px 14px;
+      font: inherit;
+      outline: none;
+      background: rgba(255,255,255,.92);
+    }
+    textarea{ min-height: 140px; resize: vertical; }
+    input:focus, textarea:focus{
+      border-color: rgba(99,47,150,.45);
+      box-shadow: 0 0 0 6px rgba(99,47,150,.10);
+    }
+
+    .note{
+      font-size:13px;
+      color: rgba(11,13,18,.55);
+      margin-top: 10px;
+    }
+
+    .footerLinks{
+      display:flex; gap:16px; justify-content:center; flex-wrap:wrap;
+      padding: 40px 0 50px;
+    }
+    .footerLinks a{
+      color: rgba(11,13,18,.55);
+      font-weight:800;
+      font-size:13px;
+      text-decoration:none;
+    }
+    .footerLinks a:hover{ color: rgba(11,13,18,.88); }
+    .copy{
+      text-align:center;
+      color: rgba(11,13,18,.42);
+      font-size:12px;
+      padding-bottom: 40px;
+    }
+  </style>
+</head>
+
+<script src="/route.js?v=1"></script>
+
+<body>
+  <header class="topbar">
+    <div class="wrap topbarInner">
+      <a href="/" class="brand" aria-label="MN8 Home">
+        <img src="/mn8-logo.svg" alt="MN8">
+      </a>
+      <button class="btn" id="backBtn" type="button">Back</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <div class="card">
+        <h1>Support</h1>
+        <p>Send a ticket. You’ll get a reply by email.</p>
+
+        <form id="supportForm">
+          <div class="row2">
+            <div>
+              <label for="name">Name (optional)</label>
+              <input id="name" name="name" autocomplete="name" />
+            </div>
+            <div>
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" required autocomplete="email" />
+            </div>
+          </div>
+
+          <div>
+            <label for="subject">Subject</label>
+            <input id="subject" name="subject" required />
+          </div>
+
+          <div>
+            <label for="message">Message</label>
+            <textarea id="message" name="message" required></textarea>
+          </div>
+
+          <button class="btn" id="submitBtn" type="submit">Send ticket</button>
+          <div class="note" id="formNote">Support replies by email.</div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footerLinks">
+      <a href="/terms/">Terms</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="/services/">Services</a>
+      <a href="/support/">Support</a>
+    </div>
+    <div class="copy">© 2026 MN8. All rights reserved.</div>
+  </footer>
+
+  <script>
+    (function(){
+      const ENDPOINT_URL = "https://qsrsfzebsncrvkqiabnu.supabase.co/functions/v1/support-submit";
+      const ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzcnNmemVic25jcnZrcWlhYm51Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4MjAwMDYsImV4cCI6MjA4NTM5NjAwNn0._PjCnlHKDomrUscaaqJ2esB31tcdR0OnuR6bgC1-5HE"; // keep your existing anon key format
+
+      const form = document.getElementById("supportForm");
+      const submitBtn = document.getElementById("submitBtn");
+      const note = document.getElementById("formNote");
+
+      function setLoading(on){
+        submitBtn.disabled = on;
+        submitBtn.textContent = on ? "Sending..." : "Send ticket";
+        note.textContent = on ? "Sending…" : "Support replies by email.";
+      }
+
+      document.getElementById("backBtn").addEventListener("click", ()=>{
+        if (window.history.length > 1) window.history.back();
+        else window.location.href = "/";
+      });
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        if (!form.checkValidity()) return form.reportValidity();
+
+        const payload = Object.fromEntries(new FormData(form).entries());
+        payload.userAgent = navigator.userAgent;
+        payload.pageUrl = location.href;
+
+        try{
+          setLoading(true);
+
+          const res = await fetch(ENDPOINT_URL, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              apikey: ANON_KEY,
+              Authorization: `Bearer ${ANON_KEY}`,
+            },
+            body: JSON.stringify(payload),
+          });
+
+          const out = await res.json().catch(()=> ({}));
+          if (!res.ok || !out.ok){
+            note.textContent = "Failed. Try again.";
+            return;
+          }
+
+          form.reset();
+          note.textContent = out.ticketId
+            ? `Sent. Ticket #${String(out.ticketId).slice(0,8)}`
+            : "Sent.";
+        } catch {
+          note.textContent = "Failed. Try again.";
+        } finally {
+          setLoading(false);
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
