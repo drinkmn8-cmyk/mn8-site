@@ -473,28 +473,34 @@
   const ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzcnNmemVic25jcnZrcWlhYm51Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4MjAwMDYsImV4cCI6MjA4NTM5NjAwNn0._PjCnlHKDomrUscaaqJ2esB31tcdR0OnuR6bgC1-5HE";
 
   async function recordLegalAcceptance(tok) {
-    const res = await fetch("https://qsrsfzebsncrvkqiabnu.supabase.co/functions/v1/record-legal", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        apikey: ANON_KEY,
-        Authorization: `Bearer ${ANON_KEY}`,
-      },
-      body: JSON.stringify({
-        token: tok,
-        terms_version: "v1",
-        privacy_version: "v1",
-        services_version: "v1",
-        page_url: location.href,
-        user_agent: navigator.userAgent,
-        agreed_at: new Date().toISOString()
-      }),
-    });
+  const cleanTok = (tok || "").trim();
+  if (!cleanTok) throw new Error("Missing token");
 
-    const out = await res.json().catch(() => ({}));
-    if (!res.ok || !out.ok) throw new Error(out.error || "record-legal failed");
-    return out;
-  }
+  const res = await fetch("https://qsrsfzebsncrvkqiabnu.supabase.co/functions/v1/record-legal", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      apikey: ANON_KEY,
+      Authorization: `Bearer ${ANON_KEY}`,
+    },
+    body: JSON.stringify({
+      token: cleanTok,
+      agreed: true,                    // ✅ REQUIRED by your backend
+      terms_version: "v1",
+      privacy_version: "v1",
+      services_version: "v1",
+      page_url: location.href,
+      user_agent: navigator.userAgent,
+      agreed_at: new Date().toISOString(),
+    }),
+  });
+
+  const out = await res.json().catch(() => ({}));
+  if (!res.ok || !out.ok) throw new Error(out.error || out.message || "record-legal failed");
+  return out;
+}
+
+
 
   // =========================
   // ROUTING
@@ -679,50 +685,48 @@
     });
   }
 
-  function initOffer() {
-    const agree = document.getElementById("agree");
-    const checkoutBtn = document.getElementById("checkoutBtn");
-    if (!agree || !checkoutBtn) return;
+function initOffer() {
+  const agree = document.getElementById("agree");
+  const checkoutBtn = document.getElementById("checkoutBtn");
+  if (!agree || !checkoutBtn) return;
 
-    // ✅ PUT YOUR REAL CHECKOUT LINK HERE
-    const CHECKOUT_URL = "YOUR_STRIPE_CHECKOUT_LINK";
+  // 🔥 put your real checkout link here
+  const CHECKOUT_URL = "YOUR_STRIPE_CHECKOUT_LINK";
 
-    function sync() {
-      checkoutBtn.disabled = !agree.checked;
-    }
-
-    agree.addEventListener("change", sync);
-    sync();
-
-    checkoutBtn.addEventListener("click", async (e) => {
-      e.preventDefault();
-      if (!agree.checked) return;
-
-      // token from URL or LS
-      const tok = (token || localStorage.getItem(LS_KEY) || "").trim();
-      if (!tok) {
-        alert("Missing token. Please re-qualify.");
-        return goQualify();
-      }
-
-      checkoutBtn.disabled = true;
-
-      try {
-        await recordLegalAcceptance(tok);
-        window.location.href = CHECKOUT_URL;
-      } catch (err) {
-        checkoutBtn.disabled = false;
-        alert("Could not save agreement. Please try again.");
-      }
-    });
+  function getToken() {
+    const p = new URLSearchParams(window.location.search);
+    return (
+      (p.get("token") || "").trim() ||
+      (p.get("access_token") || "").trim() ||
+      (p.get("t") || "").trim() ||
+      (localStorage.getItem(LS_KEY) || "").trim()
+    );
   }
 
-  document.addEventListener("DOMContentLoaded", () => {
-    authFlow();
-    initSticky();
-    initOffer();
+  function sync() {
+    checkoutBtn.disabled = !agree.checked;
+  }
+
+  agree.addEventListener("change", sync);
+  sync();
+
+  checkoutBtn.addEventListener("click", async (e) => {
+    e.preventDefault();
+    if (!agree.checked) return;
+
+    checkoutBtn.disabled = true;
+
+    try {
+      const tok = getToken();
+      await recordLegalAcceptance(tok);
+      window.location.href = CHECKOUT_URL;
+    } catch (err) {
+      checkoutBtn.disabled = false;
+      alert(err?.message || "Could not save agreement. Please try again.");
+    }
   });
-})();
+}
+
 </script>
     <script>
       // subtle background pointer parallax (optional)
