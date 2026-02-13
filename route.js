@@ -1,34 +1,40 @@
-/* route.js — single source of truth (custom domain ready) */
+// /route.js
 (function () {
-  const BASE = "mn8.app"; // custom domain => root
-
+  // EDIT THESE ONCE. DONE.
   const ROUTES = {
-    home: `${BASE}/`,
-    system: `${BASE}/`,          // if your main page is the system/landing
-    apply: `${BASE}/apply/`,
-    access: `${BASE}/access/`,
-    notApproved: `${BASE}/not-approved/`,
-    terms: `${BASE}/terms/`,
-    policy: `${BASE}/policy/`,
-    services: `${BASE}/services/`,
-    support: `${BASE}/support/`,
+    home: "/system",
+    apply: "/apply",
+    access: "/access",
+    notAccepted: "/not-accepted",
+    terms: "/terms",
+    policies: "/policies",
+    services: "/services",
+    contact: "/contact",
+    support: "/support",
   };
 
-  window.MN8_ROUTES = ROUTES;
+  function go(path) {
+    if (!path) return;
+    window.location.href = path;
+  }
 
-  window.mn8Go = function (key, qs = "") {
-    const url = ROUTES[key] || key;
-    location.href = qs ? `${url}${qs.startsWith("?") ? qs : "?" + qs}` : url;
-  };
+  // Buttons / links routing
+  document.addEventListener("click", (e) => {
+    const el = e.target.closest("[data-route],[data-apply],[data-access],[data-notaccepted]");
+    if (!el) return;
 
-  document.addEventListener("DOMContentLoaded", () => {
-    document.querySelectorAll("[data-route]").forEach((el) => {
-      const key = el.getAttribute("data-route");
-      const href = ROUTES[key];
-      if (!href) return;
+    // Backward compatible: your existing data-apply
+    if (el.hasAttribute("data-apply")) return go(ROUTES.apply);
 
-      if (el.tagName === "A") el.setAttribute("href", href);
-      if (el.tagName === "BUTTON") el.addEventListener("click", () => (location.href = href));
-    });
+    // Optional helpers if you want them
+    if (el.hasAttribute("data-access")) return go(ROUTES.access);
+    if (el.hasAttribute("data-notaccepted")) return go(ROUTES.notAccepted);
+
+    // Generic routing
+    const key = el.getAttribute("data-route");
+    if (key && ROUTES[key]) return go(ROUTES[key]);
   });
+
+  // Expose for scripts that need it (apply/access flows)
+  window.MN8_ROUTES = ROUTES;
 })();
