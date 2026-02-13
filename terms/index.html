@@ -1,1 +1,329 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MN8 — Terms</title>
+  <meta name="description" content="MN8 Terms of Service" />
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --mn8:#6D3BD2;
+      --ink:#0B0D12;
+      --muted:rgba(11,13,18,.70);
+      --hair:rgba(15,18,24,.10);
+      --bg:#ffffff;
+
+      --radiusXL:28px;
+      --radiusLG:22px;
+
+      --shadow1: 0 10px 30px rgba(15,18,24,.06);
+      --gutter: 64px;
+      --gutterMobile: 32px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:"Lato", system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      color:var(--ink);
+      background:var(--bg);
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
+    }
+
+    .bgStage{
+      position:fixed;
+      inset:-20vh -20vw;
+      pointer-events:none;
+      z-index:0;
+      background:
+        radial-gradient(1200px 600px at var(--mx, 60%) var(--my, 30%), rgba(109,59,210,.12), rgba(109,59,210,0) 60%),
+        radial-gradient(900px 500px at 20% 85%, rgba(109,59,210,.08), rgba(109,59,210,0) 60%),
+        radial-gradient(800px 420px at 85% 80%, rgba(15,18,24,.06), rgba(15,18,24,0) 60%);
+    }
+
+    .wrap{
+      width:min(980px, calc(100% - var(--gutter)));
+      margin:0 auto;
+      position:relative;
+      z-index:1;
+    }
+    @media (max-width:900px){
+      .wrap{ width: calc(100% - var(--gutterMobile)); }
+    }
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:50;
+      backdrop-filter: blur(14px);
+      background: rgba(255,255,255,.78);
+      border-bottom: 0;
+    }
+    .topbarInner{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding: 18px 0;
+      gap:14px;
+    }
+    .brand{ display:flex; align-items:center; text-decoration:none; }
+    .brandLogo{ height: 54px; width:auto; display:block; }
+
+    .btnPrimary{
+      appearance:none;
+      border:0;
+      background: var(--mn8);
+      color:#fff;
+      padding: 12px 16px;
+      border-radius:999px;
+      font-weight:900;
+      font-size:14px;
+      cursor:pointer;
+      box-shadow: 0 10px 30px rgba(109,59,210,.18);
+      transition: transform .12s ease, filter .12s ease;
+    }
+    .btnPrimary:hover{ filter:brightness(1.05); }
+    .btnPrimary:active{ transform: translateY(1px); }
+
+    main{ padding: 56px 0 24px; }
+    .kicker{
+      margin:0 0 10px;
+      font-size:12px;
+      font-weight:900;
+      color: rgba(11,13,18,.55);
+      letter-spacing:.02em;
+      text-transform: uppercase;
+    }
+    h1{
+      margin:0 0 12px;
+      font-size: clamp(28px, 3.2vw, 40px);
+      line-height:1.08;
+      letter-spacing:-.02em;
+      font-weight:900;
+    }
+    .sub{
+      margin:0;
+      color: var(--muted);
+      line-height:1.7;
+      font-size:16px;
+      max-width: 72ch;
+    }
+
+    .card{
+      margin-top: 22px;
+      background: rgba(255,255,255,.86);
+      border: 1px solid rgba(15,18,24,.08);
+      box-shadow: var(--shadow1);
+      border-radius: var(--radiusXL);
+      overflow:hidden;
+    }
+    .cardPad{ padding: 22px; }
+    .rule{
+      padding: 18px 0;
+      border-top: 1px solid rgba(15,18,24,.08);
+    }
+    .rule:first-child{ border-top:0; padding-top:0; }
+    .rule h2{
+      margin:0 0 8px;
+      font-size:16px;
+      font-weight:900;
+      letter-spacing:-.01em;
+    }
+    .rule p, .rule ul{
+      margin:0;
+      color: rgba(11,13,18,.72);
+      line-height:1.7;
+      font-size:15px;
+    }
+    .rule ul{ padding-left: 18px; margin-top: 8px; }
+    .rule li{ margin: 6px 0; }
+
+    .mn8Footer{
+      margin-top: 44px;
+      padding: 30px 0 54px;
+      text-align:center;
+      position:relative;
+      z-index:1;
+    }
+    .mn8FooterLinks{
+      display:flex;
+      justify-content:center;
+      flex-wrap:wrap;
+      gap:18px;
+      margin-bottom:12px;
+    }
+    .mn8FooterLinks a{
+      font-size:13px;
+      font-weight:800;
+      color: rgba(11,13,18,.55);
+      text-decoration:none;
+      transition: color .15s ease;
+    }
+    .mn8FooterLinks a:hover{ color: rgba(11,13,18,.85); }
+    .mn8FooterCopy{
+      font-size:12px;
+      color: rgba(11,13,18,.45);
+    }
+  </style>
+
+  <script src="/route.js?v=1"></script>
+</head>
+<body>
+  <div class="bgStage" id="bgStage" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <div class="wrap topbarInner">
+      <a class="brand" href="/" aria-label="MN8 Home">
+        <img src="/mn8-logo.svg" alt="MN8" class="brandLogo">
+      </a>
+      <button class="btnPrimary" data-apply>Begin Qualification</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <p class="kicker">MN8</p>
+      <h1>Terms of Service</h1>
+      <p class="sub">By using MN8, you agree to these Terms.</p>
+
+      <section class="card">
+        <div class="cardPad">
+          <div class="rule">
+            <h2>1. Acceptance of Terms</h2>
+            <p>By using MN8, you agree to these Terms. If you do not agree, do not use the service.</p>
+          </div>
+
+          <div class="rule">
+            <h2>2. Eligibility</h2>
+            <ul>
+              <li>Be at least 18 years old</li>
+              <li>Have legal capacity to enter a contract</li>
+              <li>Provide accurate information</li>
+            </ul>
+            <p>MN8 is private access. Access is non-transferable.</p>
+          </div>
+
+          <div class="rule">
+            <h2>3. What MN8 Is</h2>
+            <ul>
+              <li>App access</li>
+              <li>Daily Done / Not Done logging</li>
+              <li>Weekly Signals</li>
+              <li>Structured rules</li>
+            </ul>
+            <p>MN8 is not medical care and does not replace a doctor.</p>
+          </div>
+
+          <div class="rule">
+            <h2>4. Not Medical Advice</h2>
+            <p>MN8 provides education and structure only. We do not diagnose, treat, or cure any disease. No doctor–patient relationship is created.</p>
+          </div>
+
+          <div class="rule">
+            <h2>5. User Responsibilities</h2>
+            <ul>
+              <li>Log Done / Not Done daily</li>
+              <li>Complete one Weekly Signal per week</li>
+              <li>Follow system rules honestly</li>
+              <li>Do not share access</li>
+            </ul>
+            <p>Failure to follow rules voids the 90-day guarantee.</p>
+          </div>
+
+          <div class="rule">
+            <h2>6. Payment</h2>
+            <p>MN8 is $2,500 for 12 months of access. Payment is required before access. All sales are final except under the 90-day guarantee.</p>
+          </div>
+
+          <div class="rule">
+            <h2>7. 90-Day Guarantee</h2>
+            <p>You qualify for a full refund only if:</p>
+            <ul>
+              <li>You log Done / Not Done daily</li>
+              <li>You hit at least 75% “Done” days over 90 days</li>
+              <li>You complete 12 Weekly Signals (1 per week)</li>
+              <li>You submit your refund request within 7 days after Day 90</li>
+            </ul>
+            <p>The guarantee is void if tracking is incomplete, Weekly Signals are missing, access is shared, or fraud/chargeback is attempted.</p>
+          </div>
+
+          <div class="rule">
+            <h2>8. Intellectual Property</h2>
+            <p>All content, systems, branding, structure, and materials belong to MN8. You may not copy, share, reproduce, or distribute any part of MN8.</p>
+          </div>
+
+          <div class="rule">
+            <h2>9. Prohibited Use</h2>
+            <ul>
+              <li>Sharing your login</li>
+              <li>Reverse engineering the system</li>
+              <li>Abusing refund policies</li>
+              <li>Unlawful use</li>
+            </ul>
+            <p>Violation may result in termination without refund.</p>
+          </div>
+
+          <div class="rule">
+            <h2>10. Limitation of Liability</h2>
+            <p>MN8 is provided “as is.” We are not responsible for individual results or health outcomes. Your use of MN8 is at your own risk.</p>
+          </div>
+
+          <div class="rule">
+            <h2>11. Changes</h2>
+            <p>We may update these Terms at any time. Continued use means you accept the updated Terms.</p>
+          </div>
+
+          <div class="rule">
+            <h2>12. Support</h2>
+            <p>Support: support@mn8.app</p>
+          </div>
+        </div>
+      </section>
+
+      <footer class="mn8Footer">
+        <div class="mn8FooterLinks">
+          <a href="/terms/">Terms</a>
+          <a href="/privacy/">Privacy</a>
+          <a href="/services/">Services</a>
+          <a href="/support/">Support</a>
+        </div>
+        <div class="mn8FooterCopy">© 2026 MN8. All rights reserved.</div>
+      </footer>
+    </div>
+  </main>
+
+  <script>
+    (function(){
+      // CTA routing: prefer route.js; fallback to /apply/
+      document.querySelectorAll("[data-apply]").forEach(btn=>{
+        btn.addEventListener("click", ()=>{
+          try{
+            if(window.MN8_ROUTE){
+              if(typeof window.MN8_ROUTE.apply === "function") return window.MN8_ROUTE.apply();
+              if(typeof window.MN8_ROUTE.qualify === "function") return window.MN8_ROUTE.qualify();
+            }
+          }catch(e){}
+          window.location.href = "/apply/";
+        });
+      });
+
+      // subtle pointer gradient
+      const bg = document.getElementById("bgStage");
+      if(!bg) return;
+      window.addEventListener("pointermove", (e)=>{
+        const x = (e.clientX / window.innerWidth) * 100;
+        const y = (e.clientY / window.innerHeight) * 100;
+        bg.style.setProperty("--mx", x + "%");
+        bg.style.setProperty("--my", y + "%");
+      }, {passive:true});
+    })();
+  </script>
+</body>
+</html>
