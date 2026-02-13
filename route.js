@@ -7,6 +7,8 @@
     apply: "/apply",
     access: "/access",
     notAccepted: "/not-accepted",
+    success: "/success/",
+
 
     // Legal / support
     terms: "/terms",
