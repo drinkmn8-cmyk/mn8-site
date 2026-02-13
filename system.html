@@ -988,7 +988,7 @@ footer.final{
       <img src="/mn8-logo.svg" alt="MN8" class="brandLogo">
     </a>
 
-    <button class="btnPrimary" data-qualify>Begin Qualification</button>
+    <button class="btnPrimary" data-apply>Begin Qualification</button>
 
 
   </div>
@@ -1001,7 +1001,7 @@ footer.final{
       <p class="lead">MN8 is a private weight resolution system that removes the need to think about weight even as responsibility increases.</p>
 
       <div class="ctaRow">
-        <button class="btnPrimary" data-qualify>Begin Qualification</button>
+        <button class="btnPrimary" data-apply>Begin Qualification</button>
         <button class="btnGhost" data-scroll="#process">See process</button>
       </div>
 
@@ -1218,7 +1218,7 @@ footer.final{
         <h2 class="h2" style="margin-bottom:12px;">Private access. Built for real responsibility.</h2>
         <p class="sub" style="max-width:68ch;">If you want weight control that fits inside your life.</p>
         <div class="ctaRow">
-          <button class="btnPrimary" data-qualify>Begin Qualification</button>
+          <button class="btnPrimary" data-apply>Begin Qualification</button>
         </div>
       </div>
     </div>
@@ -1247,7 +1247,7 @@ footer.final{
   // =========================
   // CTA routing
   // =========================
-  document.querySelectorAll("[data-qualify]").forEach(btn=>{
+  document.querySelectorAll("[data-apply]").forEach(btn=>{
     btn.addEventListener("click", ()=>{ window.location.href = QUALIFY_URL; });
   });
 
