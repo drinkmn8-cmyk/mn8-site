@@ -500,6 +500,20 @@
       core: "https://your-checkout-link.com/mn8-core"
     };
 
+    checkoutBtn.addEventListener("click", async () => {
+  if (!agree.checked) return;
+
+  checkoutBtn.disabled = true;
+
+  try {
+    await recordLegalAcceptance(token); // token from URL or localStorage
+    window.location.href = "YOUR_STRIPE_CHECKOUT_LINK";
+  } catch (e) {
+    checkoutBtn.disabled = false;
+    alert("Could not save agreement. Please try again.");
+  }
+});
+
     // =========================
     // ROUTING (ONLY CHANGE)
     // =========================
