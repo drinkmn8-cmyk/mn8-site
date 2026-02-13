@@ -199,7 +199,7 @@ label{
 
 <header class="topbar">
   <div class="wrap topbarInner">
-    <a href="/"">
+    <a href="/">
       <img src="/mn8-logo.svg" alt="MN8" class="brandLogo">
     </a>
   </div>
@@ -219,8 +219,8 @@ label{
           <div class="qualifyGrid">
 
             <div class="field">
-              <label for="fullName">Full name</label>
-              <input class="control" id="fullName" name="fullName" required>
+<label for="full_name">Full name</label>
+<input class="control" id="full_name" name="full_name" required>
             </div>
 
             <div class="field">
@@ -337,8 +337,8 @@ label{
     } catch (e) {}
 
     // fallback (folder-style + then html)
-    const qs = reason ? `?reason=${encodeURIComponent(reason)}` : "";
-    window.location.href = `/not-accepted/${qs}`;
+const qs = reason ? `?reason=${encodeURIComponent(reason)}` : "";
+window.location.href = `/not-accepted/${qs}`;
   }
 
   function goAccessAccepted(token) {
