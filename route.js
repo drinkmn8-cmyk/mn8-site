@@ -1,15 +1,17 @@
 // /route.js
 (function () {
+
   // EDIT THESE ONCE. DONE.
   const ROUTES = {
     home: "/",
     apply: "/apply",
     access: "/access",
     notAccepted: "/not-accepted",
+
+    // Legal / support
     terms: "/terms",
-    policies: "/policies",
+    privacy: "/privacy",
     services: "/services",
-    contact: "/contact",
     support: "/support",
   };
 
@@ -23,10 +25,10 @@
     const el = e.target.closest("[data-route],[data-apply],[data-access],[data-notaccepted]");
     if (!el) return;
 
-    // Backward compatible: your existing data-apply
+    // Backward compatible: existing data-apply
     if (el.hasAttribute("data-apply")) return go(ROUTES.apply);
 
-    // Optional helpers if you want them
+    // Optional helpers
     if (el.hasAttribute("data-access")) return go(ROUTES.access);
     if (el.hasAttribute("data-notaccepted")) return go(ROUTES.notAccepted);
 
@@ -35,6 +37,7 @@
     if (key && ROUTES[key]) return go(ROUTES[key]);
   });
 
-  // Expose for scripts that need it (apply/access flows)
+  // Expose globally for scripts (apply/access flow)
   window.MN8_ROUTES = ROUTES;
+
 })();
