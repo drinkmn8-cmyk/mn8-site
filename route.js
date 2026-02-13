@@ -2,7 +2,7 @@
 (function () {
   // EDIT THESE ONCE. DONE.
   const ROUTES = {
-    home: "/system",
+    home: "/",
     apply: "/apply",
     access: "/access",
     notAccepted: "/not-accepted",
