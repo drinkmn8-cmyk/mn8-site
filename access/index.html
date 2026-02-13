@@ -727,206 +727,86 @@ function initOffer() {
   });
 }
 
-</script>
-    <script>
-  (function(){
-    const params = new URLSearchParams(window.location.search);
+<script>
+(function(){
+  // ---- CONFIG ----
+  const RECORD_LEGAL_URL = "https://qsrsfzebsncrvkqiabnu.supabase.co/functions/v1/record-legal";
+  const ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzcnNmemVic25jcnZrcWlhYm51Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4MjAwMDYsImV4cCI6MjA4NTM5NjAwNn0._PjCnlHKDomrUscaaqJ2esB31tcdR0OnuR6bgC1-5HE"; // keep your existing anon key
+  const CHECKOUT_URL = "https://buy.stripe.com/00w00kf341i079U85lbII07"; // single offer
 
-    // token can come under multiple names
-    let token =
-      (params.get("token") || "").trim() ||
-      (params.get("access_token") || "").trim() ||
-      (params.get("t") || "").trim();
+  const agree = document.getElementById("agree");
+  const checkoutBtn = document.getElementById("checkoutBtn");
 
-    const status = (params.get("status") || "").trim();
-    const reason = (params.get("reason") || "").trim();
+  // token from URL or localStorage
+  const params = new URLSearchParams(window.location.search);
+  const LS_KEY = "mn8_token";
+  const token =
+    (params.get("token") || "").trim() ||
+    (localStorage.getItem(LS_KEY) || "").trim();
 
-    const LS_KEY = "mn8_token";
+  function setCheckoutEnabled(){
+    if (!checkoutBtn) return;
+    checkoutBtn.disabled = !(agree && agree.checked);
+  }
 
-    // ---- CONFIG ----
-    const VERIFY_URL = "https://qsrsfzebsncrvkqiabnu.supabase.co/functions/v1/validate-token";
-    const ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzcnNmemVic25jcnZrcWlhYm51Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4MjAwMDYsImV4cCI6MjA4NTM5NjAwNn0._PjCnlHKDomrUscaaqJ2esB31tcdR0OnuR6bgC1-5HE";
+  async function recordLegal(){
+    const payload = {
+      token,
+      terms_version: "v1",
+      rules_version: "v1",
+      page_url: location.href,
+      user_agent: navigator.userAgent
+    };
 
-    // ONE checkout url only (update this)
-    const CHECKOUT_URL = "https://your-checkout-link.com/mn8";
-
-    // =========================
-    // ROUTING (route.js driven)
-    // =========================
-    function goQualify(){
-      try{
-        if (window.MN8_ROUTE){
-          if (typeof window.MN8_ROUTE.apply === "function") return window.MN8_ROUTE.apply();
-          if (typeof window.MN8_ROUTE.qualify === "function") return window.MN8_ROUTE.qualify();
-        }
-        if (typeof window.routeToApply === "function") return window.routeToApply();
-        if (typeof window.routeToQualify === "function") return window.routeToQualify();
-      } catch(e){}
-      window.location.href = "./apply.html";
-    }
-
-    // ---- MODAL (premium white) ----
-    function showModal(title, message, buttonText, onClick) {
-      const modal = document.createElement("div");
-      modal.style.cssText = `
-        position:fixed; inset:0;
-        display:flex; align-items:center; justify-content:center;
-        background:rgba(0,0,0,.42);
-        z-index:9999; padding:20px;
-      `;
-      modal.innerHTML = `
-        <div style="
-          width:min(520px,100%);
-          background:rgba(255,255,255,.92);
-          backdrop-filter: blur(10px);
-          -webkit-backdrop-filter: blur(10px);
-          border:1px solid rgba(15,18,24,.10);
-          border-radius:18px;
-          padding:26px;
-          box-shadow:0 30px 90px rgba(0,0,0,.28);
-          font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
-          color:#0B0D12;
-        ">
-          <div style="font-size:20px; font-weight:850; margin-bottom:10px; letter-spacing:-.01em;">
-            ${title}
-          </div>
-          <div style="font-size:15px; line-height:1.55; color:rgba(11,13,18,.72); margin-bottom:18px;">
-            ${message}
-          </div>
-          <button id="mn8ModalBtn" style="
-            width:100%;
-            padding:14px 16px;
-            border-radius:999px;
-            border:0;
-            background:rgb(99,47,150);
-            color:#fff;
-            font-weight:850;
-            cursor:pointer;
-          ">${buttonText}</button>
-        </div>
-      `;
-      document.body.appendChild(modal);
-      document.getElementById("mn8ModalBtn").onclick = () => {
-        modal.remove();
-        onClick && onClick();
-      };
-    }
-
-    function lockPage() {
-      const gate = document.getElementById("privateGate");
-      if (gate) gate.style.display = "none";
-    }
-
-    function unlockPage() {
-      const gate = document.getElementById("privateGate");
-      if (gate) gate.style.display = "block";
-    }
-
-    async function verifyToken(tok) {
-      const res = await fetch(VERIFY_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          apikey: ANON_KEY,
-          Authorization: `Bearer ${ANON_KEY}`,
-        },
-        body: JSON.stringify({ token: tok }),
-      });
-
-      const out = await res.json().catch(() => ({}));
-      if (!res.ok || !out.ok) throw new Error(out.error || out.message || "Invalid token");
-    }
-
-    async function authFlow() {
-      lockPage();
-
-      // fallback to local storage token
-      if (!token) token = (localStorage.getItem(LS_KEY) || "").trim();
-
-      // Rejected
-      if (status === "reject") {
-        showModal(
-          "Not approved",
-          reason ? `Reason: ${reason}` : "You’re not a fit right now.",
-          "Return to qualification",
-          () => goQualify()
-        );
-        return;
-      }
-
-      // Accepted but no token
-      if (status === "accept" && !token) {
-        showModal(
-          "Link issue",
-          "Your access link is missing a token. Submit again so we can generate one.",
-          "Return to qualification",
-          () => goQualify()
-        );
-        return;
-      }
-
-      // Verify and unlock
-      if (token) {
-        try {
-          await verifyToken(token);
-          localStorage.setItem(LS_KEY, token);
-          unlockPage();
-
-          if (status === "accept") {
-            showModal(
-              "You’re in.",
-              "Read what you get, confirm the guarantee rules, then continue to checkout.",
-              "Continue"
-            );
-          }
-        } catch {
-          localStorage.removeItem(LS_KEY);
-          showModal(
-            "Access denied",
-            "Your access link is invalid or expired.",
-            "Return to qualification",
-            () => goQualify()
-          );
-        }
-        return;
-      }
-
-      // Default
-      showModal(
-        "Private access",
-        "Submit the qualification to unlock this page.",
-        "Go to qualification",
-        () => goQualify()
-      );
-    }
-
-    // =========================
-    // ONE OFFER CHECKOUT ENABLE
-    // =========================
-    function initCheckout(){
-      const agree = document.getElementById("agree");
-      const checkoutBtn = document.getElementById("checkoutBtn");
-
-      if (!agree || !checkoutBtn) return;
-
-      // Make sure initial state is correct
-      checkoutBtn.disabled = !agree.checked;
-
-      agree.addEventListener("change", () => {
-        checkoutBtn.disabled = !agree.checked;
-      });
-
-      checkoutBtn.addEventListener("click", () => {
-        if (!agree.checked) return;
-        window.location.href = CHECKOUT_URL;
-      });
-    }
-
-    document.addEventListener("DOMContentLoaded", () => {
-      authFlow();
-      initCheckout();
+    const res = await fetch(RECORD_LEGAL_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: ANON_KEY,
+        Authorization: `Bearer ${ANON_KEY}`,
+      },
+      body: JSON.stringify(payload),
     });
-  })();
+
+    const out = await res.json().catch(() => ({}));
+
+    // HARD FAIL if anything is off
+    if (!res.ok || !out.ok) {
+      console.error("LEGAL LOG FAILED", res.status, out);
+      throw new Error(out.error || "Could not record legal acceptance");
+    }
+    return out;
+  }
+
+  // Init state
+  if (agree) agree.addEventListener("change", setCheckoutEnabled);
+  setCheckoutEnabled();
+
+  if (checkoutBtn){
+    checkoutBtn.addEventListener("click", async () => {
+      try{
+        if (!agree || !agree.checked) return;
+
+        if (!token){
+          alert("Missing access token. Re-open your private link.");
+          return;
+        }
+
+        checkoutBtn.disabled = true;
+        checkoutBtn.textContent = "Processing...";
+
+        await recordLegal();
+
+        // Only redirect after logging success
+        window.location.href = CHECKOUT_URL;
+      } catch(e){
+        alert(e.message || "Could not continue.");
+        checkoutBtn.textContent = "Go to checkout";
+        setCheckoutEnabled();
+      }
+    });
+  }
+})();
 </script>
 
     <script>
