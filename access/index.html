@@ -426,10 +426,17 @@
                  <a class="chipLink" href="/services" data-route="services" target="_blank" rel="noopener">Services</a>
                 </div>
 
-<button id="checkoutBtn" class="checkoutBtn" disabled>
-  <span>Continue</span>
+<button 
+  id="checkoutBtn" 
+  type="button"
+  class="checkoutBtn" 
+  disabled
+  aria-disabled="true"
+>
+  <span class="checkoutLabel">Continue</span>
   <span class="checkoutPrice">$2,500 / year</span>
 </button>
+
               </div>
             </div>
           </div>
@@ -452,7 +459,6 @@
 </footer>
 
 
-    <!-- Checkout enable + redirect (replaces the broken pointer-events approach) -->
 <script>
 (function(){
   const params = new URLSearchParams(window.location.search);
@@ -470,40 +476,15 @@
 
   // ---- CONFIG ----
   const VERIFY_URL = "https://qsrsfzebsncrvkqiabnu.supabase.co/functions/v1/validate-token";
+  const RECORD_LEGAL_URL = "https://qsrsfzebsncrvkqiabnu.supabase.co/functions/v1/record-legal";
+
   const ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzcnNmemVic25jcnZrcWlhYm51Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4MjAwMDYsImV4cCI6MjA4NTM5NjAwNn0._PjCnlHKDomrUscaaqJ2esB31tcdR0OnuR6bgC1-5HE";
 
-  async function recordLegalAcceptance(tok) {
-  const cleanTok = (tok || "").trim();
-  if (!cleanTok) throw new Error("Missing token");
-
-  const res = await fetch("https://qsrsfzebsncrvkqiabnu.supabase.co/functions/v1/record-legal", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      apikey: ANON_KEY,
-      Authorization: `Bearer ${ANON_KEY}`,
-    },
-    body: JSON.stringify({
-      token: cleanTok,
-      agreed: true,                    // ✅ REQUIRED by your backend
-      terms_version: "v1",
-      privacy_version: "v1",
-      services_version: "v1",
-      page_url: location.href,
-      user_agent: navigator.userAgent,
-      agreed_at: new Date().toISOString(),
-    }),
-  });
-
-  const out = await res.json().catch(() => ({}));
-  if (!res.ok || !out.ok) throw new Error(out.error || out.message || "record-legal failed");
-  return out;
-}
-
-
+  // ONE checkout url only (update this)
+  const CHECKOUT_URL = "https://buy.stripe.com/00w00kf341i079U85lbII07";
 
   // =========================
-  // ROUTING
+  // ROUTING (route.js driven)
   // =========================
   function goQualify(){
     try{
@@ -514,41 +495,40 @@
       if (typeof window.routeToApply === "function") return window.routeToApply();
       if (typeof window.routeToQualify === "function") return window.routeToQualify();
     } catch(e){}
+    // fallback: send them home or to /apply depending on your setup
     window.location.href = "/";
   }
 
-  // ---- BASIC MODAL ----
+  // ---- MODAL (premium glass) ----
   function showModal(title, message, buttonText, onClick) {
     const modal = document.createElement("div");
     modal.style.cssText = `
-      position:fixed;
-      inset:0;
-      display:flex;
-      align-items:center;
-      justify-content:center;
+      position:fixed; inset:0;
+      display:flex; align-items:center; justify-content:center;
       background:rgba(15,18,24,.55);
-      backdrop-filter: blur(6px);
-      z-index:9999;
-      padding:20px;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index:9999; padding:20px;
     `;
 
     modal.innerHTML = `
       <div style="
-        width:min(520px,100%);
-        background:rgba(255,255,255,.85);
+        width:min(540px,100%);
+        background:rgba(255,255,255,.86);
         backdrop-filter: blur(14px);
-        border:1px solid rgba(0,0,0,.08);
-        border-radius:20px;
+        -webkit-backdrop-filter: blur(14px);
+        border:1px solid rgba(15,18,24,.10);
+        border-radius:22px;
         padding:32px;
-        box-shadow:0 40px 100px rgba(0,0,0,.25);
+        box-shadow:0 45px 120px rgba(0,0,0,.28);
         font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
-        color:#111;
+        color:#0B0D12;
       ">
         <div style="
           font-size:22px;
           font-weight:900;
           margin-bottom:12px;
-          letter-spacing:-0.01em;
+          letter-spacing:-.01em;
         ">
           ${title}
         </div>
@@ -556,8 +536,8 @@
         <div style="
           font-size:15px;
           line-height:1.6;
-          color:#333;
-          margin-bottom:24px;
+          color:rgba(11,13,18,.72);
+          margin-bottom:22px;
         ">
           ${message}
         </div>
@@ -569,13 +549,10 @@
           border:0;
           background:linear-gradient(135deg, rgb(99,47,150), rgb(140,95,210));
           color:#fff;
-          font-weight:800;
+          font-weight:900;
           font-size:15px;
           cursor:pointer;
-          transition:all .2s ease;
-        ">
-          ${buttonText}
-        </button>
+        ">${buttonText}</button>
       </div>
     `;
 
@@ -611,6 +588,48 @@
     if (!res.ok || !out.ok) throw new Error(out.error || out.message || "Invalid token");
   }
 
+  function getToken(){
+    const p = new URLSearchParams(window.location.search);
+    return (
+      (p.get("token") || "").trim() ||
+      (p.get("access_token") || "").trim() ||
+      (p.get("t") || "").trim() ||
+      (localStorage.getItem(LS_KEY) || "").trim()
+    );
+  }
+
+  async function recordLegalAcceptance(tok) {
+    const cleanTok = (tok || "").trim();
+    if (!cleanTok) throw new Error("Missing token");
+
+    const res = await fetch(RECORD_LEGAL_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: ANON_KEY,
+        Authorization: `Bearer ${ANON_KEY}`,
+      },
+      body: JSON.stringify({
+        token: cleanTok,
+        agreed: true,
+        terms_version: "v1",
+        privacy_version: "v1",
+        services_version: "v1",
+        page_url: location.href,
+        user_agent: navigator.userAgent,
+        agreed_at: new Date().toISOString(),
+      }),
+      function sync(){
+  checkoutBtn.disabled = !agree.checked;
+  checkoutBtn.setAttribute("aria-disabled", checkoutBtn.disabled);
+}
+    });
+
+    const out = await res.json().catch(() => ({}));
+    if (!res.ok || !out.ok) throw new Error(out.error || out.message || "record-legal failed");
+    return out;
+  }
+
   async function authFlow() {
     lockPage();
 
@@ -620,7 +639,7 @@
       showModal(
         "Not approved",
         reason ? `Reason: ${reason}` : "You’re not a fit right now.",
-        "Return to Qualification",
+        "Return to qualification",
         () => goQualify()
       );
       return;
@@ -628,9 +647,9 @@
 
     if (status === "accept" && !token) {
       showModal(
-        "Access token missing",
-        "Your access link didn’t include a token. Submit again so we can generate one.",
-        "Return to Qualification",
+        "Link issue",
+        "Your access link is missing a token. Submit again so we can generate one.",
+        "Return to qualification",
         () => goQualify()
       );
       return;
@@ -643,14 +662,18 @@
         unlockPage();
 
         if (status === "accept") {
-          showModal("You qualified.", "This is your structure now.", "Continue");
+          showModal(
+            "You’re in.",
+            "Read what you get, confirm the guarantee rules, then continue to checkout.",
+            "Continue"
+          );
         }
       } catch {
         localStorage.removeItem(LS_KEY);
         showModal(
           "Access denied",
           "Your access link is invalid or expired.",
-          "Return to Qualification",
+          "Return to qualification",
           () => goQualify()
         );
       }
@@ -660,167 +683,57 @@
     showModal(
       "Private access",
       "Submit the qualification to unlock this page.",
-      "Go to Qualification",
+      "Go to qualification",
       () => goQualify()
     );
   }
 
-  function initSticky() {
-    const offerSection = document.getElementById("offer");
-    const sticky = document.getElementById("stickyJump");
-    const jumpBtn = document.getElementById("jumpToOffer");
-    if (!offerSection || !sticky || !jumpBtn) return;
+  // =========================
+  // ONE OFFER CHECKOUT ENABLE + LOG
+  // =========================
+  function initCheckout(){
+    const agree = document.getElementById("agree");
+    const checkoutBtn = document.getElementById("checkoutBtn");
+    if (!agree || !checkoutBtn) return;
 
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) sticky.classList.add("hidden");
-        else sticky.classList.remove("hidden");
-      });
-    }, { threshold: 0.15 });
+    function sync(){
+      checkoutBtn.disabled = !agree.checked;
+    }
 
-    io.observe(offerSection);
+    agree.addEventListener("change", sync);
+    sync();
 
-    jumpBtn.addEventListener("click", () => {
-      offerSection.scrollIntoView({ behavior: "smooth", block: "start" });
-    });
-  }
+    checkoutBtn.addEventListener("click", async (e) => {
+      e.preventDefault();
+      if (!agree.checked) return;
 
-function initOffer() {
-  const agree = document.getElementById("agree");
-  const checkoutBtn = document.getElementById("checkoutBtn");
-  if (!agree || !checkoutBtn) return;
-
-  // 🔥 put your real checkout link here
-  const CHECKOUT_URL = "YOUR_STRIPE_CHECKOUT_LINK";
-
-  function getToken() {
-    const p = new URLSearchParams(window.location.search);
-    return (
-      (p.get("token") || "").trim() ||
-      (p.get("access_token") || "").trim() ||
-      (p.get("t") || "").trim() ||
-      (localStorage.getItem(LS_KEY) || "").trim()
-    );
-  }
-
-  function sync() {
-    checkoutBtn.disabled = !agree.checked;
-  }
-
-  agree.addEventListener("change", sync);
-  sync();
-
-  checkoutBtn.addEventListener("click", async (e) => {
-    e.preventDefault();
-    if (!agree.checked) return;
-
-    checkoutBtn.disabled = true;
-
-    try {
       const tok = getToken();
-      await recordLegalAcceptance(tok);
-      window.location.href = CHECKOUT_URL;
-    } catch (err) {
-      checkoutBtn.disabled = false;
-      alert(err?.message || "Could not save agreement. Please try again.");
-    }
-  });
-}
+      if (!tok){
+        alert("Missing access token. Re-open your private link.");
+        return;
+      }
 
-<script>
-(function(){
-  // ---- CONFIG ----
-  const RECORD_LEGAL_URL = "https://qsrsfzebsncrvkqiabnu.supabase.co/functions/v1/record-legal";
-  const ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzcnNmemVic25jcnZrcWlhYm51Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4MjAwMDYsImV4cCI6MjA4NTM5NjAwNn0._PjCnlHKDomrUscaaqJ2esB31tcdR0OnuR6bgC1-5HE"; // keep your existing anon key
-  const CHECKOUT_URL = "https://buy.stripe.com/00w00kf341i079U85lbII07"; // single offer
+      checkoutBtn.disabled = true;
+      const originalText = checkoutBtn.textContent;
+      checkoutBtn.textContent = "Processing...";
 
-  const agree = document.getElementById("agree");
-  const checkoutBtn = document.getElementById("checkoutBtn");
-
-  // token from URL or localStorage
-  const params = new URLSearchParams(window.location.search);
-  const LS_KEY = "mn8_token";
-  const token =
-    (params.get("token") || "").trim() ||
-    (localStorage.getItem(LS_KEY) || "").trim();
-
-  function setCheckoutEnabled(){
-    if (!checkoutBtn) return;
-    checkoutBtn.disabled = !(agree && agree.checked);
-  }
-
-  async function recordLegal(){
-    const payload = {
-      token,
-      terms_version: "v1",
-      rules_version: "v1",
-      page_url: location.href,
-      user_agent: navigator.userAgent
-    };
-
-    const res = await fetch(RECORD_LEGAL_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        apikey: ANON_KEY,
-        Authorization: `Bearer ${ANON_KEY}`,
-      },
-      body: JSON.stringify(payload),
-    });
-
-    const out = await res.json().catch(() => ({}));
-
-    // HARD FAIL if anything is off
-    if (!res.ok || !out.ok) {
-      console.error("LEGAL LOG FAILED", res.status, out);
-      throw new Error(out.error || "Could not record legal acceptance");
-    }
-    return out;
-  }
-
-  // Init state
-  if (agree) agree.addEventListener("change", setCheckoutEnabled);
-  setCheckoutEnabled();
-
-  if (checkoutBtn){
-    checkoutBtn.addEventListener("click", async () => {
       try{
-        if (!agree || !agree.checked) return;
-
-        if (!token){
-          alert("Missing access token. Re-open your private link.");
-          return;
-        }
-
-        checkoutBtn.disabled = true;
-        checkoutBtn.textContent = "Processing...";
-
-        await recordLegal();
-
-        // Only redirect after logging success
+        await recordLegalAcceptance(tok);
         window.location.href = CHECKOUT_URL;
-      } catch(e){
-        alert(e.message || "Could not continue.");
-        checkoutBtn.textContent = "Go to checkout";
-        setCheckoutEnabled();
+      } catch(err){
+        console.error(err);
+        checkoutBtn.textContent = originalText || "Go to checkout";
+        sync();
+        alert(err?.message || "Could not save agreement. Please try again.");
       }
     });
   }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    authFlow();
+    initCheckout();
+  });
 })();
 </script>
-
-    <script>
-      // subtle background pointer parallax (optional)
-      (function(){
-        const stage = document.getElementById("bgStage");
-        if(!stage) return;
-        window.addEventListener("pointermove", (e) => {
-          const x = (e.clientX / window.innerWidth) * 100;
-          const y = (e.clientY / window.innerHeight) * 100;
-          stage.style.setProperty("--mx", x + "%");
-          stage.style.setProperty("--my", y + "%");
-        }, { passive:true });
-      })();
-    </script>
   </body>
 </html>
