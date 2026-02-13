@@ -472,6 +472,28 @@
     const VERIFY_URL = "https://qsrsfzebsncrvkqiabnu.supabase.co/functions/v1/validate-token";
     const ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFzcnNmemVic25jcnZrcWlhYm51Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4MjAwMDYsImV4cCI6MjA4NTM5NjAwNn0._PjCnlHKDomrUscaaqJ2esB31tcdR0OnuR6bgC1-5HE";
 
+    async function recordLegalAcceptance(token) {
+  const res = await fetch("https://qsrsfzebsncrvkqiabnu.supabase.co/functions/v1/record-legal", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      apikey: ANON_KEY,
+      Authorization: `Bearer ${ANON_KEY}`,
+    },
+    body: JSON.stringify({
+      token,
+      terms_version: "v1",
+      privacy_version: "v1",
+      services_version: "v1",
+      page_url: location.href,
+      user_agent: navigator.userAgent,
+    }),
+  });
+
+  const out = await res.json().catch(() => ({}));
+  if (!res.ok || !out.ok) throw new Error(out.error || "record-legal failed");
+}
+
     // CHANGE THESE LINKS
     const CHECKOUT_LINKS = {
       private: "https://your-checkout-link.com/mn8-private",
