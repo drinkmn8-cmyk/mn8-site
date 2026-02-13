@@ -7,156 +7,157 @@
   <meta name="robots" content="noindex,nofollow" />
 
   <style>
-    :root{
-      --ink:#0b0d12;
-      --muted:rgba(11,13,18,.62);
-      --line:rgba(11,13,18,.10);
-      --bg:#ffffff;
-      --mn8:#632f96;
-      --mn8b:#8c5fd2;
-    }
-
-    *{ box-sizing:border-box; }
-    body{
-      margin:0;
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-      background:var(--bg);
-      color:var(--ink);
-    }
-    /* Topbar */
-  .topbar{
-    position:sticky;
-    top:0;
-    z-index:50;
-    backdrop-filter: blur(14px);
-    background: rgba(255,255,255,.78);
-    border-bottom: 0;
-  }
-  .topbarInner{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:14px;
-    padding: 14px 0;
-  }
-  .brand{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    font-weight:900;
-    letter-spacing:.02em;
-  }
-
-    .wrap{
-      width:min(920px, 100%);
-      margin:0 auto;
-      padding:28px 20px;
-    }
-
-    .card{
-      margin-top:48px;
-      border:1px solid var(--line);
-      border-radius:18px;
-      padding:26px;
-      background:#fff;
-    }
-
-    h1{
-      margin:0 0 8px 0;
-      font-size:28px;
-      letter-spacing:-.02em;
-      line-height:1.12;
-      font-weight:900;
-    }
-
-    .sub{
-      margin:0 0 18px 0;
-      font-size:15px;
-      line-height:1.5;
-      color:var(--muted);
-      max-width:62ch;
-    }
-
-    .btnRow{
-      display:flex;
-      gap:12px;
-      align-items:center;
-      flex-wrap:wrap;
-      margin-top:10px;
-    }
-
-    .btn{
-      appearance:none;
-      border:1px solid var(--line);
-      background:#fff;
-      color:var(--ink);
-      padding:12px 14px;
-      border-radius:999px;
-      font-weight:850;
-      cursor:pointer;
-      text-decoration:none;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      min-height:44px;
-      transition:transform .12s ease, box-shadow .12s ease, border-color .12s ease;
-      user-select:none;
-      white-space:nowrap;
-    }
-
-    .btnPrimary{
-      border:0;
-      background:linear-gradient(135deg, var(--mn8), var(--mn8b));
-      color:#fff;
-      box-shadow:0 10px 24px rgba(99,47,150,.18);
-    }
-
-    .btn:hover{ transform:translateY(-1px); }
-    .btn:active{ transform:translateY(0px); }
-
-    .tip{
-      margin-top:14px;
-      font-size:12.5px;
-      color:rgba(11,13,18,.55);
-    }
-
-    /* Mobile: stack buttons */
-    @media (max-width: 520px){
-      .card{ margin-top:28px; padding:20px; }
-      h1{ font-size:24px; }
-      .btnRow{ flex-direction:column; align-items:stretch; }
-      .btn{ width:100%; }
-    }
-    .brandLogo{
-  height: 60px;     /* realistic header size */
-  width: auto;
-  display:block;
-  transform: scale(1.25);
-  transform-origin: left center;
-}
-/* =========================================
-   TOPBAR — match site container width
-   (same width as #process/#outcome .wrap)
-   ========================================= */
-
-/* Make the header use the same wrap sizing rules */
-.topbar .wrap{
-  width: min(1360px, calc(100% - var(--gutter)));
+:root{
+  --ink:#0b0d12;
+  --muted:rgba(11,13,18,.62);
+  --line:rgba(11,13,18,.10);
+  --bg:#ffffff;
+  --mn8:#632f96;
+  --mn8b:#8c5fd2;
 }
 
-@media (max-width: 900px){
-  .topbar .wrap{
-    width: calc(100% - var(--gutterMobile));
-  }
+*{ box-sizing:border-box; }
+
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+
+  /* TRUE CENTER LAYOUT */
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
 }
 
-/* Optional: make the bar feel “taller/premium” */
-.topbarInner{
-  padding: 18px 0;   /* was 14px */
+/* =========================
+   HEADER
+========================= */
+.header{
+  padding:28px 20px 0 20px;
+  display:flex;
+  justify-content:center; /* CENTER LOGO */
 }
-@media (max-width: 740px){
-  .topbarInner{
-    padding: 14px 0;
+
+.header img{
+  height:28px;
+}
+
+/* =========================
+   MAIN WRAP
+========================= */
+.wrap{
+  flex:1;
+  display:flex;
+  align-items:center;      /* vertical center */
+  justify-content:center;  /* horizontal center */
+  padding:40px 20px;
+}
+
+/* =========================
+   CARD
+========================= */
+.card{
+  width:min(760px, 100%);
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:32px;
+  background:#fff;
+}
+
+/* =========================
+   TEXT
+========================= */
+h1{
+  margin:0 0 10px 0;
+  font-size:28px;
+  letter-spacing:-.02em;
+  line-height:1.12;
+  font-weight:900;
+}
+
+.sub{
+  margin:0 0 22px 0;
+  font-size:15px;
+  line-height:1.5;
+  color:var(--muted);
+  max-width:62ch;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+.btnRow{
+  display:flex;
+  gap:14px;
+  align-items:center;
+  flex-wrap:wrap;
+  margin-top:12px;
+}
+
+.btn{
+  appearance:none;
+  border:1px solid var(--line);
+  background:#fff;
+  color:var(--ink);
+  padding:13px 16px;
+  border-radius:999px;
+  font-weight:850;
+  cursor:pointer;
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:46px;
+  transition:transform .12s ease, box-shadow .12s ease;
+  user-select:none;
+  white-space:nowrap;
+}
+
+.btnPrimary{
+  border:0;
+  background:linear-gradient(135deg, var(--mn8), var(--mn8b));
+  color:#fff;
+  box-shadow:0 12px 28px rgba(99,47,150,.18);
+}
+
+.btn:hover{ transform:translateY(-2px); }
+.btn:active{ transform:translateY(0px); }
+
+/* =========================
+   TIP
+========================= */
+.tip{
+  margin-top:18px;
+  font-size:12.5px;
+  color:rgba(11,13,18,.55);
+}
+
+/* =========================
+   MOBILE
+========================= */
+@media (max-width: 520px){
+
+  .wrap{
+    align-items:flex-start;
+    padding-top:40px;
+  }
+
+  .card{
+    padding:22px;
+  }
+
+  h1{
+    font-size:24px;
+  }
+
+  .btnRow{
+    flex-direction:column;
+    align-items:stretch;
+  }
+
+  .btn{
+    width:100%;
   }
 }
   </style>
